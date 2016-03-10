@@ -1,0 +1,113 @@
+div.module {
+    margin:0px;
+    background-color:white;
+}
+
+div.module-header {
+    margin:0px;
+    width:100%;
+    height:40px;
+}
+
+div.module-left-ornament {
+    margin:0px;
+    width:20px;
+    height:40px;
+    float:left;
+}
+
+div.module-blue-check {
+    margin:0px;
+    width:20px;
+    height:20px;
+    background-color:#00a0ea;
+}
+
+div.module-title {
+    margin:0px;
+    float:left;
+    height:40px;
+}
+
+/* alpha module */
+div.alpha-module {
+    margin:0px;
+    margin-bottom:15px;
+    width:740px;
+    background:white;
+}
+
+div.alpha-module-title {
+    width: 720px;
+    font-size:150%;
+}
+
+div.alpha-module-title-cnt {
+    margin:0px;
+    margin-right:15px;
+    width:705px;
+    height:100%;
+    border-left: 1px solid #00a0ea;
+    border-bottom: 1px solid #00a0ea;
+    padding-left:15px;
+}
+
+div.module-title-division {
+    height:40px;
+    margin:0px;
+    padding:0px;
+}
+
+div.alpha-module-main-title {
+    display: table-cell;
+    vertical-align: bottom;
+    height: 35px;
+    font-size:110%;
+}
+
+div.alpha-module-sec-title {
+    height: 35px;
+    display: table-cell;
+    vertical-align: bottom;
+    padding-left:10px;
+    font-size:75%;
+    color:#888;
+}
+
+div.alpha-module-more {
+    height: 35px;
+    display: table-cell;
+    padding-left:40px;
+    vertical-align: bottom;
+    font-size:75%;
+    color:#888;
+}
+
+a.module-more, a.module-more:hover {
+    text-decoration:none;
+    color: #888;
+}
+
+/* beta modules */
+div.beta-module {
+    margin-left:15px;
+    width:325px;
+    margin-bottom:15px;
+    background:white;
+}
+
+div.beta-module-title {
+    width: 290px;
+    font-size:150%;
+}
+
+div.beta-module-title-cnt {
+    margin:0px;
+    margin-right:15px;
+    width:100%;
+    height:100%;
+    border-left: 1px solid #00a0ea;
+    border-bottom: 1px solid #00a0ea;
+    padding-top:10px;
+    padding-left:15px;
+}

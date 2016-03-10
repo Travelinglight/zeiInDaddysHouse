@@ -1,0 +1,100 @@
+/*------------------------Newest---------------------------*/
+div.beta-module-newhottest {
+    height:432px;
+}
+
+div.newhottest-content {
+    margin:0px;
+    width:100%;
+    height:392px;
+}
+
+p.newhottest-entry-p {
+    margin:0px;
+}
+
+/* -------------------------------------- Newest -----------------------------------------*/
+div.newest-entry {
+    width:90%;
+    height:16.67%;
+    margin:auto;
+}
+
+div.newest-entry-profile {
+    float:left;
+    height:100%;
+    width:65.3333px;     /* = height */
+    padding: 9.8px 9.8px 9.8px 9.8px;
+}
+
+div.newest-entry-profile-img {
+    height:45.733333px; /* 80% height */
+    width:45.733333px;  /* 80% height */
+    background-repeat: no-repeat;
+    background-position: 50%;
+    border-radius: 50%;
+    background: url(/images/user_profile.jpg);
+    background-size: 52.266667px 52.266667px;
+    background-repeat: no-repeat;
+}
+
+div.newest-entry-cnt {
+    float:left;
+    height: 100%;
+    width:227.1666px;
+}
+
+div.newest-entry-text {
+    width:100%;
+    height:75%;
+    padding:5px;
+}
+
+div.newest-entry-time {
+    width:100%;
+    height:25%;
+    color:#CCCCCC;
+    text-align:right;
+}
+
+p.newhottest-entry-title {
+    font-weight:bold;
+    color:black;
+}
+
+p.newhottest-entry-detail {
+    color:#999999;
+}
+
+/* -------------------------------------- Hottest -----------------------------------------*/
+div.hottest-entry {
+    width:90%;
+    height:16.67%;
+    margin:auto;
+}
+
+div.hottest-entry-image {
+    float:left;
+    height:100%;
+    width:65.3333px;     /* = height */
+    text-align: center;
+}
+
+span.valign-helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+img.hottest-entry-img {
+    vertical-align: middle;
+    max-height:52.266667px;
+    max-width:52.266667px;
+}
+
+div.hottest-entry-cnt {
+    float:left;
+    height: 100%;
+    width:227.1666px;
+    padding:10px 5px 10px 5px;
+}

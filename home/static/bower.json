@@ -1,0 +1,18 @@
+{
+  "name": "bbjjzl",
+  "description": "haha",
+  "main": "index.js",
+  "license": "ISC",
+  "homepage": "https://github.com/Travelinglight/zeiInDaddysHouse",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  }
+}
