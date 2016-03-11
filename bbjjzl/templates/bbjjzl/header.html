@@ -48,7 +48,8 @@
             <div class="menubar container-fluid">
                 <table class="menubtn_table">
                     <tr>
-                        <td><img src="/images/logo_max.png" alt="logo_max" style="width:156px"></td>
+                        {% load staticfiles %}
+                        <td><img src="{% static 'images/logo_max.png' %}" alt="logo_max" style="width:156px"></td>
                         <td class="menubtn">
                             <div class="right-vbar">
                                 <a id="tag-home" class="menu-a" href="/">首页<br><font id="tagEng-home" size="2" color="grey">Home</font></a>
