@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'myuser',
     'bbjjzl',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -82,7 +83,7 @@ DATABASES = {
         'USER': 'bbjjzl',
         'PASSWORD': 'bbjjzlhhh',
         'HOST': 'localhost',
-        'PORT': ''
+        'PORT': '',
     }
 }
 
@@ -124,3 +125,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# cookie secure settings
+CSRF_COOKIE_SECURE = True
