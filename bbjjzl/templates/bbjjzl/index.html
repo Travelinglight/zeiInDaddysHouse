@@ -3,18 +3,18 @@
     <head>
         <title>温哥华学生网</title>
         {% load staticfiles %}
-        <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}"></link>
+        <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}"></link>
         <link rel="stylesheet" type="text/css" href="{% static 'css/layout.css' %}"></link>
         <link rel="stylesheet" type="text/css" href="{% static 'css/module_format.css' %}"></link>
         <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"></link>
         <link rel="stylesheet" type="text/css" href="{% static 'css/newhottest.css' %}"></link>
         <link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}"></link>
         <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}"></link>
-        <script src="/bower_components/jquery/dist/jquery.min.js"></script>
-        <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="/javascripts/myjs.js"></script>
-        <script src="/javascripts/header.js"></script>
-        <script src="/javascripts/footer.js"></script>
+        <script src='{% static 'jquery/dist/jquery.min.js' %}'></script>
+        <script src='{% static 'bootstrap/dist/js/bootstrap.min.js' %}'></script>
+        <script src='{% static 'javascript/myjs.js' %}'></script>
+        <script src='{% static 'javascript/header.js' %}'></script>
+        <script src='{% static 'javascript/footer.js' %}'></script>
         <script type='text/javascript'>
             $(document).ready(function(){
 
@@ -523,7 +523,7 @@
                             <div class="market-prev-half">
                                 <div class="market-prev-entry">
                                     <div class="market-prev-img">
-                                        <a class="prehouse-a0" href="#"><img id="prehouse-i0" src="images/house_sample0.jpg" class="market-prev-img"></a>
+                                        <a class="prehouse-a0" href="#"><img id="prehouse-i0" src='{% static 'images/house_sample0.jpg' %}' class="market-prev-img"></a>
                                     </div>
                                     <div class="market-prev-cnt">
                                         <div class="market-prev-txt">
@@ -537,7 +537,7 @@
                                 </div>
                                 <div class="market-prev-entry">
                                     <div class="market-prev-img">
-                                        <a class="prehouse-a1" href="#"><img id="prehouse-i1" src="images/house_sample1.jpg" class="market-prev-img"></a>
+                                        <a class="prehouse-a1" href="#"><img id="prehouse-i1" src='{% static 'images/house_sample1.jpg' %}' class="market-prev-img"></a>
                                     </div>
                                     <div class="market-prev-cnt">
                                         <div class="market-prev-txt">
@@ -551,7 +551,7 @@
                                 </div>
                                 <div class="market-prev-entry">
                                     <div class="market-prev-img">
-                                        <a class="prehouse-a2" href="#"><img id="prehouse-i2" src="images/house_sample2.jpg" class="market-prev-img"></a>
+                                        <a class="prehouse-a2" href="#"><img id="prehouse-i2" src='{% static 'images/house_sample2.jpg' %}' class="market-prev-img"></a>
                                     </div>
                                     <div class="market-prev-cnt">
                                         <div class="market-prev-txt">
@@ -567,7 +567,7 @@
                             <div class="market-prev-half">
                                 <a class="prehouse-a0" href="#"><div class="market-prev-entry">
                                     <div class="market-prev-img">
-                                        <a class="prehouse-a3" href="#"><img id="prehouse-i3" src="images/house_sample3.jpg" class="market-prev-img"></a>
+                                        <a class="prehouse-a3" href="#"><img id="prehouse-i3" src='{% static 'images/house_sample3.jpg' %}' class="market-prev-img"></a>
                                     </div>
                                     <div class="market-prev-cnt">
                                         <div class="market-prev-txt">
@@ -581,7 +581,7 @@
                                 </div>
                                 <div class="market-prev-entry">
                                     <div class="market-prev-img">
-                                        <a class="prehouse-a4" href="#"><img id="prehouse-i4" src="images/house_sample4.jpg" class="market-prev-img"></a>
+                                        <a class="prehouse-a4" href="#"><img id="prehouse-i4" src='{% static 'images/house_sample4.jpg' %}' class="market-prev-img"></a>
                                     </div>
                                     <div class="market-prev-cnt">
                                         <div class="market-prev-txt">
@@ -595,7 +595,7 @@
                                 </div>
                                 <div class="market-prev-entry">
                                     <div class="market-prev-img">
-                                        <a class="prehouse-a5" href="#"><img id="prehouse-i5" src="images/house_sample5.jpg" class="market-prev-img"></a>
+                                        <a class="prehouse-a5" href="#"><img id="prehouse-i5" src='{% static 'images/house_sample5.jpg' %}' class="market-prev-img"></a>
                                     </div>
                                     <div class="market-prev-cnt">
                                         <div class="market-prev-txt">

@@ -61,6 +61,9 @@ target/
 #Ipython Notebook
 .ipynb_checkpoints
 
-#mac
+# mac
 .DS_Store
 *.swp
+
+# bower components
+components/*
