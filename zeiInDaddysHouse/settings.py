@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'myuser',
     'bbjjzl',
     'djangobower',
     'django.contrib.admin',
