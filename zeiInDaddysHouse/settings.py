@@ -136,6 +136,3 @@ STATICFILES_FINDERS = (
 BOWER_INSTALLED_APPS = (
     'bootstrap',
 )
-
-# cookie secure settings
-CSRF_COOKIE_SECURE = True
