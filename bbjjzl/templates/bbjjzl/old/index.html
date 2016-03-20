@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>温哥华学生网</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}"></link>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/layout.css' %}"></link>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/module_format.css' %}"></link>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"></link>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/newhottest.css' %}"></link>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}"></link>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}"></link>
+        <script src='{% static 'jquery/dist/jquery.min.js' %}'></script>
+        <script src='{% static 'bootstrap/dist/js/bootstrap.min.js' %}'></script>
+        <script src='{% static 'javascript/myjs.js' %}'></script>
+        <script src='{% static 'javascript/header.js' %}'></script>
+        <script src='{% static 'javascript/footer.js' %}'></script>
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                /* header change */
+                $("#tag-home").addClass("blue-select");
+                $("#tagEng-home").addClass("blue-select");
+
+                /* ----------------------- time clock ----------------------- */
+                var VCoffset = 0;
+                var vanDate = new Date();
+
+                // decide offset
+                var lboundDate = new Date(2015, 11, 1, 2, 1, 0, 0);
+                var uboundDate = new Date(2016, 3, 13, 1, 59, 0, 0);
+                if (vanDate < uboundDate && vanDate > lboundDate) {
+                    VCoffset = 16;
+                }
+                else {
+                    VCoffset = 15;
+                }
+                // beijing time
+                var chnDate = new Date(vanDate.getTime() + VCoffset * 3600000);
+
+                // define function
+                function MinUpdate() {
+                    // vancouver time
+                    var mins1 = vanDate.getMinutes();
+                    var hours1 = vanDate.getHours();
+                    var day1 = vanDate.getDate();
+                    var month1 = vanDate.getMonth() + 1;
+                    var year1 = vanDate.getFullYear();
+
+                    // beijing time
+                    var mins2 = chnDate.getMinutes();
+                    var hours2 = chnDate.getHours();
+                    var day2 = chnDate.getDate();
+                    var month2 = chnDate.getMonth() + 1;
+                    var year2 = chnDate.getFullYear();
+
+                    // minutes
+                    // Vancouver 1
+                    var mins1 = vanDate.getMinutes();
+                    var mdegree1 = mins1 * 6;
+                    var mrotate1 = "rotate(" + mdegree1 + "deg)";
+                    // China 2
+                    var mins2 = chnDate.getMinutes();
+                    var mdegree2 = mins2 * 6;
+                    var mrotate2 = "rotate(" + mdegree2 + "deg)";
+
+                    // hours
+                    // Vancouver 1
+                    var hours1 = vanDate.getHours();
+                    var hdegree1 = hours1 * 30 + (mins1 / 2);
+                    var hrotate1 = "rotate(" + hdegree1 + "deg)";
+                    // China 2
+                    var hours2 = chnDate.getHours();
+                    var hdegree2 = hours2 * 30 + (mins2 / 2);
+                    var hrotate2 = "rotate(" + hdegree2 + "deg)";
+
+                    $("#min1").css({"-moz-transform" : mrotate1, "-webkit-transform" : mrotate1});
+                    $("#min2").css({"-moz-transform" : mrotate2, "-webkit-transform" : mrotate2});
+                    $("#hour1").css({"-moz-transform" : hrotate1, "-webkit-transform" : hrotate1});
+                    $("#hour2").css({"-moz-transform" : hrotate2, "-webkit-transform" : hrotate2});
+
+                    var vanTimeStr = year1 + "年" + month1 + "月" + day1 + "日<br>" + hours1 + ":" + mins1;
+                    var chnTimeStr = year2 + "年" + month2 + "月" + day2 + "日<br>" + hours2 + ":" + mins2;
+                    $("#vanTimeStr").html(vanTimeStr);
+                    $("#chnTimeStr").html(chnTimeStr);
+                }
+
+                MinUpdate();
+                setInterval( function() {
+                    vanDate = new Date(vanDate.getTime() + 60000);
+                    chnDate = new Date(chnDate.getTime() + 60000);
+                    MinUpdate();
+                }, 60000 );
+
+                /* ----------------------- content load ----------------------- */
+                $.get("carousel", function(data) {
+                    for (var i = 0; i < 5; i++) {
+                        if (i < data.carousel.length) {
+                            var crsobj = data.carousel[i];
+                            var link = "#carousel-a" + i;
+                            var imag = "#carousel-i" + i;
+                            var head = "#carousel-h" + i;
+                            var para = "#carousel-p" + i;
+                            $(link).attr("href", crsobj.href);
+                            $(imag).attr("src", crsobj.image);
+                            $(head).text(crsobj.title);
+                            $(para).text(crsobj.description);
+                        }
+                    }
+                });
+
+                $.post("egallery", function(data) {
+                    for (var i = 0; i < 12; i++) {
+                        if (i < data.egallery.length) {
+                            var eglobj = data.egallery[i];
+                            var link = "#egallery-a" + i;
+                            var imag = "#egallery-i" + i;
+                            var capt = "#egallery-c" + i;
+                            var host_date = eglobj.host_time.substring(0, 4) + "年" + eglobj.host_time.substring(5, 7) + "月" +  eglobj.host_time.substring(8, 10) + "日";
+                            $(link).attr("href", eglobj.link);
+                            $(imag).attr("src", "/images/" + eglobj.image + ".jpg");
+                            $(capt).html(eglobj.title + "<br>" + host_date);
+                        }
+                    }
+                });
+
+                $.post("pre-market", function(data) {
+                    for (var i = 0; i < 6; i++) {
+                        if (i < data.market.length) {
+                            var mktobj = data.market[i];
+                            var link = ".pre2hand-a" + i;
+                            var imag = "#pre2hand-i" + i;
+                            var titl = "#pre2hand-t" + i;
+                            var para = "#pre2hand-p" + i;
+                            var view = "#pre2hand-v" + i;
+                            $(link).attr("href", "/market/" + mktobj.id);
+                            if (mktobj.images.length > 0)
+                                $(imag).attr("src", "/uploads/" + mktobj.images[0].substring(0, 2) + "/" + mktobj.images[0].substring(2, 4) + "/" + mktobj.images[0].substring(4) + "-ori");
+                            else
+                                $(imag).attr("src", "/images/NoImg.jpg");
+                            $(titl).text(mktobj.title);
+                            $(para).text(mktobj.content);
+                            $(view).text(mktobj.visited_time + "次浏览");
+                        }
+                    }
+                });
+
+                $.post("pre-housing", function(data) {
+                    for (var i = 0; i < 6; i++) {
+                        if (i < data.housing.length) {
+                            var mktobj = data.housing[i];
+                            var link = ".prehouse-a" + i;
+                            var imag = "#prehouse-i" + i;
+                            var titl = "#prehouse-t" + i;
+                            var para = "#prehouse-p" + i;
+                            var view = "#prehouse-v" + i;
+                            $(link).attr("href", "/housing/" + mktobj.id);
+                            if (mktobj.images.length > 0)
+                                $(imag).attr("src", "/uploads/" + mktobj.images[0].substring(0, 2) + "/" + mktobj.images[0].substring(2, 4) + "/" + mktobj.images[0].substring(4) + "-ori");
+                            else
+                                $(imag).attr("src", "/images/NoImg.jpg");
+                            $(titl).text(mktobj.title);
+                            $(para).text(mktobj.content);
+                            $(view).text(mktobj.visited_time + "次浏览");
+                        }
+                    }
+                });
+
+                $.post("pre-vehicle", function(data) {
+                    for (var i = 0; i < 6; i++) {
+                        if (i < data.vehicle.length) {
+                            var mktobj = data.vehicle[i];
+                            var link = ".precar-a" + i;
+                            var imag = "#precar-i" + i;
+                            var titl = "#precar-t" + i;
+                            var para = "#precar-p" + i;
+                            var view = "#precar-v" + i;
+                            $(link).attr("href", "/vehicle/" + mktobj.id);
+                            if (mktobj.images.length > 0)
+                                $(imag).attr("src", "/uploads/" + mktobj.images[0].substring(0, 2) + "/" + mktobj.images[0].substring(2, 4) + "/" + mktobj.images[0].substring(4) + "-ori");
+                            else
+                                $(imag).attr("src", "/images/NoImg.jpg");
+                            $(titl).text(mktobj.title);
+                            $(para).text(mktobj.content);
+                            $(view).text(mktobj.visited_time + "次浏览");
+                        }
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+        {% include "bbjjzl/header.html" %}
+        <div class="main-wrap">
+            <div class = "main-block gallery-newest container-fluid">
+                <div class="alpha-modules">
+                    <div id="myCarousel0" class="carousel slide" data-ride="carousel">
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators">
+                            <li class="ccitem0" data-target="#myCarousel0" data-slide-to="0" class="active"></li>
+                            <li class="ccitem1" data-target="#myCarousel0" data-slide-to="1"></li>
+                            <li class="ccitem2" data-target="#myCarousel0" data-slide-to="2"></li>
+                            <li class="ccitem3" data-target="#myCarousel0" data-slide-to="3"></li>
+                            <li class="ccitem4" data-target="#myCarousel0" data-slide-to="4"></li>
+                        </ol>
+
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner" role="listbox">
+                            <div id="carousel-item0" class="item active">
+                                <a id="carousel-a0" href="#"><img id="carousel-i0" src="" alt=" " class="gallery-pic"></a>
+                                <div class="carousel-caption">
+                                    <h3 id="carousel-h0"></h3>
+                                    <p id="carousel-p0"></p>
+                                </div>
+                            </div>
+
+                            <div id="carousel-item1" class="item">
+                                <a id="carousel-a1" href="#"><img id="carousel-i1" src="" alt=" " class="gallery-pic"></a>
+                                <div class="carousel-caption">
+                                    <h3 id="carousel-h1"></h3>
+                                    <p id="carousel-p1"></p>
+                                </div>
+                            </div>
+
+                            <div id="carousel-item2" class="item">
+                                <a id="carousel-a2" href="#"><img id="carousel-i2" src="" alt=" " class="gallery-pic"></a>
+                                <div class="carousel-caption">
+                                    <h3 id="carousel-h2"></h3>
+                                    <p id="carousel-p2"></p>
+                                </div>
+                            </div>
+
+                            <div id="carousel-item3" class="item">
+                                <a id="carousel-a3" href="#"><img id="carousel-i3" src="" alt=" " class="gallery-pic"></a>
+                                <div class="carousel-caption">
+                                    <h3 id="carousel-h3"></h3>
+                                    <p id="carousel-p3"></p>
+                                </div>
+                            </div>
+
+                            <div id="carousel-item4" class="item">
+                                <a id="carousel-a4" href="#"><img id="carousel-i4" src="" alt=" " class="gallery-pic"></a>
+                                <div class="carousel-caption">
+                                    <h3 id="carousel-h4"></h3>
+                                    <p id="carousel-p4"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="beta-modules">
+                    {% include "bbjjzl/global_newest.html" %}
+                </div>
+            </div>
+            <div class="event-gallery ">
+                <div id="myCarousel1" class="carousel slide">
+                    <!-- Carousel items -->
+                    <div class="carousel-inner carousel-inner1">
+                        <div class="item active item1">
+                            <div class="row">
+                                <div class="col-3 event-gallery-piece">
+                                    <a id="egallery-a0" href="#"><img src="{% static 'images/event.jpg' %}" id="egallery-i0" class="img-event-gallery"></a>
+                                    <div id="egallery-c0" class="carousel-caption1">
+                                        No Event
+                                    </div>
+                                </div>
+                                <div class="col-3 event-gallery-piece">
+                                    <a id="egallery-a1" class="egallery-a" href="#"><img src="{% static 'images/event.jpg' %}" id="egallery-i1" class="img-event-gallery"></a>
+                                    <div id="egallery-c1" class="carousel-caption1">
+                                        No Event
+                                    </div>
+                                </div>
+                                <div class="col-3 event-gallery-piece">
+                                    <a id="egallery-a2" href="#"><img src="{% static 'images/event.jpg' %}" id="egallery-i2" class="img-event-gallery"></a>
+                                    <div id="egallery-c2" class="carousel-caption1">
+                                        No Event
+                                    </div>
+                                </div>
+                                <div class="col-3 event-gallery-piece">
+                                    <a id="egallery-a3" href="#"><img src="{% static 'images/event.jpg' %}" id="egallery-i3" class="img-event-gallery"></a>
+                                    <div id="egallery-c3" class="carousel-caption1">
+                                        No Event
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/row-->
+                        </div>
+                        <!--/item-->
+                        <div class="item item1">
+                            <div class="row">
+                                <div class="col-3 event-gallery-piece">
+                                    <a id="egallery-a4" href="#"><img src="{% static 'images/event.jpg' %}" id="egallery-i4" class="img-event-gallery"></a>
+                                    <div id="egallery-c4" class="carousel-caption1">
+                                        No Event
+                                    </div>
+                                </div>
+                                <div class="col-3 event-gallery-piece">
+                                    <a id="egallery-a5" href="#"><img src="{% static 'images/event.jpg' %}" id="egallery-i5" class="img-event-gallery"></a>
+                                    <div id="egallery-c5" class="carousel-caption1">
+                                        No Event
+                                    </div>
+                                </div>
+                                <div class="col-3 event-gallery-piece">
+                                    <a id="egallery-a6" href="#"><img src="{% static 'images/event.jpg' %}" id="egallery-i6" class="img-event-gallery"></a>
+                                    <div id="egallery-c6" class="carousel-caption1">
+                                        No Event
+                                    </div>
+                                </div>
+                                <div class="col-3 event-gallery-piece">
+                                    <a id="egallery-a7" href="#"><img src="{% static 'images/event.jpg' %}" id="egallery-i7" class="img-event-gallery"></a>
+                                    <div id="egallery-c7" class="carousel-caption1">
+                                        No Event
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/row-->
+                        </div>
+                        <!--/item-->
+                        <div class="item item1">
+                            <div class="row">
+                                <div class="col-3 event-gallery-piece">
+                                    <a id="egallery-a8" href="#"><img src="{% static 'images/event.jpg' %}" id="egallery-i8" class="img-event-gallery"></a>
+                                    <div id="egallery-c8" class="carousel-caption1">
+                                        No Event
+                                    </div>
+                                </div>
+                                <div class="col-3 event-gallery-piece">
+                                    <a id="egallery-a9" href="#"><img src="{% static 'images/event.jpg' %}" id="egallery-i9" class="img-event-gallery"></a>
+                                    <div id="egallery-c9" class="carousel-caption1">
+                                        No Event
+                                    </div>
+                                </div>
+                                <div class="col-3 event-gallery-piece">
+                                    <a id="egallery-a10" href="#"><img src="{% static 'images/event.jpg' %}" id="egallery-i10" class="img-event-gallery"></a>
+                                    <div id="egallery-c10" class="carousel-caption1">
+                                        No Event
+                                    </div>
+                                </div>
+                                <div class="col-3 event-gallery-piece">
+                                    <a id="egallery-a11" href="#"><img src="{% static 'images/event.jpg' %}" id="egallery-i11" class="img-event-gallery"></a>
+                                    <div id="egallery-c11" class="carousel-caption1">
+                                        No Event
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/row-->
+                        </div>
+                        <!--/item-->
+                    </div>
+                    <!--/carousel-inner-->
+
+                    <a class="left carousel-control event-prev" href="#myCarousel1" data-slide="prev">‹</a>
+                    <a class="right carousel-control event-next" href="#myCarousel1" data-slide="next">›</a>
+                </div>
+                <!--/myCarousel-->
+            </div>
+
+            <div class="main-block home-main-block">
+                <div class="alpha-modules">
+                    <div class="module alpha-module alpha-module-forum">
+                        <div class = "module-header">
+                            <div class = "module-left-ornament">
+                                <div class = "module-blue-check">
+                                </div>
+                            </div>
+                            <div class = "module-title alpha-module-title">
+                                <div class="alpha-module-title-cnt">
+                                    <div class = "col-4 module-title-division">
+                                        <div class = "alpha-module-main-title">论坛</div>
+                                        <div class = "alpha-module-sec-title">最新动态</div>
+                                    </div>
+                                    <div class = "col-6 module-title-division"></div>
+                                    <div class = "col-2 module-title-division">
+                                        <div class = "alpha-module-more"><a class="module-more" href="#">更多>></a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="forum-new-cnt">
+                            <div class="forum-new-cnt-half right-black-bar">
+                            </div>
+                            <div class="forum-new-cnt-half">
+                            </div>
+<!--
+                            <div class="forum-new-entry">
+                                <p class="forum-new-p forum-new-title dfont">[SFU] 停车场为何屡次传出女人的哭声</p>
+                                <p class="forum-new-p forum-new-text dfont">最近每次周五focus club聚会完，去停车场旁边的公交车站坐车的时候，都会听到停车场里传来一个女人用西班牙语哭喊的声音，好可怕</p>
+                            </div>
+
+-->
+                        </div>
+                    </div>
+                    <div class="module alpha-module alpha-module-2hands">
+                        <div class = "module-header">
+                            <div class = "module-left-ornament">
+                                <div class = "module-blue-check">
+                                </div>
+                            </div>
+                            <div class = "module-title alpha-module-title">
+                                <div class="alpha-module-title-cnt">
+                                    <div class = "col-4 module-title-division">
+                                        <div class = "alpha-module-main-title">二手市场</div>
+                                        <div class = "alpha-module-sec-title">最新动态</div>
+                                    </div>
+                                    <div class = "col-6 module-title-division"></div>
+                                    <div class = "col-2 module-title-division">
+                                        <div class = "alpha-module-more"><a class="module-more" href="/market">更多>></a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="market-prev-content">
+                            <div class="market-prev-half">
+                                <div class="market-prev-entry">
+                                    <div class="market-prev-img">
+                                        <a class="pre2hand-a0" href="#"><img id="pre2hand-i0" src="" class="market-prev-img"></a>
+                                    </div>
+                                    <div class="market-prev-cnt">
+                                        <div class="market-prev-txt">
+                                            <a class="pre2hand-a0 pre-title" href="#"><p id="pre2hand-t0" class="market-prev-p market-prev-title dfont"></p></a>
+                                            <p id="pre2hand-p0" class="market-prev-p market-prev-para dfont"></p>
+                                        </div>
+                                        <div class="market-prev-view">
+                                            <p id="pre2hand-v0"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="market-prev-entry">
+                                    <div class="market-prev-img">
+                                        <a class="pre2hand-a1" href="#"><img id="pre2hand-i1" src="" class="market-prev-img"></a>
+                                    </div>
+                                    <div class="market-prev-cnt">
+                                        <div class="market-prev-txt">
+                                            <a class="pre2hand-a1 pre-title" href="#"><p id="pre2hand-t1" class="market-prev-p market-prev-title dfont"></p></a>
+                                            <p id="pre2hand-p1" class="market-prev-p market-prev-para dfont"></p>
+                                        </div>
+                                        <div class="market-prev-view">
+                                            <p id="pre2hand-v1"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="market-prev-entry">
+                                    <div class="market-prev-img">
+                                        <a class="pre2hand-a2" href="#"><img id="pre2hand-i2" src="" class="market-prev-img"></a>
+                                    </div>
+                                    <div class="market-prev-cnt">
+                                        <div class="market-prev-txt">
+                                            <a class="pre2hand-a2 pre-title" href="#"><p id="pre2hand-t2" class="market-prev-p market-prev-title dfont"></p></a>
+                                            <p id="pre2hand-p2" class="market-prev-p market-prev-para dfont"></p>
+                                        </div>
+                                        <div class="market-prev-view">
+                                            <p id="pre2hand-v2"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="market-prev-half">
+                                <div class="market-prev-entry">
+                                    <div class="market-prev-img">
+                                        <a class="pre2hand-a3" href="#"><img id="pre2hand-i3" src="" class="market-prev-img"></a>
+                                    </div>
+                                    <div class="market-prev-cnt">
+                                        <div class="market-prev-txt">
+                                            <a class="pre2hand-a3 pre-title" href="#"><p id="pre2hand-t3" class="market-prev-p market-prev-title dfont"></p></a>
+                                            <p id="pre2hand-p3" class="market-prev-p market-prev-para dfont"></p>
+                                        </div>
+                                        <div class="market-prev-view">
+                                            <p id="pre2hand-v3"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="market-prev-entry">
+                                    <div class="market-prev-img">
+                                        <a class="pre2hand-a4" href="#"><img id="pre2hand-i4" src="" class="market-prev-img"></a>
+                                    </div>
+                                    <div class="market-prev-cnt">
+                                        <div class="market-prev-txt">
+                                            <a class="pre2hand-a4 pre-title" href="#"><p id="pre2hand-t4" class="market-prev-p market-prev-title dfont"></p></a>
+                                            <p id="pre2hand-p4" class="market-prev-p market-prev-para dfont"></p>
+                                        </div>
+                                        <div class="market-prev-view">
+                                            <p id="pre2hand-v4"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="market-prev-entry">
+                                    <div class="market-prev-img">
+                                        <a class="pre2hand-a5" href="#"><img id="pre2hand-i5" src="" class="market-prev-img"></a>
+                                    </div>
+                                    <div class="market-prev-cnt">
+                                        <div class="market-prev-txt">
+                                            <a class="pre2hand-a5 pre-title" href="#"><p id="pre2hand-t5" class="market-prev-p market-prev-title dfont"></p></a>
+                                            <p id="pre2hand-p5" class="market-prev-p market-prev-para dfont"></p>
+                                        </div>
+                                        <div class="market-prev-view">
+                                            <p id="pre2hand-v5"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module alpha-module alpha-module-house">
+                        <div class = "module-header">
+                            <div class = "module-left-ornament">
+                                <div class = "module-blue-check">
+                                </div>
+                            </div>
+                            <div class = "module-title alpha-module-title">
+                                <div class="alpha-module-title-cnt">
+                                    <div class = "col-4 module-title-division">
+                                        <div class = "alpha-module-main-title">租房信息</div>
+                                        <div class = "alpha-module-sec-title">最新动态</div>
+                                    </div>
+                                    <div class = "col-6 module-title-division"></div>
+                                    <div class = "col-2 module-title-division">
+                                        <div class = "alpha-module-more"><a class="module-more" href="/housing">更多>></a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="market-prev-content">
+                            <div class="market-prev-half">
+                                <div class="market-prev-entry">
+                                    <div class="market-prev-img">
+                                        <a class="prehouse-a0" href="#"><img id="prehouse-i0" src='{% static 'images/house_sample0.jpg' %}' class="market-prev-img"></a>
+                                    </div>
+                                    <div class="market-prev-cnt">
+                                        <div class="market-prev-txt">
+                                            <a class="prehouse-a0 pre-title" href="#"><p id="prehouse-t0" class="market-prev-p market-prev-title dfont"></p></a>
+                                            <p id="prehouse-p0" class="market-prev-p market-prev-para dfont"></p>
+                                        </div>
+                                        <div class="market-prev-view">
+                                            <p id="prehouse-v0"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="market-prev-entry">
+                                    <div class="market-prev-img">
+                                        <a class="prehouse-a1" href="#"><img id="prehouse-i1" src='{% static 'images/house_sample1.jpg' %}' class="market-prev-img"></a>
+                                    </div>
+                                    <div class="market-prev-cnt">
+                                        <div class="market-prev-txt">
+                                            <a class="prehouse-a1 pre-title" href="#"><p id="prehouse-t1" class="market-prev-p market-prev-title dfont"></p></a>
+                                            <p id="prehouse-p1" class="market-prev-p market-prev-para dfont"></p>
+                                        </div>
+                                        <div class="market-prev-view">
+                                            <p id="prehouse-v1"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="market-prev-entry">
+                                    <div class="market-prev-img">
+                                        <a class="prehouse-a2" href="#"><img id="prehouse-i2" src='{% static 'images/house_sample2.jpg' %}' class="market-prev-img"></a>
+                                    </div>
+                                    <div class="market-prev-cnt">
+                                        <div class="market-prev-txt">
+                                            <a class="prehouse-a2 pre-title" href="#"><p id="prehouse-t2" class="market-prev-p market-prev-title dfont"></p></a>
+                                            <p id="prehouse-p2" class="market-prev-p market-prev-para dfont"></p>
+                                        </div>
+                                        <div class="market-prev-view">
+                                            <p id="prehouse-v2"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="market-prev-half">
+                                <a class="prehouse-a0" href="#"><div class="market-prev-entry">
+                                    <div class="market-prev-img">
+                                        <a class="prehouse-a3" href="#"><img id="prehouse-i3" src='{% static 'images/house_sample3.jpg' %}' class="market-prev-img"></a>
+                                    </div>
+                                    <div class="market-prev-cnt">
+                                        <div class="market-prev-txt">
+                                            <a class="prehouse-a3 pre-title" href="#"><p id="prehouse-t3" class="market-prev-p market-prev-title dfont"></p></a>
+                                            <p id="prehouse-p3" class="market-prev-p market-prev-para dfont"></p>
+                                        </div>
+                                        <div class="market-prev-view">
+                                            <p id="prehouse-v3"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="market-prev-entry">
+                                    <div class="market-prev-img">
+                                        <a class="prehouse-a4" href="#"><img id="prehouse-i4" src='{% static 'images/house_sample4.jpg' %}' class="market-prev-img"></a>
+                                    </div>
+                                    <div class="market-prev-cnt">
+                                        <div class="market-prev-txt">
+                                            <a class="prehouse-a4 pre-title" href="#"><p id="prehouse-t4" class="market-prev-p market-prev-title dfont"></p></a>
+                                            <p id="prehouse-p4" class="market-prev-p market-prev-para dfont"></p>
+                                        </div>
+                                        <div class="market-prev-view">
+                                            <p id="prehouse-v4"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="market-prev-entry">
+                                    <div class="market-prev-img">
+                                        <a class="prehouse-a5" href="#"><img id="prehouse-i5" src='{% static 'images/house_sample5.jpg' %}' class="market-prev-img"></a>
+                                    </div>
+                                    <div class="market-prev-cnt">
+                                        <div class="market-prev-txt">
+                                            <a class="prehouse-a5 pre-title" href="#"><p id="prehouse-t5" class="market-prev-p market-prev-title dfont"></p></a>
+                                            <p id="prehouse-p5" class="market-prev-p market-prev-para dfont"></p>
+                                        </div>
+                                        <div class="market-prev-view">
+                                            <p id="prehouse-v5"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/alpha-module-house-->
+                    <div class="module alpha-module alpha-module-car">
+                        <div class = "module-header">
+                            <div class = "module-left-ornament">
+                                <div class = "module-blue-check">
+                                </div>
+                            </div>
+                            <div class = "module-title alpha-module-title">
+                                <div class="alpha-module-title-cnt">
+                                    <div class = "col-4 module-title-division">
+                                        <div class = "alpha-module-main-title">车市信息</div>
+                                        <div class = "alpha-module-sec-title">最新动态</div>
+                                    </div>
+                                    <div class = "col-6 module-title-division"></div>
+                                    <div class = "col-2 module-title-division">
+                                        <div class = "alpha-module-more"><a class="module-more" href="/vehicle">更多>></a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="market-prev-content">
+                            <div class="market-prev-half">
+                                <div class="market-prev-entry">
+                                    <div class="market-prev-img">
+                                        <a class="precar-a0" href="#"><img id="precar-i0" src="" class="market-prev-img"></a>
+                                    </div>
+                                    <div class="market-prev-cnt">
+                                        <div class="market-prev-txt">
+                                            <a class="precar-a0 pre-title" href="#"><p id="precar-t0" class="market-prev-p market-prev-title dfont"></p></a>
+                                            <p id="precar-p0" class="market-prev-p market-prev-para dfont"></p>
+                                        </div>
+                                        <div class="market-prev-view">
+                                            <p id="precar-v0" ></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="market-prev-entry">
+                                    <div class="market-prev-img">
+                                        <a class="precar-a1" href="#"><img id="precar-i1" src="" class="market-prev-img"></a>
+                                    </div>
+                                    <div class="market-prev-cnt">
+                                        <div class="market-prev-txt">
+                                            <a class="precar-a1 pre-title" href="#"><p id="precar-t1" class="market-prev-p market-prev-title dfont"></p></a>
+                                            <p id="precar-p1" class="market-prev-p market-prev-para dfont"></p>
+                                        </div>
+                                        <div class="market-prev-view">
+                                            <p id="precar-v1" ></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="market-prev-entry">
+                                    <div class="market-prev-img">
+                                        <a class="precar-a2" href="#"><img id="precar-i2" src="" class="market-prev-img"></a>
+                                    </div>
+                                    <div class="market-prev-cnt">
+                                        <div class="market-prev-txt">
+                                            <a class="precar-a2 pre-title" href="#"><p id="precar-t2" class="market-prev-p market-prev-title dfont"></p></a>
+                                            <p id="precar-p2" class="market-prev-p market-prev-para dfont"></p>
+                                        </div>
+                                        <div class="market-prev-view">
+                                            <p id="precar-v2" ></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="market-prev-half">
+                                <div class="market-prev-entry">
+                                    <div class="market-prev-img">
+                                        <a class="precar-a3" href="#"><img id="precar-i3" src="" class="market-prev-img"></a>
+                                    </div>
+                                    <div class="market-prev-cnt">
+                                        <div class="market-prev-txt">
+                                            <a class="precar-a3 pre-title" href="#"><p id="precar-t3" class="market-prev-p market-prev-title dfont"></p></a>
+                                            <p id="precar-p3" class="market-prev-p market-prev-para dfont"></p>
+                                        </div>
+                                        <div class="market-prev-view">
+                                            <p id="precar-v3" ></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="market-prev-entry">
+                                    <div class="market-prev-img">
+                                        <a class="precar-a4" href="#"><img id="precar-i4" src="" class="market-prev-img"></a>
+                                    </div>
+                                    <div class="market-prev-cnt">
+                                        <div class="market-prev-txt">
+                                            <a class="precar-a4 pre-title" href="#"><p id="precar-t4" class="market-prev-p market-prev-title dfont"></p></a>
+                                            <p id="precar-p4" class="market-prev-p market-prev-para dfont"></p>
+                                        </div>
+                                        <div class="market-prev-view">
+                                            <p id="precar-v4" ></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="market-prev-entry">
+                                    <div class="market-prev-img">
+                                        <a class="precar-a5" href="#"><img id="precar-i5" src="" class="market-prev-img"></a>
+                                    </div>
+                                    <div class="market-prev-cnt">
+                                        <div class="market-prev-txt">
+                                            <a class="precar-a5 pre-title" href="#"><p id="precar-t5" class="market-prev-p market-prev-title dfont"></p></a>
+                                            <p id="precar-p5" class="market-prev-p market-prev-para dfont"></p>
+                                        </div>
+                                        <div class="market-prev-view">
+                                            <p id="precar-v5" ></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="beta-modules">
+                    <div class="module beta-module beta-module-forum">
+                        <div class = "module-header">
+                            <div class = "module-left-ornament">
+                                <div class = "module-blue-check">
+                                </div>
+                            </div>
+                            <div class = "module-title beta-module-title">
+                                <div class="ab-module-title-cnt">
+                                    <div class = "alpha-module-main-title">论坛</div>
+                                    <div class = "alpha-module-sec-title">今日最热</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="forum-hot-content">
+                            <ol class="forum-hot-list dfont">
+                                <li class="forum-hot-entry">GWtalks Beijing: Featuring Dean</li>
+                                <li class="forum-hot-entry">【吃货盛宴】乔治城迎新美食园游会</li>
+                                <li class="forum-hot-entry">马里兰大学CSSA新成员招募！</li>
+                                <li class="forum-hot-entry">[一起买家具］GU CSSA宜家行预报名</li>
+                                <li class="forum-hot-entry">炙舞团招新 | 2015-Fall</li>
+                                <li class="forum-hot-entry">GWtalks Beijing: Featuring Dean</li>
+                                <li class="forum-hot-entry">【吃货盛宴】乔治城迎新美食园游会</li>
+                                <li class="forum-hot-entry">马里兰大学CSSA新成员招募！</li>
+                                <li class="forum-hot-entry">[一起买家具］GU CSSA宜家行预报名</li>
+                                <li class="forum-hot-entry">炙舞团招新 | 2015-Fall</li>
+                                <li class="forum-hot-entry">GWtalks Beijing: Featuring Dean</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="clock">
+                        <div class="left-clock">
+                            <p>温哥华</p>
+                            <ul id="clock1">
+                                <li id="hour1"></li>
+                                <li id="min1"></li>
+                            </ul>
+                            <p id="vanTimeStr">2015年10月8日<br>15:36</p>
+                        </div>
+                        <div class="right-clock">
+                            <p>北京</p>
+                            <ul id="clock2">
+                                <li id="hour2"></li>
+                                <li id="min2"></li>
+                            </ul>
+                            <p id="chnTimeStr">2015年10月9日<br>6:36</p>
+                        </div>
+                    </div>
+                    <div class="module beta-module beta-module-cssa">
+                        <div class = "module-header">
+                            <div class = "module-left-ornament">
+                                <div class = "module-blue-check">
+                                </div>
+                            </div>
+                            <div class = "module-title beta-module-title">
+                                <div class="beta-module-title-cnt">
+                                    学生学者联合会(CSSA)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cssa-prev-content">
+                            <ol class="cssa-prev-list dfont">
+                                <li class="cssa-prev-entry">GWtalks Beijing: Featuring Dean</li>
+                                <li class="cssa-prev-entry">【吃货盛宴】乔治城迎新美食园游会</li>
+                                <li class="cssa-prev-entry">马里兰大学CSSA新成员招募！</li>
+                                <li class="cssa-prev-entry">[一起买家具］GU CSSA宜家行预报名</li>
+                                <li class="cssa-prev-entry">炙舞团招新 | 2015-Fall</li>
+                                <li class="cssa-prev-entry">GWtalks Beijing: Featuring Dean</li>
+                                <li class="cssa-prev-entry">【吃货盛宴】乔治城迎新美食园游会</li>
+                                <li class="cssa-prev-entry">马里兰大学CSSA新成员招募！</li>
+                                <li class="cssa-prev-entry">[一起买家具］GU CSSA宜家行预报名</li>
+                                <li class="cssa-prev-entry">炙舞团招新 | 2015-Fall</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  <!-- main_content -->
+        <h2 style="display:none;" id="redirect">/</h2>
+        {% include "bbjjzl/footer.html" %}
+    </body>
+</html>
