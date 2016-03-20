@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 
 def index(request):
     return render(request, 'bbjjzl/index.html')
@@ -28,3 +29,12 @@ def user_new(request) :
                 user.save()
                 return JsonResponse({'status': 0})
 
+def user_login(request) :
+    user = authenticate(username=request.POST['username'], password=request.POST['password'])
+    if user is not None:
+        if user.is_active:
+            return JsonResponse({'status': 0})
+        else:
+            return JsonResponse({'status': 1})
+    else :
+        return JsonResponse({'status': 2})

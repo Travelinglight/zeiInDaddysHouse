@@ -79,12 +79,34 @@
             }
         });
 
-        $("#submit_signin").click(function(){
-            //post to server
+        $("#submit_signin").click(function(event){
+            event.preventDefault();
+            // construct the JSON
+            var login_obj = {};
+            var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
+            login_obj["username"] = $("#signinName").val();
+            login_obj["password"] = $("#signinPassword").val();
+            login_obj["csrfmiddlewaretoken"] = token;
+
+            // post the JSON
+            $.post("user/login", login_obj, function(res) {
+                if (res.status == 0) {
+                    $("#warning").html('<strong>Success</strong> Login succeeded!');
+                    $("#warning").show();
+                }
+                else if (res.status == 1) {
+                    $("#warning").html('<strong>Warnings</strong> Account disabled!');
+                    $("#warning").show();
+                }
+                else {
+                    $("#warning").html('<strong>Warnings</strong> The username and password were incorrect!');
+                    $("#warning").show();
+                    
+                }
+            });
         });
 
     });
-
 
     </script>
 </head>
@@ -116,8 +138,8 @@
                 <form id="form-signin" class="form-signin">
                     {% csrf_token %}
                     <!--h2 class="form-signin-heading">Please sign in</h2-->
-                    <label for="signinEmail" class="sr-only">Email address</label>
-                    <input type="email" id="signinEmail" class="form-control input-top" placeholder="Email address" required="" autofocus="">
+                    <label for="signinName" class="sr-only">User name</label>
+                    <input type="text" id="signinName" class="form-control input-top" placeholder="User name" required="" autofocus="">
                     <label for="signinPassword" class="sr-only">Password</label>
                     <input type="password" id="signinPassword" class="form-control input-bottom" placeholder="Password" required="">
                     <!-- div class="checkbox">
@@ -131,15 +153,16 @@
 
             <div role="tabpanel" class="tab-pane fade in active" id="signup">
                 <form id="form-signup" class="form-signup">
+                    {% csrf_token %}
                     <!--h2 class="form-signup-heading">Please sign up</h2-->
                     <label for="signupName" class="sr-only">User name</label>
-                    <input type="text" name="username" id="signupName" class="form-control input-top" placeholder="User name" required="" >
+                    <input type="text" id="signupName" class="form-control input-top" placeholder="User name" required="" >
                     <label for="signupEmail" class="sr-only">Email address</label>
-                    <input type="email" name="email" id="signupEmail" class="form-control input-body" placeholder="Email address" required="" >
+                    <input type="email" id="signupEmail" class="form-control input-body" placeholder="Email address" required="" >
                     <label for="signupPassword" class="sr-only">Password</label>
-                    <input type="password" name="password1" id="signupPassword" class="form-control input-body" placeholder="Password" required="">
+                    <input type="password" id="signupPassword" class="form-control input-body" placeholder="Password" required="">
                     <label for="signupPassword2" class="sr-only">Confirm password</label>
-                    <input type="password" name="password2" id="signupPassword2" class="form-control input-bottom" placeholder="Confirm password" required="">
+                    <input type="password" id="signupPassword2" class="form-control input-bottom" placeholder="Confirm password" required="">
                     <!-- div class="checkbox">
                       <label>
                         <input type="checkbox" value="remember-me"> Remember me
