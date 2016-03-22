@@ -32,6 +32,7 @@ def user_new(request) :
 def user_login(request) :
     user = authenticate(username=request.POST['username'], password=request.POST['password'])
     if user is not None:
+        request.session['id'] = user.id
         if user.is_active:
             return JsonResponse({'status': 0})
         else:
