@@ -40,3 +40,13 @@ def user_login(request) :
             return JsonResponse({'status': 1})
     else :
         return JsonResponse({'status': 2})
+
+def group_new(request) :
+    return render(request, 'bbjjzl/group_new.html')
+
+def group_home(request) :
+    return render(request, 'bbjjzl/group_home.html')
+
+def group_upload(request) :
+    return render(request, 'bbjjzl/group_upload.html')
+
