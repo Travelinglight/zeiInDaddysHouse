@@ -10,6 +10,7 @@ def index(request):
 
 def users(request):
     data = User.objects.raw('select * from auth_user;')
+    print(request.session['id'])
     return HttpResponse(data)
 
 def user_new(request) :
