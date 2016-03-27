@@ -1,9 +1,13 @@
+from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+import base64
+import hashlib
+import os
 
 def index(request):
     return render(request, 'bbjjzl/index.html')
@@ -48,5 +52,46 @@ def group_home(request) :
     return render(request, 'bbjjzl/group_home.html')
 
 def group_upload(request) :
-    return render(request, 'bbjjzl/group_upload.html')
+    if request.method == "POST":
+        # base64 decode
+        if request.POST['file'].index(','):
+            filedata = base64.b64decode(request.POST['file'][request.POST['file'].index(',') + 1:])
+        else:
+            filedata = base64.b64decode(request.POST['file'])
+
+        # get hash value
+        filehash = hashfile(filedata)
+
+        # create the folder if it doesn't exist.
+        filepath = settings.BASE_DIR + '/bbjjzl/static/uploads/' + filehash[:2]
+        try:
+            os.mkdir(filepath)
+        except:
+            pass
+
+        filepath = filepath + '/' + filehash[2:4]
+        try:
+            os.mkdir(filepath)
+        except:
+            pass
+
+        # write file to disk
+        fout = open(filepath + '/' + filehash[4:], 'wb')
+        try:
+            fout.write(filedata)
+            fout.close()
+            return JsonResponse({'status': 0, 'hash': filehash})
+        except:
+            return JsonResponse({'status': 1, 'message': 'image saving failed'})
+    else:
+        return render(request, 'bbjjzl/upload.html')
+
+def hashfile(f):
+    sha1 = hashlib.sha1()
+
+    #for chunk in f.chunks():
+    #    sha1.update(chunk)
+    sha1.update(f)
+
+    return sha1.hexdigest()
 
