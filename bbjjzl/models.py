@@ -40,4 +40,4 @@ class group(models.Model):
         return json.loads(self.foo)
 
     def __str__(self):
-        return self.title
+        return self.name

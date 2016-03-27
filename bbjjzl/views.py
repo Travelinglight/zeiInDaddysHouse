@@ -5,6 +5,9 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from django.db import connection
+from django.core import serializers
+from bbjjzl.models import group as Group
 import base64
 import hashlib
 import os
@@ -30,7 +33,6 @@ def user_new(request) :
                 user = User.objects.create_user(username=request.POST['username'],
                                          email=request.POST['email'],
                                          password=request.POST['password'])
-                print(user)
                 user.save()
                 return JsonResponse({'status': 0})
 
@@ -53,6 +55,15 @@ def group_home(request) :
 
 def group_upload(request) :
     if request.method == "POST":
+        """ database select and insert example
+
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO bbjjzl_group (name, uid, proPic, description, nSong, songList) VALUES('Country', 1, 'c0ac2df0e46421292fefbac2b7b91315c07e19a8', 'haha', 0, '[]');")
+        result = Group.objects.filter(name = 'Country')
+        data = serializers.serialize('json', result)
+        return JsonResponse(data, safe=False)
+        """
+
         # base64 decode
         if request.POST['file'].index(','):
             filedata = base64.b64decode(request.POST['file'][request.POST['file'].index(',') + 1:])
@@ -89,8 +100,6 @@ def group_upload(request) :
 def hashfile(f):
     sha1 = hashlib.sha1()
 
-    #for chunk in f.chunks():
-    #    sha1.update(chunk)
     sha1.update(f)
 
     return sha1.hexdigest()
