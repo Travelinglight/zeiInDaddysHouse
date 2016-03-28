@@ -48,12 +48,22 @@ def user_login(request) :
         return JsonResponse({'status': 2})
 
 def group_new(request) :
+    if request.method == "POST":
+        try:
+            cursor = connection.cursor()
+            cursor.execute("INSERT INTO bbjjzl_group (name, uid, proPic, description, nSong, songList) VALUES('" + request.POST["name"] + "', " + str(request.session["id"]) + ", '" + request.POST["proPic"] + "', '" + request.POST["description"] + "', 0, '[]');")
+        except:
+            return HttpResponse("Creating group failed!")
+        finally:
+            cursor.close()
+            return HttpResponse("Creating group succeeded!")
+
     return render(request, 'bbjjzl/group_new.html')
 
 def group_home(request) :
     return render(request, 'bbjjzl/group_home.html')
 
-def group_upload(request) :
+def file_upload(request) :
     if request.method == "POST":
         """ database select and insert example
 
