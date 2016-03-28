@@ -15,11 +15,6 @@ import os
 def index(request):
     return render(request, 'bbjjzl/index.html')
 
-def users(request):
-    data = User.objects.raw('select * from auth_user;')
-    print(request.session['id'])
-    return HttpResponse(data)
-
 def user_new(request) :
     if request.method == "POST":
         try:
@@ -51,11 +46,16 @@ def group_new(request) :
     if request.method == "POST":
         try:
             cursor = connection.cursor()
-            cursor.execute("INSERT INTO bbjjzl_group (name, uid, proPic, description, nSong, songList) VALUES('" + request.POST["name"] + "', " + str(request.session["id"]) + ", '" + request.POST["proPic"] + "', '" + request.POST["description"] + "', 0, '[]');")
+            cursor.execute("INSERT INTO bbjjzl_music (name, artist, vHash) VALUES('" + request.POST["name"] + "', " + request.POST["artist"] + "', '" + request.POST["vHash"] + "');")
         except:
-            return HttpResponse("Creating group failed!")
+            return HttpResponse("Creating music failed!")
         finally:
             cursor.close()
+
+        try:
+            cursor = connection.cursor()
+            cursor.execute("INSERT INTO bbjjzl_music (name, artist, vHash) VALUES('" + request.POST["name"] + "', " + request.POST["artist"] + "', '" + request.POST["vHash"] + "');")
+        finally:
             return HttpResponse("Creating group succeeded!")
 
     return render(request, 'bbjjzl/group_new.html')
@@ -63,12 +63,24 @@ def group_new(request) :
 def group_home(request) :
     return render(request, 'bbjjzl/group_home.html')
 
+def upload(request):
+    if request.method == "POST":
+        try:
+            cursor = connection.cursor()
+            cursor.execute("INSERT INTO bbjjzl_group (name, uid, proPic, description, nSong, songList) VALUES('" + request.POST["name"] + "', " + str(request.session["id"]) + ", '" + request.POST["proPic"] + "', '" + request.POST["description"] + "', 0, '[]');")
+        except:
+            return HttpResponse("Creating group failed!")
+        finally:
+            cursor.close()
+            return HttpResponse("Creating group succeeded!")
+
+    return render(request, 'bbjjzl/upload.html')
+
+
 def file_upload(request) :
     if request.method == "POST":
         """ database select and insert example
 
-        cursor = connection.cursor()
-        cursor.execute("INSERT INTO bbjjzl_group (name, uid, proPic, description, nSong, songList) VALUES('Country', 1, 'c0ac2df0e46421292fefbac2b7b91315c07e19a8', 'haha', 0, '[]');")
         result = Group.objects.filter(name = 'Country')
         data = serializers.serialize('json', result)
         return JsonResponse(data, safe=False)
@@ -104,8 +116,6 @@ def file_upload(request) :
             return JsonResponse({'status': 0, 'hash': filehash})
         except:
             return JsonResponse({'status': 1, 'message': 'image saving failed'})
-    else:
-        return render(request, 'bbjjzl/upload.html')
 
 def hashfile(f):
     sha1 = hashlib.sha1()
