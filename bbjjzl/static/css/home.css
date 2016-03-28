@@ -1,0 +1,28 @@
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+
+.logo {
+  max-width: 200px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 500px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.btn-primary {
+  margin: 0 auto;
+  max-width: 100px;
+  margin-top: 20px;
+}
+
+.icon {
+  max-width: 150px;
+}
