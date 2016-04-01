@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate
 from django.db import connection
 from django.core import serializers
 from bbjjzl.models import group as Group
+from bbjjzl.models import music as Music
 import base64
 import hashlib
 import os
@@ -46,16 +47,11 @@ def group_new(request) :
     if request.method == "POST":
         try:
             cursor = connection.cursor()
-            cursor.execute("INSERT INTO bbjjzl_music (name, artist, vHash) VALUES('" + request.POST["name"] + "', " + request.POST["artist"] + "', '" + request.POST["vHash"] + "');")
+            cursor.execute("INSERT INTO bbjjzl_group (name, uid, proPic, description, nSong, songList) VALUES('" + request.POST["name"] + "', " + str(request.session["id"]) + ", '" + request.POST["proPic"] + "', '" + request.POST["description"] + "', 0, '[]');")
         except:
-            return HttpResponse("Creating music failed!")
+            return HttpResponse("Creating group failed!")
         finally:
             cursor.close()
-
-        try:
-            cursor = connection.cursor()
-            cursor.execute("INSERT INTO bbjjzl_music (name, artist, vHash) VALUES('" + request.POST["name"] + "', " + request.POST["artist"] + "', '" + request.POST["vHash"] + "');")
-        finally:
             return HttpResponse("Creating group succeeded!")
 
     return render(request, 'bbjjzl/group_new.html')
@@ -67,24 +63,33 @@ def upload(request):
     if request.method == "POST":
         try:
             cursor = connection.cursor()
-            cursor.execute("INSERT INTO bbjjzl_group (name, uid, proPic, description, nSong, songList) VALUES('" + request.POST["name"] + "', " + str(request.session["id"]) + ", '" + request.POST["proPic"] + "', '" + request.POST["description"] + "', 0, '[]');")
+            cursor.execute("INSERT INTO bbjjzl_music (name, artist, vHash) VALUES('" + request.POST["name"] + "', " + request.POST["artist"] + "', '" + request.POST["vHash"] + "');")
         except:
-            return HttpResponse("Creating group failed!")
+            return HttpResponse("Creating music failed!")
         finally:
             cursor.close()
-            return HttpResponse("Creating group succeeded!")
+
+        idSong = Music.objects.values("id").filter(hash = request.POST["vHash"])
+
+        try:
+            cursor = connection.cursor()
+            cursor.execute("UPDATE bbjjzl_group set nSong = nSong + 1;")
+        except:
+            return HttpResponse("The number of songs update failed!")
+        finally:
+            cursor.close()
+
+        Music.addSong(idSong["id"])
+        return HttpResponse("haha")
 
     return render(request, 'bbjjzl/upload.html')
 
 
 def file_upload(request) :
     if request.method == "POST":
-        """ database select and insert example
-
-        result = Group.objects.filter(name = 'Country')
-        data = serializers.serialize('json', result)
-        return JsonResponse(data, safe=False)
-        """
+        """database select and insert example
+        instance = Group.objects.values('name').filter(name = 'Jericho')
+        return JsonResponse(instance[0], safe=False)"""
 
         # base64 decode
         if request.POST['file'].index(','):

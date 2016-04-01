@@ -36,8 +36,13 @@ class group(models.Model):
     def setSongs(self, x):
         self.songList = json.dumps(x)
 
-    def getSongs(self, x):
+    def getSongs(self):
         return json.loads(self.foo)
+
+    def addSong(self, x):
+        crtSongList = self.getSongs()
+        crtSongList += x;
+        self.setSongs(crtSongList)
 
     def __str__(self):
         return self.name
