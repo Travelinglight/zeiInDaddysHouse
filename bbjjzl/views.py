@@ -12,6 +12,7 @@ from bbjjzl.models import music as Music
 import base64
 import hashlib
 import os
+import json
 
 def index(request):
     return render(request, 'bbjjzl/index.html')
@@ -49,10 +50,10 @@ def group_new(request) :
             cursor = connection.cursor()
             cursor.execute("INSERT INTO bbjjzl_group (name, uid, proPic, description, nSong, songList) VALUES('" + request.POST["name"] + "', " + str(request.session["id"]) + ", '" + request.POST["proPic"] + "', '" + request.POST["description"] + "', 0, '[]');")
         except:
-            return HttpResponse("Creating group failed!")
+            return JsonResponse({'status': 1, 'message': 'Creating group failed!'})
         finally:
             cursor.close()
-            return HttpResponse("Creating group succeeded!")
+            return JsonResponse({'status': 0, 'message': 'Creating group succeeded!'})
 
     return render(request, 'bbjjzl/group_new.html')
 
@@ -63,26 +64,36 @@ def upload(request):
     if request.method == "POST":
         try:
             cursor = connection.cursor()
-            cursor.execute("INSERT INTO bbjjzl_music (name, artist, vHash) VALUES('" + request.POST["name"] + "', " + request.POST["artist"] + "', '" + request.POST["vHash"] + "');")
+            cursor.execute("INSERT INTO bbjjzl_music(name, artist, vHash) VALUES('" + request.POST["name"] + "', '" + request.POST["artist"] + "', '" + request.POST["vHash"] + "');")
         except:
-            return HttpResponse("Creating music failed!")
+            return JsonResponse({'status': 1, 'message': 'Creating music failed!'})
         finally:
             cursor.close()
-
-        idSong = Music.objects.values("id").filter(hash = request.POST["vHash"])
 
         try:
             cursor = connection.cursor()
-            cursor.execute("UPDATE bbjjzl_group set nSong = nSong + 1;")
+            cursor.execute("UPDATE bbjjzl_group set nSong = nSong + 1 where id = " + request.POST["gid"] + ";")
         except:
-            return HttpResponse("The number of songs update failed!")
+            return JsonResponse({'status': 2, 'message': 'Updating the number of songs failed!'})
         finally:
             cursor.close()
 
-        Music.addSong(idSong["id"])
-        return HttpResponse("haha")
+        idSong = Music.objects.values("id").filter(vHash = request.POST["vHash"])[0]["id"]
+        songList = Group.objects.values("songList").filter(id = request.POST["gid"])[0]["songList"]
+        songList_json = json.loads(songList)
+        songList_json.append(idSong)
+        songList = json.dumps(songList_json)
+        try:
+            cursor = connection.cursor()
+            cursor.execute("UPDATE bbjjzl_group set songList = '" + songList + "' where id = " + request.POST["gid"] + ";")
+        except:
+            return JsonResponse({'status': 3, 'message': 'Updating song list failed!'})
+        finally:
+            cursor.close()
 
-    return render(request, 'bbjjzl/upload.html')
+        return JsonResponse({'status': 0, 'message': '1 song added'})
+
+    return render(request, 'bbjjzl/upload.html', {'gid': 20})
 
 
 def file_upload(request) :

@@ -19,7 +19,7 @@
     <script type="text/javascript"> 
         $(document).ready(function() {
             /* ------------------------------ images uploading -------------------------------- */
-            var profileImg = '';
+            var audio = '';
             var reader;
 
             function handleFileSelect(evt) {
@@ -27,28 +27,18 @@
 
                 // limit the file number
                 if (files.length > 1) {
-                    alert("only 1 profile image is allowed");
-                    return;
-                }
-
-                // decide whether file list block should be displayed
-                if(!files[0].type.match('image.*')) {
-                    alert("This is not an image file");
+                    alert("only 1 song a time");
                     return;
                 }
 
                 for (var i = 0, f; f = files[i]; i++) {
-                    if(!f.type.match('image.*')){
+                    if(!f.type.match('audio.*')){
                         continue;
                     }
                     reader = new FileReader();
                     reader.onload = (function(theFile){
                         return function(e){
-                            var imgProfile = document.getElementById('profileImg');
-                            imgProfile.setAttribute('src', e.target.result);
-                            imgProfile.onload = function() {
-                                profileImg = e.target.result;
-                            }
+                                audio = e.target.result;
                         }
                     })(f);
                     reader.readAsDataURL(f);
@@ -60,25 +50,27 @@
             $("#group_upload").submit(function(event){
                 event.preventDefault();
 
-                var imj = {file:profileImg};
+                var fileJSON = {file:audio};
                 var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
-                imj["csrfmiddlewaretoken"] = token;
-                $.post("/fileupload", imj, function(feedback){
+                fileJSON["csrfmiddlewaretoken"] = token;
+                $.post("/fileupload", fileJSON, function(feedback){
                     if (feedback.status == 0) {
                         // construct the JSON
-                        var group_obj = {};
-                        group_obj["name"] = $("#name").val();
-                        group_obj["description"] = $("#description").val();
-                        group_obj["proPic"] = feedback.hash;
-                        group_obj["csrfmiddlewaretoken"] = token;
+                        var upload_obj = {};
+                        upload_obj["gid"] = {{ gid }};
+                        upload_obj["name"] = $("#name").val();
+                        upload_obj["artist"] = $("#artist").val();
+                        upload_obj["vHash"] = feedback.hash;
+                        upload_obj["csrfmiddlewaretoken"] = token;
+                        console.log(upload_obj);
 
                         // post the JSON
-                        $.post("/group/new", group_obj, function(res) {
+                        $.post("/upload", upload_obj, function(res) {
                             console.log(res);
                         });
                     }
                     else {
-                        alert("Group Profile upload failed!");
+                        alert("Music upload failed!");
                     }
                 });
             });
@@ -121,7 +113,7 @@
                 <input class='fileframe' id='fileframe' type="file" title=" ">
             </div>
 
-            <button type="submit" form="group_upload" class="btn btn-primary" id="submit">Submit</button>
+            <button type="submit" form="group_upload" class="btn btn-primary" id="submit" accept="audio/*">Submit</button>
         </form>
     </div> <!-- /container -->
 
