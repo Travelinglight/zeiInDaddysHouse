@@ -46,6 +46,12 @@
                 }
             }
             document.getElementById('fileframe').addEventListener('change', handleFileSelect, false);
+            
+            /* cancel */
+            $("#cancel").click(function(event){
+                event.preventDefault();
+                history.go(-1);
+            });
 
             /* form submit */
             $("#group_upload").submit(function(event){
@@ -136,7 +142,12 @@
                 <input class='fileframe' id='fileframe' type="file" title=" ">
             </div>
 
-            <button type="submit" form="group_upload" class="btn btn-primary" id="submit" accept="audio/*">Submit</button>
+            <button type="submit" form="group_upload" class="btn btn-primary" id="submit" accept="audio/*">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Submit
+            </button>
+            <button class="btn btn-primary" id="cancel">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Cancel
+            </button>
         </form>
     </div> <!-- /container -->
 
