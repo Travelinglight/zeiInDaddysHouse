@@ -56,6 +56,12 @@
             }
             document.getElementById('fileframe').addEventListener('change', handleFileSelect, false);
 
+            /* cancel */
+            $("#cancel").click(function(event){
+                event.preventDefault();
+                history.go(-1);
+            });
+
             /* form submit */
             $("#newGroup-form").submit(function(event){
                 event.preventDefault();
@@ -134,7 +140,12 @@
                 <input class='fileframe' id='fileframe' type="file" title=" ">
                 <img id="profileImg" src="{% static 'img/mio.jpg' %}" class="icon">
             </div>
-            <button type="submit" form="newGroup-form" class="btn btn-primary" id="submit">Submit</button>
+            <button type="submit" form="newGroup-form" class="btn btn-primary" id="submit">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Submit
+            </button>
+            <button class="btn btn-primary" id="cancel">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Cancel
+            </button>
 		</form>
     </div> <!-- /container -->
 </body>

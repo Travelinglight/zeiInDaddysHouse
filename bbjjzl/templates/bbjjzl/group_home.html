@@ -18,6 +18,15 @@
     <script src="{% static 'jquery/dist/jquery.min.js' %}"></script> 
     <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
 
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#group_upload").click(function(event) {
+                event.preventDefault();
+                window.location.href='/upload';
+            });
+        });
+    </script>
+
 </head>
 
 <body>
