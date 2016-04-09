@@ -61,6 +61,12 @@
   width: 100px;
 }
 
+.btn-primary#group_upload {
+  margin: 0 auto;
+  margin-top: 10px;
+  width: 100px;
+}
+
 .playlist_container {
   padding: 15px;
   background-color: white;
