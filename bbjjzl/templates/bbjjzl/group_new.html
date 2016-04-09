@@ -12,7 +12,8 @@
     {% load staticfiles %}
 
     <link href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/home.css' %}" rel="stylesheet">
+    <link href="{% static 'css/header.css' %}" rel="stylesheet">
+    <link href="{% static 'css/group_new.css' %}" rel="stylesheet">
     <script src="{% static 'jquery/dist/jquery.min.js' %}"></script> 
     <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
     <script type="text/javascript"> 
@@ -87,14 +88,35 @@
 
 </head>
 <body>
-    <div align="center">
-        <img src="{% static 'img/LOGO.png' %}" class="logo">
-        <!--img src="./img/LOGO.png" class="logo"-->
-        <h3>Create a New Group</h3>
 
-    </div>
+    <div class="container header_container">
+        <div class="container logo_container">
+            <img src="{% static 'img/LOGO.png' %}" class="logo">
+        </div>
+        <div class="container welcoming_container">
+            <h4 class="welcoming">Welcome,</h4>
+            <h3 class="welcoming">ShyuSeimin</h3>
+        </div>
+        <div class="container nav_container">
+            <table class="table nav_table"><tbody>
+                <tr>
+                    <td class="highlight right_border"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></td>
+                    <td class="right_border"><span class="glyphicon glyphicon-music" aria-hidden="true"></span></td>
+                    <td class="right_border"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></td>
+                    <td><span class="glyphicon glyphicon-user" aria-hidden="true"></span></td>
+                </tr>
+                <tr>
+                    <td class="highlight right_border">Home</td>
+                    <td class="right_border">My Playlist</td>
+                    <td class="right_border">Favorite Groups</td>
+                    <td>My Account</td>
+                </tr>
+            </tbody></table>
+        </div>
+    </div><!-- end of header container-->
 
-    <div class="container">
+    <div class="container new_group_container">
+        <h3 class="title">Creat a New Group</h3>
         <form id="newGroup-form">
             {% csrf_token %}
             <div class="form-group">
@@ -110,7 +132,7 @@
             <div>
                 <label for="icon">Group icon</label>
                 <input class='fileframe' id='fileframe' type="file" title=" ">
-                <img id="profileImg" src="{% static 'img/mio.jpg' %}" class="logo">
+                <img id="profileImg" src="{% static 'img/mio.jpg' %}" class="icon">
             </div>
             <button type="submit" form="newGroup-form" class="btn btn-primary" id="submit">Submit</button>
 		</form>

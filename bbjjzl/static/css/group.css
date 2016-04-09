@@ -1,0 +1,113 @@
+.container.group_info_container{
+  padding-left: 0;
+  padding-right: 0;
+  width: 800px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.container.icon_container{
+  padding-left: 0;
+  padding-right: 20px;
+  width: 170px;
+  background-color: transparent;
+  float:left;
+}
+
+.icon {
+  width: 150px;
+}
+
+.container.description_container{
+  padding-left: 0;
+  padding-right: 0;
+  width: 630px;
+  background-color: transparent;
+  float:left;
+  position: relative;
+}
+
+.group_name{
+  margin-top: 0;
+}
+
+.group_info_label{
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: bold;
+}
+
+.group_info_content{
+  color: #777;
+  margin-top: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.group_button {
+ position: absolute;
+ top: 45px;
+ right: 0;
+}
+
+.btn-primary#group_favorite {
+  margin: 0 auto;
+  width: 100px;
+}
+
+.btn-primary#group_delete {
+  margin: 0 auto;
+  margin-top: 10px;
+  width: 100px;
+}
+
+.playlist_container {
+  padding: 15px;
+  background-color: white;
+  width: 800px;
+  padding-bottom: 0;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.container.comment_container {
+  padding: 15px;
+  background-color: white;
+  width: 800px;
+  padding-bottom: 0;
+  margin-top: 30px;
+}
+
+.comment_table.table > thead > tr > th.comment_title {
+  font-size: 150%;
+}
+
+.comment_table.table > tbody > tr > td {
+  position: relative;
+}
+
+.comment_content {
+
+}
+
+.comment_maker {
+  text-align: right;
+  color: #999;
+  font-size: 85%
+}
+
+.comment_delete {
+  position: absolute;
+  top: 10px;
+  right: 8px;
+  color: #aa5555;
+  font-size: 85%
+}
+
+.form-control#new_comment {
+  margin-top: 10px
+}
+
+.btn-primary#submit_comment {
+  margin-top: 10px;
+}

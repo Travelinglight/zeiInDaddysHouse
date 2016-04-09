@@ -1,0 +1,77 @@
+.group_info_container.container {
+  padding: 0;
+  margin: 0;
+  width: 760px;
+  margin-top: 20px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.container.group_icon_container{
+  padding-left: 0;
+  padding-right: 20px;
+  width: 170px;
+  background-color: transparent;
+  float:left;
+}
+
+.group_icon {
+  width: 150px;
+}
+
+.container.group_description_container{
+  padding-left: 0;
+  padding-right: 0;
+  width: 590px;
+  background-color: transparent;
+  float:left;
+  position: relative;
+}
+
+.group_name{
+  margin-top: 0;
+}
+
+.group_info_label{
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: bold;
+}
+
+.group_info_content{
+  color: #777;
+  margin-top: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.group_button {
+ position: absolute;
+ top: 45px;
+ right: 0;
+}
+
+.btn-primary#group_favorite {
+  margin: 0 auto;
+  width: 100px;
+}
+
+.btn-primary#group_delete {
+  margin: 0 auto;
+  margin-top: 10px;
+  width: 100px;
+}
+
+.table.group_table {
+  padding: 0;
+  margin: 0;
+}
+
+.table.group_table >tbody > tr > td {
+  padding: 0;
+  margin: 0;
+}
+
+.table.group_table > tbody > tr > td.first {
+  border-top: 1px solid transparent;
+}

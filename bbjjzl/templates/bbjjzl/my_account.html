@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+<!--
+    {% load staticfiles %}
+
+    <link href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/group.css' %}" rel="stylesheet">
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script> 
+    <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+-->
+    <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="./header.css" rel="stylesheet">
+    <link href="./my_account.css" rel="stylesheet">
+    <link href="./playlist.css" rel="stylesheet">
+    <link href="./group_list.css" rel="stylesheet">
+
+    <script src="./jquery.min.js"></script>
+    <script src="./bootstrap/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript"> 
+        //$(function () {
+            $('#myTabs a').click(function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+            });
+    </script>
+
+</head>
+
+<body>
+
+    <div class="container header_container">
+        <div class="container logo_container">
+            <img src="./img/logo.png" class="logo">
+        </div>
+        <div class="container welcoming_container">
+            <h4 class="welcoming">Welcome,</h4>
+            <h3 class="welcoming">ShyuSeimin</h3>
+        </div>
+        <div class="container nav_container">
+            <table class="table nav_table"><tbody>
+                <tr>
+                    <td class="right_border"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></td>
+                    <td class="right_border"><span class="glyphicon glyphicon-music" aria-hidden="true"></span></td>
+                    <td class="right_border"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></td>
+                    <td class="highlight"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></td>
+                </tr>
+                <tr>
+                    <td class="right_border">Home</td>
+                    <td class="right_border">My Playlist</td>
+                    <td class="right_border">Favorite Groups</td>
+                    <td class="highlight">My Account</td>
+                </tr>
+            </tbody></table>
+        </div>
+    </div><!-- end of header container-->
+
+    <div class="container acc_mng_container">
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#change_pw" aria-controls="home" role="tab" data-toggle="tab">Change Password</a></li>
+            <li role="presentation"><a href="#my_song" aria-controls="profile" role="tab" data-toggle="tab">My Songs</a></li>
+            <li role="presentation"><a href="#my_group" aria-controls="messages" role="tab" data-toggle="tab">My Groups</a></li>
+        </ul>
+        
+        <!-- Tab panes -->
+        <div class="tab-content my_acc">
+
+            <div role="tabpanel" class="change_pswd tab-pane fade in active" id="change_pw">
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Old Password</label>
+                        <input type="password" class="form-control" id="old_pw">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">New Password</label>
+                        <input type="password" class="form-control" id="old_pw">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Confirm New Password</label>
+                        <input type="password" class="form-control" id="old_pw">
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="submit_pw">Submit</button>
+                </form>
+            </div><!--Change Password-->
+
+            <div role="tabpanel" class="tab-pane fade" id="my_song">
+                <div class="container playlist_container">
+                    <table class="table table-hover playlist_table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Artist</th>
+                                <th>Group</th>
+                                <th class="center">Play</th>
+                                <th class="center">Add</th>
+                                <th class="center">Delete</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>1</td>
+                            <td class="title">Sweet Refrain</td>
+                            <td>Perfume</td>
+                            <td>ShyuSeiMin</td>
+                            <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
+                            <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
+                            <td class="center"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td class="title">僕が僕の全て</td>
+                            <td>嵐</td>
+                            <td>arashi</td>
+                            <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
+                            <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
+                            <td class="center"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td class="title">虹</td>
+                            <td>二宮和也</td>
+                            <td>ShyuSeiMin</td>
+                            <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
+                            <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
+                            <td class="center"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td class="title">ふたりごと</td>
+                            <td>RADWIMPS</td>
+                            <td>二宮和也</td>
+                            <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
+                            <td class="center"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></td>
+                            <td class="center"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td class="title">25コ目の染色体</td>
+                            <td>RADWIMPS</td>
+                            <td>野田洋次郎</td>
+                            <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
+                            <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
+                            <td class="center"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td>
+                        </tr>
+                    </table>
+                </div> <!-- end of container playlist-->
+            </div><!--/ My Song-->
+
+            <div role="tabpanel" class="tab-pane fade" id="my_group">
+                <table class="table group_table"><tbody>
+                    <tr><td class="first">
+                        <div class="container group_info_container">
+
+                            <div class="container group_icon_container">
+                                <img src="./img/mio.jpg" class="group_icon">
+                            </div>
+
+                            <div class="container group_description_container">
+
+                                <h2 class="group_name">
+                                    Shyuseimin's Favorite
+                                </h2>
+
+                                <h4 class="group_info_lable">
+                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                    Founder:
+                                </h4>
+                                <h4 class="group_info_content"><small>
+                                    ShyuSeimin
+                                </small></h4>
+
+                                <h4 class="group_info_lable">
+                                    <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
+                                    Group Description:
+                                </h4>
+                                <h4 class="group_info_content"><small>
+                                    Hey! These are the songs that I love sooo much!!!<br>
+                                    Welcome those who also like Arashi and RADWIMPS!!!
+                                </small></h4>
+
+                                <div class="group_button">
+                                    <button type="button" class="btn btn-primary" id="group_favorite">
+                                        <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+                                        Favorite
+                                    </button>
+                                    <br>
+                                    <button type="button" class="btn btn-primary" id="group_delete">
+                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                        Delete
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div><!-- end of group information-->
+                    </td></tr>
+
+                    <tr><td>
+                        <div class="container group_info_container">
+
+                            <div class="container group_icon_container">
+                                <img src="./img/mio.jpg" class="group_icon">
+                            </div>
+
+                            <div class="container group_description_container">
+
+                                <h2 class="group_name">
+                                    Shyuseimin's Favorite
+                                </h2>
+
+                                <h4 class="group_info_lable">
+                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                    Founder:
+                                </h4>
+                                <h4 class="group_info_content"><small>
+                                    ShyuSeimin
+                                </small></h4>
+
+                                <h4 class="group_info_lable">
+                                    <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
+                                    Group Description:
+                                </h4>
+                                <h4 class="group_info_content"><small>
+                                    Hey! These are the songs that I love sooo much!!!<br>
+                                    Welcome those who also like Arashi and RADWIMPS!!!
+                                </small></h4>
+
+                                <div class="group_button">
+                                    <button type="button" class="btn btn-primary" id="group_favorite">
+                                        <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+                                        Favorite
+                                    </button>
+                                    <br>
+                                    <button type="button" class="btn btn-primary" id="group_delete">
+                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                        Delete
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div><!-- end of group information-->
+                    </td></tr>
+
+                </tbody></table>
+            </div><!--/ My Group-->
+        </div>
+
+    </div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+  
+
+</body></html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    {% load staticfiles %}
+
+    <link href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/header.css' %}" rel="stylesheet">
+    <link href="{% static 'css/group.css' %}" rel="stylesheet">
+    <link href="{% static 'css/playlist.css' %}" rel="stylesheet">
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script> 
+    <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+
+</head>
+
+<body>
+    
+    <div class="container header_container">
+        <div class="container logo_container">
+            <img src="{% static 'img/LOGO.png' %}" class="logo">
+        </div>
+        <div class="container welcoming_container">
+            <h4 class="welcoming">Welcome,</h4>
+            <h3 class="welcoming">ShyuSeimin</h3>
+        </div>
+        <div class="container nav_container">
+            <table class="table nav_table"><tbody>
+                <tr>
+                    <td class="right_border"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></td>
+                    <td class="right_border"><span class="glyphicon glyphicon-music" aria-hidden="true"></span></td>
+                    <td class="right_border"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></td>
+                    <td><span class="glyphicon glyphicon-user" aria-hidden="true"></span></td>
+                </tr>
+                <tr>
+                    <td class="right_border">Home</td>
+                    <td class="right_border">My Playlist</td>
+                    <td class="right_border">Favorite Groups</td>
+                    <td>My Account</td>
+                </tr>
+            </tbody></table>
+        </div>
+    </div><!-- end of header container-->
+
+    <div class="container group_info_container">
+
+        <div class="container icon_container">
+            <img src="{% static 'img/mio.jpg' %}" class="icon">
+        </div>
+
+        <div class="container description_container">
+
+            <h2 class="group_name">
+                Shyuseimin's Favorite
+            </h2>
+
+            <h4 class="group_info_lable">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                Founder:
+            </h4>
+            <h4 class="group_info_content"><small>
+                ShyuSeimin
+            </small></h4>
+
+            <h4 class="group_info_lable">
+                <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
+                Group Description:
+            </h4>
+            <h4 class="group_info_content"><small>
+                Hey! These are the songs that I love sooo much!!!<br>
+                Welcome those who also like Arashi and RADWIMPS!!!
+            </small></h4>
+
+            <div class="group_button">
+                <button type="button" class="btn btn-primary" id="group_favorite">
+                    <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+                    Favorite
+                </button>
+                <br>
+                <button type="button" class="btn btn-primary" id="group_delete">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    Delete
+                </button>
+            </div>
+
+        </div>
+    </div><!-- end of group information-->
+
+    <div class="container playlist_container">
+
+        <table class="table table-hover playlist_table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Artist</th>
+                    <th>Uploader</th>
+                    <th class="center">Play</th>
+                    <th class="center">Add</th>
+                    <th class="center">Delete</th>
+                </tr>
+            </thead>
+            <tr>
+                <td>1</td>
+                <td class="title">Sweet Refrain</td>
+                <td>Perfume</td>
+                <td>ShyuSeiMin</td>
+                <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
+                <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
+                <td class="center"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td class="title">僕が僕の全て</td>
+                <td>嵐</td>
+                <td>arashi</td>
+                <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
+                <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td class="title">虹</td>
+                <td>二宮和也</td>
+                <td>ShyuSeiMin</td>
+                <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
+                <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td class="title">ふたりごと</td>
+                <td>RADWIMPS</td>
+                <td>二宮和也</td>
+                <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
+                <td class="center"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td class="title">25コ目の染色体</td>
+                <td>RADWIMPS</td>
+                <td>野田洋次郎</td>
+                <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
+                <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td class="title">Sweet Refrain</td>
+                <td>Perfume</td>
+                <td>ShyuSeiMin</td>
+                <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
+                <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td class="title">僕が僕の全て</td>
+                <td>嵐</td>
+                <td>arashi</td>
+                <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
+                <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td class="title">虹</td>
+                <td>二宮和也</td>
+                <td>ShyuSeiMin</td>
+                <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
+                <td class="center"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td class="title">ふたりごと</td>
+                <td>RADWIMPS</td>
+                <td>二宮和也</td>
+                <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
+                <td class="center"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></td>
+                <td class="center"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td class="title">25コ目の染色体</td>
+                <td>RADWIMPS</td>
+                <td>野田洋次郎</td>
+                <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
+                <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
+                <td></td>
+            </tr>
+        </table>
+    </div> <!-- end of container playlist-->
+
+    <div class="container comment_container">
+        <table class="table comment_table">
+
+            <thead>
+                <tr>
+                    <th class="comment_title">Comment</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr><td>
+                    <div class="comment_content">
+                        すきすきすきすきだいすき！！
+                    </div>
+                    <div class="comment_maker">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        RADWIMPS_LOVER
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                        Mar 11 2016
+                    </div>
+                </td></tr>
+
+                <tr><td>
+                    <div class="comment_content">
+                        Love this list sooo much!
+                    </div>
+                    <div class="comment_maker">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        ShyuSeimin
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                        Mar 11 2016
+                    </div>
+                    <div class="comment_delete">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        Delete
+                    </div>
+                </td></tr>
+
+                <tr><td>
+                    <div class="comment_content">
+                        すきすきすきすきだいすき！！
+                    </div>
+                    <div class="comment_maker">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        RADWIMPS_LOVER
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                        Mar 11 2016
+                    </div>
+                </td></tr>
+
+                <tr><td>
+                    <div class="comment_content">
+                        Love this list sooo much!
+                    </div>
+                    <div class="comment_maker">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        Ninomiya_Kazunari
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                        Mar 11 2016
+                    </div>
+                </td></tr>
+
+                <tr><td>
+                    <h5 class="group_name">Leave a massage:</h5>
+                    <textarea class="form-control" rows="3" id="new_comment"></textarea>
+                    <button type="button" class="btn btn-primary" id="submit_comment">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        Submit
+                    </button>
+                </td></tr>
+
+            </tbody>
+
+        </table>
+    </div> <!-- end of container comment-->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+  
+
+</body></html>
