@@ -25,7 +25,7 @@ body {
 }
 
 .form-signin {
-  max-width: 330px;
+  width: 330px;
   padding: 15px;
   margin: 0 auto;
 }
@@ -53,7 +53,7 @@ body {
 }
 
 .form-signup {
-  max-width: 330px;
+  width: 330px;
   padding: 15px;
   margin: 0 auto;
 }
@@ -76,7 +76,7 @@ body {
 }
 
 .nav-tabs {
-  max-width: 300px;
+  width: 300px;
   margin: 0 auto;
   border-color: #aaa;
 }
@@ -102,7 +102,7 @@ body {
 }
 
 .logo {
-  max-width: 400px;
+  width: 400px;
   margin-top: 50px;
   margin-bottom: 20px;
 }

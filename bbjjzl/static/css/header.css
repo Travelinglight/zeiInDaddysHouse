@@ -1,0 +1,83 @@
+body {
+  padding-top: 20px;
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+
+.container.header_container{
+  padding-left: 0;
+  padding-right: 0;
+  width: 800px;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.container.logo_container{
+  padding: 0;
+  padding-right: 10px;
+  width: 400px;
+  height:100px;
+  margin-top: 0;
+  margin-bottom: 0;
+  float: left;
+}
+
+.logo {
+  width: 200px;
+  float: right;
+}
+
+.container.welcoming_container{
+  padding: 0;
+  padding-left: 10px;
+  width: 400px;
+  height:100px;
+  margin: 0;
+  float: left;
+}
+
+h4.welcoming {
+  margin: 0;
+  margin-top:15px;
+  color: #337ab7;
+}
+
+h3.welcoming {
+  margin: 0;
+  margin-top: 5px;
+  color: #337ab7;
+}
+
+.container.nav_container{
+  padding: 0;
+  width: 700px;
+}
+
+.table.nav_table{
+  text-align: center;
+  line-height: 100px;
+}
+
+.nav_table.table > tbody > tr > td {
+  padding: 0px;
+  line-height: 1.4;
+  border-top: transparent;
+  color: #115895;
+  width: 100px;
+}
+
+.nav_table.table > tbody > tr > td.highlight {
+  padding: 0px;
+  line-height: 1.4;
+  border-top: transparent;
+  color: #337ab7;
+  font-weight: bold;
+  width: 100px;
+}
+
+.nav_table.table > tbody > tr > td.right_border {
+  border-style: solid;
+  border-color: transparent;
+  border-width: 1px;
+  border-right-color: #337ab7;
+}

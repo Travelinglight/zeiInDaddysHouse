@@ -1,0 +1,19 @@
+.playlist_table.table-hover > tbody > tr:hover {
+  background-color: #eee;
+}
+
+.playlist_table.table > thead > tr > th{
+  font-weight: bold;
+}
+
+.playlist_table.table > thead > tr > th.center,
+.playlist_table.table > thead > tr > td.center,
+.playlist_table.table > tbody > tr > th.center,
+.playlist_table.table > tbody > tr > td.center {
+  text-align: center;
+  width: 60px;
+}
+
+.playlist_table.table > tbody > tr > td.title {
+  font-weight: bold;
+}
