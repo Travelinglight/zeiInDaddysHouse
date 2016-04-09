@@ -61,18 +61,21 @@ def group_home(request) :
     if not 'id' in request.session.keys():
         return HttpResponse('You must login first')
 
-    oriSongList = Group.objects.values("songList").filter(id = request.POST["gid"])[0]["songList"]
-    oriSongList_json = json.loads(oriSongList)
+    oriSongList = json.loads(Group.objects.values("songList").filter(id = request.GET.get('gid', 0))[0]["songList"])
 
     songList = []
     song = {}
-    for i in range(len(oriSongList_json)):
-        theSong = json.loads(Music.objects.values("name", "artist", "vHash").filter(id = oriSongList_json[i]["sid"])[0])
-        theUser = json.loads(User.objects.values("username").filter(id = oriSongList_json[i]["uid"])[0])
-        print(theSong)
-        print(theUser)
+    for i in range(len(oriSongList)):
+        theSong = Music.objects.values("name", "artist", "vHash").filter(id = oriSongList[i]["sid"])[0]
+        theUser = User.objects.values("username").filter(id = oriSongList[i]["uid"])[0]
+        song["name"] = theSong["name"]
+        song["artist"] = theSong["artist"]
+        song["vHash"] = theSong["vHash"]
+        song["uploader"] = theUser["username"]
+        song["own"] = request.session["id"] == oriSongList[i]["uid"]
+        songList.append(song)
 
-    return render(request, 'bbjjzl/group_home.html')
+    return render(request, 'bbjjzl/group_home.html', {"songList": songList})
 
 def upload(request):
     if request.method == "POST":
