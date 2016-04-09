@@ -62,11 +62,14 @@ def group_home(request) :
 
 def upload(request):
     if request.method == "POST":
+        if not 'id' in request.session.keys():
+            return JsonResponse({'status': 1, 'message': 'You must login first before you upload music'})
+
         try:
             cursor = connection.cursor()
             cursor.execute("INSERT INTO bbjjzl_music(name, artist, vHash) VALUES('" + request.POST["name"] + "', '" + request.POST["artist"] + "', '" + request.POST["vHash"] + "');")
         except:
-            return JsonResponse({'status': 1, 'message': 'Creating music failed!'})
+            return JsonResponse({'status': 2, 'message': 'Creating music failed!'})
         finally:
             cursor.close()
 
@@ -74,20 +77,20 @@ def upload(request):
             cursor = connection.cursor()
             cursor.execute("UPDATE bbjjzl_group set nSong = nSong + 1 where id = " + request.POST["gid"] + ";")
         except:
-            return JsonResponse({'status': 2, 'message': 'Updating the number of songs failed!'})
+            return JsonResponse({'status': 3, 'message': 'Updating the number of songs failed!'})
         finally:
             cursor.close()
 
         idSong = Music.objects.values("id").filter(vHash = request.POST["vHash"])[0]["id"]
         songList = Group.objects.values("songList").filter(id = request.POST["gid"])[0]["songList"]
         songList_json = json.loads(songList)
-        songList_json.append(idSong)
+        songList_json.append({idSong: request.session["id"]})
         songList = json.dumps(songList_json)
         try:
             cursor = connection.cursor()
             cursor.execute("UPDATE bbjjzl_group set songList = '" + songList + "' where id = " + request.POST["gid"] + ";")
         except:
-            return JsonResponse({'status': 3, 'message': 'Updating song list failed!'})
+            return JsonResponse({'status': 4, 'message': 'Updating song list failed!'})
         finally:
             cursor.close()
 
@@ -135,8 +138,42 @@ def file_upload(request) :
 
 def hashfile(f):
     sha1 = hashlib.sha1()
-
     sha1.update(f)
-
     return sha1.hexdigest()
+
+def delete_from_group(request):
+    if request.method == "POST":
+        if not 'id' in request.session.keys():
+            return JsonResponse({'status': 1, 'message': 'You must login first to delete the music'})
+
+        songList = Group.objects.values("songList").filter(id = request.POST["gid"])[0]["songList"]
+        songList_json = json.loads(songList)
+        if songList_json[request.POST["sid"]] != request.session["id"]:
+            return JsonResponse({'status': 2, 'message': 'Deletion request denied'})
+
+        for i in xrange(len(songList_json)):
+            if songList_json[i].keys() == request.POST["sid"]:
+                songList_json.pop(i)
+
+        songList = json.dumps(songList_json)
+        try:
+            cursor = connection.cursor()
+            cursor.execute("UPDATE bbjjzl_group set songList = '" + songList + "' where id = " + request.POST["gid"] + ";")
+        except:
+            return JsonResponse({'status': 4, 'message': 'Updating song list failed!'})
+        finally:
+            cursor.close()
+
+        try:
+            cursor = connection.cursor()
+            cursor.execute("UPDATE bbjjzl_group set nSong = nSong - 1 where id = " + request.POST["gid"] + ";")
+        except:
+            return JsonResponse({'status': 3, 'message': 'Updating the number of songs failed!'})
+        finally:
+            cursor.close()
+
+def add_favorate(request):
+    if request.method == "POST":
+        if not 'id' in request.session.keys():
+            return JsonResponse({'status': 1, 'message': 'You must login first to delete the music'})
 
