@@ -58,6 +58,20 @@ def group_new(request) :
     return render(request, 'bbjjzl/group_new.html')
 
 def group_home(request) :
+    if not 'id' in request.session.keys():
+        return HttpResponse('You must login first')
+
+    oriSongList = Group.objects.values("songList").filter(id = request.POST["gid"])[0]["songList"]
+    oriSongList_json = json.loads(oriSongList)
+
+    songList = []
+    song = {}
+    for i in range(len(oriSongList_json)):
+        theSong = json.loads(Music.objects.values("name", "artist", "vHash").filter(id = oriSongList_json[i]["sid"])[0])
+        theUser = json.loads(User.objects.values("username").filter(id = oriSongList_json[i]["uid"])[0])
+        print(theSong)
+        print(theUser)
+
     return render(request, 'bbjjzl/group_home.html')
 
 def upload(request):
@@ -84,7 +98,7 @@ def upload(request):
         idSong = Music.objects.values("id").filter(vHash = request.POST["vHash"])[0]["id"]
         songList = Group.objects.values("songList").filter(id = request.POST["gid"])[0]["songList"]
         songList_json = json.loads(songList)
-        songList_json.append({idSong: request.session["id"]})
+        songList_json.append({"sid": idSong, "uid": request.session["id"]})
         songList = json.dumps(songList_json)
         try:
             cursor = connection.cursor()
@@ -177,3 +191,15 @@ def add_favorate(request):
         if not 'id' in request.session.keys():
             return JsonResponse({'status': 1, 'message': 'You must login first to delete the music'})
 
+
+def home(request): 
+    return render(request, 'bbjjzl/home.html')
+
+def myAccount(request):
+    return render(request, 'bbjjzl/my_account.html')
+
+def myPlayList(request):
+    return render(request, 'bbjjzl/my_playlist.html')
+
+def favoriteGroup(request):
+    return render(request, 'bbjjzl/favorite_group.html')

@@ -106,6 +106,21 @@
                     <th class="center">Delete</th>
                 </tr>
             </thead>
+            {% for i in len(songList) %}
+             <tr>
+                <td>i</td>
+                <td class="title">songList[i].name</td>
+                <td>songList[i].artist</td>
+                <td>songList[i].uploader</td>
+                <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
+                <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
+                <td class="center">
+                    {% if songList[i].own == 1 %}
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
             <tr>
                 <td>1</td>
                 <td class="title">Sweet Refrain</td>

@@ -9,4 +9,8 @@ urlpatterns = [
     url(r'^group/home$', views.group_home, name='homeGroup'),
     url(r'^upload$', views.upload, name='upload'),
     url(r'^fileupload$', views.file_upload, name='upload'),
+    url(r'^home$', views.home, name="home"),
+    url(r'^myAccount$', views.myAccount, name="myAccount"),
+    url(r'^myPlayList$', views.myPlayList, name="myPlayList"),
+    url(r'^favoriteGroup$', views.favoriteGroup, name="favoriteGroup"),
 ]
