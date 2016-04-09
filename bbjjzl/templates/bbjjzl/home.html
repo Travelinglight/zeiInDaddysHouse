@@ -8,23 +8,17 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-<!--
+
     {% load staticfiles %}
 
     <link href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/group.css' %}" rel="stylesheet">
+    <link href="{% static 'css/header.css' %}" rel="stylesheet">
+    <link href="{% static 'css/home.css' %}" rel="stylesheet">
+    <link href="{% static 'css/playlist.css' %}" rel="stylesheet">
+    <link href="{% static 'css/group_list.css' %}" rel="stylesheet">
+
     <script src="{% static 'jquery/dist/jquery.min.js' %}"></script> 
     <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
--->
-    <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <link href="./header.css" rel="stylesheet">
-    <link href="./home.css" rel="stylesheet">
-    <link href="./playlist.css" rel="stylesheet">
-    <link href="./group_list.css" rel="stylesheet">
-
-    <script src="./jquery.min.js"></script>
-    <script src="./bootstrap/js/bootstrap.min.js"></script>
 
     <script type="text/javascript"> 
         //$(function () {
@@ -40,7 +34,7 @@
 
     <div class="container header_container">
         <div class="container logo_container">
-            <img src="./img/logo.png" class="logo">
+            <img src="{% static 'img/LOGO.png' %}" class="logo">
         </div>
         <div class="container welcoming_container">
             <h4 class="welcoming">Welcome,</h4>
@@ -55,10 +49,10 @@
                     <td><span class="glyphicon glyphicon-user" aria-hidden="true"></span></td>
                 </tr>
                 <tr>
-                    <td class="highlight right_border">Home</td>
-                    <td class="right_border">My Playlist</td>
-                    <td class="right_border">Favorite Groups</td>
-                    <td>My Account</td>
+                    <td class="right_border highlight"><a href="/home">Home</a></td>
+                    <td class="right_border"><a href="/myPlaylist">My Playlist</a></td>
+                    <td class="right_border"><a href="/favoriteGroup">Favorite Groups</a></td>
+                    <td><a href="/myAccount">My Account</a></td>
                 </tr>
             </tbody></table>
         </div>
@@ -144,7 +138,7 @@
                         <div class="container group_info_container">
 
                             <div class="container group_icon_container">
-                                <img src="./img/mio.jpg" class="group_icon">
+                                <img src="{% static 'img/mio.jpg' %}" class="group_icon">
                             </div>
 
                             <div class="container group_description_container">
@@ -190,7 +184,7 @@
                         <div class="container group_info_container">
 
                             <div class="container group_icon_container">
-                                <img src="./img/mio.jpg" class="group_icon">
+                                <img src="{% static 'img/mio.jpg' %}" class="group_icon">
                             </div>
 
                             <div class="container group_description_container">
@@ -232,143 +226,6 @@
                         </div><!-- end of group information-->
                     </td></tr>
 
-                    <tr><td>
-                        <div class="container group_info_container">
-
-                            <div class="container group_icon_container">
-                                <img src="./img/mio.jpg" class="group_icon">
-                            </div>
-
-                            <div class="container group_description_container">
-
-                                <h2 class="group_name">
-                                    Shyuseimin's Favorite
-                                </h2>
-
-                                <h4 class="group_info_lable">
-                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                                    Founder:
-                                </h4>
-                                <h4 class="group_info_content"><small>
-                                    ShyuSeimin
-                                </small></h4>
-
-                                <h4 class="group_info_lable">
-                                    <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
-                                    Group Description:
-                                </h4>
-                                <h4 class="group_info_content"><small>
-                                    Hey! These are the songs that I love sooo much!!!<br>
-                                    Welcome those who also like Arashi and RADWIMPS!!!
-                                </small></h4>
-
-                                <div class="group_button">
-                                    <button type="button" class="btn btn-primary" id="group_favorite">
-                                        <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
-                                        Favorite
-                                    </button>
-                                    <br>
-                                    <button type="button" class="btn btn-primary" id="group_delete">
-                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                        Delete
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div><!-- end of group information-->
-                    </td></tr>
-
-                    <tr><td>
-                        <div class="container group_info_container">
-
-                            <div class="container group_icon_container">
-                                <img src="./img/mio.jpg" class="group_icon">
-                            </div>
-
-                            <div class="container group_description_container">
-
-                                <h2 class="group_name">
-                                    Shyuseimin's Favorite
-                                </h2>
-
-                                <h4 class="group_info_lable">
-                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                                    Founder:
-                                </h4>
-                                <h4 class="group_info_content"><small>
-                                    ShyuSeimin
-                                </small></h4>
-
-                                <h4 class="group_info_lable">
-                                    <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
-                                    Group Description:
-                                </h4>
-                                <h4 class="group_info_content"><small>
-                                    Hey! These are the songs that I love sooo much!!!<br>
-                                    Welcome those who also like Arashi and RADWIMPS!!!
-                                </small></h4>
-
-                                <div class="group_button">
-                                    <button type="button" class="btn btn-primary" id="group_favorite">
-                                        <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
-                                        Favorite
-                                    </button>
-                                    <br>
-                                    <button type="button" class="btn btn-primary" id="group_delete">
-                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                        Delete
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div><!-- end of group information-->
-                    </td></tr>
-
-                    <tr><td>
-                        <div class="container group_info_container">
-
-                            <div class="container group_icon_container">
-                                <img src="./img/mio.jpg" class="group_icon">
-                            </div>
-
-                            <div class="container group_description_container">
-
-                                <h2 class="group_name">
-                                    Shyuseimin's Favorite
-                                </h2>
-
-                                <h4 class="group_info_lable">
-                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                                    Founder:
-                                </h4>
-                                <h4 class="group_info_content"><small>
-                                    ShyuSeimin
-                                </small></h4>
-
-                                <h4 class="group_info_lable">
-                                    <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
-                                    Group Description:
-                                </h4>
-                                <h4 class="group_info_content"><small>
-                                    Hey! These are the songs that I love sooo much!!!<br>
-                                    Welcome those who also like Arashi and RADWIMPS!!!
-                                </small></h4>
-
-                                <div class="group_button">
-                                    <button type="button" class="btn btn-primary" id="group_favorite">
-                                        <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
-                                        Favorite
-                                    </button>
-                                    <br>
-                                    <button type="button" class="btn btn-primary" id="group_delete">
-                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                        Delete
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div><!-- end of group information-->
-                    </td></tr>
 
                 </tbody></table>
             </div><!--/ New Group-->

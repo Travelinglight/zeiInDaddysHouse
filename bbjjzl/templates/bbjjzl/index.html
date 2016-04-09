@@ -93,6 +93,7 @@
                 if (res.status == 0) {
                     $("#warning").html('<strong>Success</strong> Login succeeded!');
                     $("#warning").show();
+                    window.location.href="/home";
                 }
                 else if (res.status == 1) {
                     $("#warning").html('<strong>Warnings</strong> Account disabled!');
@@ -175,7 +176,7 @@
         </div>
 
 
-        <div id="warning" class="alert alert-danger alert-dismissable" style="width:50%;margin-left:40%;display:none;">
+        <div id="warning" class="alert alert-danger alert-dismissable" style="width:300px;margin:0 auto;display:none;">
         </div>
     </div> <!-- /container -->
 

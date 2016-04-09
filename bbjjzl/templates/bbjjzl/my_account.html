@@ -8,15 +8,17 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-<!--
+
     {% load staticfiles %}
 
     <link href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/group.css' %}" rel="stylesheet">
+    <link href="{% static 'css/header.css' %}" rel="stylesheet">
+    <link href="{% static 'css/my_account.css' %}" rel="stylesheet">
+    <link href="{% static 'css/playlist.css' %}" rel="stylesheet">
+    <link href="{% static 'css/group_list.css' %}" rel="stylesheet">
+
     <script src="{% static 'jquery/dist/jquery.min.js' %}"></script> 
     <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
--->
-    <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <link href="./header.css" rel="stylesheet">
     <link href="./my_account.css" rel="stylesheet">
@@ -27,7 +29,8 @@
     <script src="./bootstrap/js/bootstrap.min.js"></script>
 
     <script type="text/javascript"> 
-        //$(function () {
+        $(document).ready(function () {
+
             $('#myTabs a').click(function (e) {
                 e.preventDefault();
                 $(this).tab('show');
@@ -40,7 +43,7 @@
 
     <div class="container header_container">
         <div class="container logo_container">
-            <img src="./img/logo.png" class="logo">
+            <img src="{% static 'img/LOGO.png' %}" class="logo">
         </div>
         <div class="container welcoming_container">
             <h4 class="welcoming">Welcome,</h4>
@@ -55,10 +58,10 @@
                     <td class="highlight"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></td>
                 </tr>
                 <tr>
-                    <td class="right_border">Home</td>
-                    <td class="right_border">My Playlist</td>
-                    <td class="right_border">Favorite Groups</td>
-                    <td class="highlight">My Account</td>
+                    <td class="right_border"><a href="/home">Home</a></td>
+                    <td class="right_border"><a href="/myPlaylist">My Playlist</a></td>
+                    <td class="right_border"><a href="/favoriteGroup">Favorite Groups</a></td>
+                    <td class="highlight"><a href="/myAccount">My Account</a></td>
                 </tr>
             </tbody></table>
         </div>
@@ -163,7 +166,7 @@
                         <div class="container group_info_container">
 
                             <div class="container group_icon_container">
-                                <img src="./img/mio.jpg" class="group_icon">
+                                <img src="{% static 'img/mio.jpg' %}" class="group_icon">
                             </div>
 
                             <div class="container group_description_container">
@@ -209,7 +212,7 @@
                         <div class="container group_info_container">
 
                             <div class="container group_icon_container">
-                                <img src="./img/mio.jpg" class="group_icon">
+                                <img src="{% static 'img/LOGO.png' %}" class="group_icon">
                             </div>
 
                             <div class="container group_description_container">
