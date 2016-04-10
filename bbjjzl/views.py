@@ -260,7 +260,6 @@ def like_song(request):
             if int(i) == int(request.POST["sid"]):
                 return JsonResponse({'status': 0, 'message': 'song liked'})
         songList.append(str(request.POST["sid"]))
-        print(songList)
         songList = json.dumps(songList)
         try:
             cursor = connection.cursor()
@@ -285,7 +284,6 @@ def dislike_song(request):
                 songList = json.dumps(songList)
                 try:
                     cursor = connection.cursor()
-                    print("UPDATE bbjjzl_musiclist set songList = '" + songList + "' where uid = " + str(request.session["id"]) + ";")
                     cursor.execute("UPDATE bbjjzl_musiclist set songList = '" + songList + "' where uid = " + str(request.session["id"]) + ";")
                 except:
                     return JsonResponse({'status': 2, 'message': 'Updating starred song list failed!'})
@@ -314,3 +312,48 @@ def group_comment(request):
             cursor.close()
 
         return JsonResponse({'status': 0, 'message': 'comment added'})
+
+def like_group(request):
+    if request.method == "POST":
+        if not 'id' in request.session.keys():
+            return JsonResponse({'status': 1, 'message': 'You must login first to like the music'})
+
+        groupList = json.loads(Grouplist.objects.values("groupList").filter(uid = request.session["id"])[0]["groupList"])
+        for i in groupList:
+            if int(i) == int(request.POST["gid"]):
+                return JsonResponse({'status': 0, 'message': 'group liked'})
+        groupList.append(str(request.POST["gid"]))
+        groupList = json.dumps(groupList)
+        try:
+            cursor = connection.cursor()
+            cursor.execute("UPDATE bbjjzl_grouplist set groupList = '" + groupList + "' where uid = " + str(request.session["id"]) + ";")
+        except:
+            return JsonResponse({'status': 2, 'message': 'Updating starred group list failed!'})
+        finally:
+            cursor.close()
+
+        return JsonResponse({'status': 0, 'message': 'group liked'})
+
+def dislike_group(request):
+    if request.method == "POST":
+        if not 'id' in request.session.keys():
+            return JsonResponse({'status': 1, 'message': 'You must login first to dislike the music'})
+
+        groupList = json.loads(Grouplist.objects.values("groupList").filter(uid = request.session["id"])[0]["groupList"])
+
+        for index, item in enumerate(groupList):
+            if int(item) == int(request.POST["gid"]):
+                groupList.pop(index)
+                groupList = json.dumps(groupList)
+                try:
+                    cursor = connection.cursor()
+                    print("UPDATE bbjjzl_musiclist set groupList = '" + groupList + "' where uid = " + str(request.session["id"]) + ";")
+                    cursor.execute("UPDATE bbjjzl_grouplist set groupList = '" + groupList + "' where uid = " + str(request.session["id"]) + ";")
+                except:
+                    return JsonResponse({'status': 2, 'message': 'Updating starred group list failed!'})
+                finally:
+                    cursor.close()
+
+                return JsonResponse({'status': 0, 'message': 'group disliked'})
+
+        return JsonResponse({'status': 4, 'message': 'group not in like list'})

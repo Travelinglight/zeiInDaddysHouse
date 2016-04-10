@@ -94,7 +94,7 @@
                 var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
                 if( $("#like_group_flag").attr("class").indexOf("empty") != -1 ) { //if not like
                     //alert("like");
-                    $.post("/likeGroup", {'gid': group.id, 'csrfmiddlewaretoken': token}, function(feedback) {
+                    $.post("/likeGroup", {'gid': {{ group.id }}, 'csrfmiddlewaretoken': token}, function(feedback) {
                         if(feedback.status == 0) {
                             $("#like_group_flag").removeClass("glyphicon-heart-empty");
                             $("#like_group_flag").addClass("glyphicon-heart");
@@ -103,7 +103,7 @@
                 }
                 else { //if like
                     //alert("dislike");
-                    $.post("/dislikeGroup", {'gid': group.id, 'csrfmiddlewaretoken': token}, function(feedback) {
+                    $.post("/dislikeGroup", {'gid': {{ group.id }}, 'csrfmiddlewaretoken': token}, function(feedback) {
                         if(feedback.status == 0) {
                             $("#like_group_flag").removeClass("glyphicon-heart");
                             $("#like_group_flag").addClass("glyphicon-heart-empty");
