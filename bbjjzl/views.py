@@ -98,8 +98,23 @@ def myPlaylist(request):
     if not 'id' in request.session.keys():
         return HttpResponse('You must login first')
 
+    likeList = json.loads(Musiclist.objects.values("songList").filter(uid = request.session["id"])[0]["songList"])
+    songList = []
+    song = {}
+    for i in range(len(likeList)):
+        theSong = Music.objects.values("id", "name", "artist", "vHash", "gid", "uid").filter(id = int(likeList[i]))[0]
+        theGroup = Group.objects.values("name").filter(id = theSong["gid"])[0]
+        song["id"] = theSong["id"]
+        song["name"] = theSong["name"]
+        song["artist"] = theSong["artist"]
+        song["path"] = "uploads/" + theSong["vHash"][0:2] + "/" + theSong["vHash"][2:4] + "/" + theSong["vHash"][4:]
+        song["group"] = theGroup["name"]
+        song["like"] = True;
+        song["own"] = theSong["uid"] == request.session["id"]
+        songList.append(song)
+        song = {}
     username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
-    return render(request, 'bbjjzl/my_playlist.html', {'username': username})
+    return render(request, 'bbjjzl/my_playlist.html', {'username': username, 'songList': songList})
 
 def favoriteGroup(request):
     if not 'id' in request.session.keys():
@@ -366,6 +381,6 @@ def group_dismiss(request):
         except:
             return JsonResponse({'status': 2, 'message': 'Updating starred group list failed!'})
         finally:
-            cursor.close() 
+            cursor.close()
 
         return JsonResponse({'status': 0, 'message': 'group dismissed'})

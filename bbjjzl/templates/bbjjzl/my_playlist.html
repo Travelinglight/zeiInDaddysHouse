@@ -49,6 +49,7 @@
                         if(feedback.status == 0) {
                             $("#"+thisID).removeClass("glyphicon-heart");
                             $("#"+thisID).addClass("glyphicon-heart-empty");
+                            $("#"+thisID).parent().parent().hide();
                         }
                     });
                 }
