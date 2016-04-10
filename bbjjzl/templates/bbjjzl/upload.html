@@ -56,7 +56,6 @@
             /* form submit */
             $("#group_upload").submit(function(event){
                 event.preventDefault();
-
                 var fileJSON = {file:audio};
                 var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
                 fileJSON["csrfmiddlewaretoken"] = token;
@@ -99,7 +98,7 @@
         <div class="container nav_container">
             <table class="table nav_table"><tbody>
                 <tr>
-                    <td class="highlight right_border"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></td>
+                    <td class="right_border"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></td>
                     <td class="right_border"><span class="glyphicon glyphicon-music" aria-hidden="true"></span></td>
                     <td class="right_border"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></td>
                     <td><span class="glyphicon glyphicon-user" aria-hidden="true"></span></td>
@@ -145,10 +144,10 @@
             <button type="submit" form="group_upload" class="btn btn-primary" id="submit" accept="audio/*">
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Submit
             </button>
-            <button class="btn btn-primary" id="cancel">
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Cancel
-            </button>
         </form>
+        <button class="btn btn-primary" id="cancel">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel
+        </button>
     </div> <!-- /container -->
 
 </body></html>
