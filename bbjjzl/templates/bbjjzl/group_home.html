@@ -219,11 +219,12 @@
                     <th>Title</th>
                     <th>Artist</th>
                     <th>Uploader</th>
-                    <th class="music center">Play</th>
+                    <th class="center">Play</th>
                     <th class="center">Add</th>
                     <th class="center">Delete</th>
                 </tr>
             </thead>
+            <tbody>
             {% for c in songList %}
                 <tr>
                     <td id="sid-td-{{forloop.counter}}">{{ forloop.counter }}</td>
@@ -249,6 +250,7 @@
                     </td>
                 </tr>
             {% endfor %}
+            </tbody>
         </table>
     </div> <!-- end of container playlist-->
 

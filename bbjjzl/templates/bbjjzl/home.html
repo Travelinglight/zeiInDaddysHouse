@@ -35,6 +35,40 @@
                 $("#search_form").removeClass("first");
                 $("#search_result").fadeIn();
             });
+
+            $(".song-delete").click(function(event) {
+                event.preventDefault();
+                thisID = this.id;
+                var sid = Number(thisID.substring(12));
+                var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
+                $.post("/group/delete", {'sid': sid, 'csrfmiddlewaretoken': token}, function(feedback) {
+                    $("#" + thisID).parent().parent().hide();
+                });
+            });
+
+            $(".song-like").click(function(event) {
+                event.preventDefault();
+                thisID = this.id;
+                var sid = Number(thisID.substring(10));
+                var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
+                if( $("#"+thisID).attr("class").indexOf("empty") != -1 ) { //if not like
+                    $.post("/likeSong", {'sid': sid, 'csrfmiddlewaretoken': token}, function(feedback) {
+                        if(feedback.status == 0) {
+                            $("#"+thisID).removeClass("glyphicon-heart-empty");
+                            $("#"+thisID).addClass("glyphicon-heart");
+                        }
+                    });
+                }
+                else { //if like
+                    $.post("/dislikeSong", {'sid': sid, 'csrfmiddlewaretoken': token}, function(feedback) {
+                        if(feedback.status == 0) {
+                            $("#"+thisID).removeClass("glyphicon-heart");
+                            $("#"+thisID).addClass("glyphicon-heart-empty");
+                        }
+                    });
+                }
+            });
+
         });
     </script>
 
@@ -101,57 +135,37 @@
                                 <th>Title</th>
                                 <th>Artist</th>
                                 <th>Group</th>
-                                <th>Uploader</th>
                                 <th class="center">Play</th>
                                 <th class="center">Add</th>
                                 <th class="center">Delete</th>
                             </tr>
                         </thead>
-                        <tr>
-                            <td class="title">Sweet Refrain</td>
-                            <td>Perfume</td>
-                            <td>ShyuSeiMin</td>
-                            <td>ShyuSeiMin</td>
-                            <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="title">僕が僕の全て</td>
-                            <td>嵐</td>
-                            <td>arashi</td>
-                            <td>ShyuSeiMin</td>
-                            <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="title">虹</td>
-                            <td>二宮和也</td>
-                            <td>ShyuSeiMin</td>
-                            <td>ShyuSeiMin</td>
-                            <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="title">ふたりごと</td>
-                            <td>RADWIMPS</td>
-                            <td>二宮和也</td>
-                            <td>ShyuSeiMin</td>
-                            <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="title">25コ目の染色体</td>
-                            <td>RADWIMPS</td>
-                            <td>野田洋次郎</td>
-                            <td>ShyuSeiMin</td>
-                            <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td>
-                        </tr>
+                        <tbody>
+                            {% for c in songList %}
+                            <tr>
+                                <td id="sname-td-{{forloop.counter}}" class="title">{{ c.name }}</td>
+                                <td id="sartist-td-{{forloop.counter}}">{{ c.artist }}</td>
+                                <td id="suploader-td-{{forloop.counter}}">{{ c.group }}</td>
+                                <td id="splay-td-{{forloop.counter}}" class="center">
+                                    <audio src="{% static "" %}{{ c.path }}" controls="controls">
+                                        No Audio Support
+                                    </audio>
+                                </td>
+                                <td id="slike-td-{{forloop.counter}}" class="center">
+                                    {% if c.like %}
+                                        <a id="song-like-{{ c.id }}" href="#" class="glyphicon glyphicon-heart song-like" aria-hidden="true"></a>
+                                    {% else %}
+                                        <a id="song-like-{{ c.id }}" href="#" class="glyphicon glyphicon-heart-empty song-like" aria-hidden="true"></a>
+                                    {% endif %}
+                                </td>
+                                <td id="sdelete-td-{{forloop.counter}}" class="center">
+                                    {% if c.own %}
+                                    <a id="song-delete-{{ c.id }}" class="song-delete" href="#"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
                     </table>
                 </div> <!-- end of container playlist-->
             </div><!--/ New Song-->
