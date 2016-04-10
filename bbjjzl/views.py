@@ -133,7 +133,7 @@ def upload(request):
         finally:
             cursor.close()
 
-        return JsonResponse({'status': 0, 'message': '1 song added'})
+        return JsonResponse({'status': 0, 'message': '1 song added', 'url': '/group/home/?gid=' + str(request.POST["gid"])})
     else:
         return render(request, 'bbjjzl/upload.html', {'gid': request.GET.get('gid', 0)})
 
