@@ -207,12 +207,17 @@ def delete_from_group(request):
         songList = Group.objects.values("songList").filter(id = request.POST["gid"])[0]["songList"]
         songList_json = json.loads(songList)
 
+        print(songList_json)
         for i in range(len(songList_json)):
+            print(i)
+            print(songList_json[i])
+            print(songList_json)
             if int(songList_json[i]["sid"]) == int(request.POST["sid"]):
                 if int(songList_json[i]["uid"]) != int(request.session["id"]):
                     return JsonResponse({'status': 2, 'message': 'Deletion request denied'})
                 else:
                     songList_json.pop(i)
+                    break
 
         songList = json.dumps(songList_json)
         try:

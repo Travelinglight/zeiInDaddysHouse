@@ -61,7 +61,6 @@
                 var sid = Number(thisID.substring(12));
                 var gid = {{ group.id }}
                 var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
-
                 $.post("/group/delete", {'sid': sid, 'gid': gid, 'csrfmiddlewaretoken': token}, function(feedback) {
                     $("#" + thisID).parent().parent().hide();
                 });
@@ -198,59 +197,24 @@
 
             <tbody>
 
+                <!--
                 <tr><td>
                     <div class="comment_content">
-                        すきすきすきすきだいすき！！
+                        {{ c.content}}
                     </div>
                     <div class="comment_maker">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                        RADWIMPS_LOVER
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                        Mar 11 2016
+                        {{ c.username }}
                     </div>
-                </td></tr>
+                </td></tr>-->
 
                 <tr><td>
                     <div class="comment_content">
-                        Love this list sooo much!
+                        c.content
                     </div>
                     <div class="comment_maker">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                        ShyuSeimin
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                        Mar 11 2016
-                    </div>
-                    <div class="comment_delete">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                        Delete
-                    </div>
-                </td></tr>
-
-                <tr><td>
-                    <div class="comment_content">
-                        すきすきすきすきだいすき！！
-                    </div>
-                    <div class="comment_maker">
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                        RADWIMPS_LOVER
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                        Mar 11 2016
-                    </div>
-                </td></tr>
-
-                <tr><td>
-                    <div class="comment_content">
-                        Love this list sooo much!
-                    </div>
-                    <div class="comment_maker">
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                        Ninomiya_Kazunari
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                        Mar 11 2016
+                        c.username
                     </div>
                 </td></tr>
 
