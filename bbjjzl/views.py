@@ -36,7 +36,7 @@ def user_new(request) :
 
                 try:
                     cursor = connection.cursor()
-                    cursor.execute("INSERT INTO bbjjzl_musiclist(uid, nSong, songList) VALUES(" + str(uid) + ", 0, '[]');")
+                    cursor.execute("INSERT INTO bbjjzl_musiclist(uid, songList) VALUES(" + str(uid) + ", '[]');")
                 except:
                     return JsonResponse({'status': 3, 'message': 'music list creation failed!'})
                 finally:
@@ -88,7 +88,7 @@ def group_new(request) :
     if request.method == "POST":
         try:
             cursor = connection.cursor()
-            cursor.execute("INSERT INTO bbjjzl_group(name, uid, proPic, description, nSong, songList, nComment, commentList) VALUES('" + request.POST["name"] + "', " + str(request.session["id"]) + ", '" + request.POST["proPic"] + "', '" + request.POST["description"] + "', 0, '[]', 0, '[]');")
+            cursor.execute("INSERT INTO bbjjzl_group(name, uid, proPic, description, songList, commentList) VALUES('" + request.POST["name"] + "', " + str(request.session["id"]) + ", '" + request.POST["proPic"] + "', '" + request.POST["description"] + "', '[]', '[]');")
         except:
             return JsonResponse({'status': 1, 'message': 'Creating group failed!'})
         finally:
@@ -140,14 +140,6 @@ def upload(request):
             cursor.execute("INSERT INTO bbjjzl_music(name, artist, vHash) VALUES('" + request.POST["name"] + "', '" + request.POST["artist"] + "', '" + request.POST["vHash"] + "');")
         except:
             return JsonResponse({'status': 2, 'message': 'Creating music failed!'})
-        finally:
-            cursor.close()
-
-        try:
-            cursor = connection.cursor()
-            cursor.execute("UPDATE bbjjzl_group set nSong = nSong + 1 where id = " + request.POST["gid"] + ";")
-        except:
-            return JsonResponse({'status': 3, 'message': 'Updating the number of songs failed!'})
         finally:
             cursor.close()
 
@@ -245,14 +237,6 @@ def delete_from_group(request):
         finally:
             cursor.close()
 
-        try:
-            cursor = connection.cursor()
-            cursor.execute("UPDATE bbjjzl_group set nSong = nSong - 1 where id = " + request.POST["gid"] + ";")
-        except:
-            return JsonResponse({'status': 3, 'message': 'Updating the number of songs failed!'})
-        finally:
-            cursor.close()
-
         return JsonResponse({'status': 0, 'message': 'music deleted'})
 
 def like_song(request):
@@ -272,14 +256,6 @@ def like_song(request):
             cursor.execute("UPDATE bbjjzl_musiclist set songList = '" + songList + "' where uid = " + str(request.session["id"]) + ";")
         except:
             return JsonResponse({'status': 2, 'message': 'Updating starred song list failed!'})
-        finally:
-            cursor.close()
-
-        try:
-            cursor = connection.cursor()
-            cursor.execute("UPDATE bbjjzl_musiclist set nSong = nSong + 1 where uid = " + str(request.session["id"]) + ";")
-        except:
-            return JsonResponse({'status': 3, 'message': 'Updating the number of songs failed!'})
         finally:
             cursor.close()
 
@@ -305,14 +281,25 @@ def dislike_song(request):
                 finally:
                     cursor.close()
 
-                try:
-                    cursor = connection.cursor()
-                    cursor.execute("UPDATE bbjjzl_musiclist set nSong = nSong - 1 where uid = " + str(request.session["id"]) + ";")
-                except:
-                    return JsonResponse({'status': 3, 'message': 'Updating the number of songs failed!'})
-                finally:
-                    cursor.close()
-
                 return JsonResponse({'status': 0, 'message': 'song disliked'})
 
         return JsonResponse({'status': 4, 'message': 'song not in like list'})
+
+def group_comment(request):
+    if request.method == "POST":
+        if not 'id' in request.session.keys():
+            return JsonResponse({'status': 1, 'message': 'You must login first to comment the group'})
+
+        username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
+        commentList = json.loads(Group.objects.values("commentList").filter(id = request.POST["gid"])[0]["commentList"])
+        commentList.append({"content": request.POST["content"], "username": username, "uid": request.session["id"]})
+        commentList = json.dumps(commentList)
+        try:
+            cursor = connection.cursor()
+            cursor.execute("UPDATE bbjjzl_group set commentList = '" + commentList + "' where id = " + request.POST["gid"] + ";")
+        except:
+            return JsonResponse({'status': 4, 'message': 'Updating song list failed!'})
+        finally:
+            cursor.close()
+
+        return JsonResponse({'status': 0, 'message': 'comment added'})

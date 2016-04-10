@@ -43,7 +43,7 @@
                     login_obj["csrfmiddlewaretoken"] = token;
 
                     // post the JSON
-                    $.post("group/comment", login_obj, function(res) {
+                    $.post("/group/comment", login_obj, function(res) {
                         if (res.status == 0) {
                             location.reload();
                         }

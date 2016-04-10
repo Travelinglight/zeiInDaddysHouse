@@ -4,7 +4,6 @@ import json
 
 class musicList(models.Model):
     uid = models.IntegerField(default = 0)
-    nSong = models.IntegerField(default = 0)
     songList = models.TextField()
 
     def __str__(self):
@@ -23,9 +22,7 @@ class group(models.Model):
     uid = models.IntegerField(default = 0)
     proPic = models.CharField(max_length = 1000)
     description = models.TextField()
-    nSong = models.IntegerField(default = 0)
     songList = models.TextField()
-    nComment = models.IntegerField(default = 0)
     commentList = models.TextField(default = '[]')
 
     def __str__(self):
