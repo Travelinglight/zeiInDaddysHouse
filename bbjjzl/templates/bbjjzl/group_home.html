@@ -24,6 +24,7 @@
                 event.preventDefault();
                 window.location.href='/upload/?gid={{ gid }}';
             });
+
         });
     </script>
 
@@ -60,7 +61,7 @@
     <div class="container group_info_container">
 
         <div class="container icon_container">
-            <img src="{% static 'img/mio.jpg' %}" class="icon">
+            <img src="{% static "" %}{{ group.proPic }}" class="icon">
         </div>
 
         <div class="container description_container">

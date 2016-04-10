@@ -90,6 +90,7 @@ def group_home(request) :
         song["own"] = request.session["id"] == oriSongList[i]["uid"]
         songList.append(song)
 
+    theGroup["proPic"] = "/uploads/" + theGroup["proPic"][0:2] + "/" + theGroup["proPic"][2:4] + "/" + theGroup["proPic"][4:]
     return render(request, 'bbjjzl/group_home.html', {"group": theGroup, "songList": songList, "Founder": Founder, "own": idFounder == request.session["id"]})
 
 def upload(request):
