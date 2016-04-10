@@ -102,7 +102,9 @@ def myPlaylist(request):
     songList = []
     song = {}
     for i in range(len(likeList)):
-        theSong = Music.objects.values("id", "name", "artist", "vHash", "gid", "uid").filter(id = int(likeList[i]))[0]
+        theSong = Music.objects.values("id", "name", "artist", "vHash", "gid", "uid").filter(id = int(likeList[i]))
+        if len(theSong) == 0:
+            continue
         theGroup = Group.objects.values("name").filter(id = theSong["gid"])[0]
         song["id"] = theSong["id"]
         song["name"] = theSong["name"]
