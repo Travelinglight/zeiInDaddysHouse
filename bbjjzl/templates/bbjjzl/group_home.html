@@ -25,6 +25,36 @@
                 window.location.href='/upload/?gid={{ group.id }}';
             });
 
+            $("#submit_comment").click(function(event){
+                event.preventDefault();
+                var content=$("#content").val();
+
+                if (content.length == 0) {
+                    $("#warning").html('<strong>Warning</strong> Empty Comment!');
+                    $("#warning").show();
+                }
+                else
+                {
+                    // construct the JSON
+                    var login_obj = {};
+                    var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
+                    login_obj["content"] = content;
+                    login_obj["gid"] = {{ group.id }};
+                    login_obj["csrfmiddlewaretoken"] = token;
+
+                    // post the JSON
+                    $.post("group/comment", login_obj, function(res) {
+                        if (res.status == 0) {
+                            location.reload();
+                        }
+                        else if (res.status == 1) {
+                            $("#warning").html('<strong>Warnings</strong> Submission Failed!');
+                            $("#warning").show();
+                        }
+                    });
+                }
+            });
+
             $(".song-delete").click(function(event) {
                 event.preventDefault();
                 thisID = this.id;
@@ -224,6 +254,21 @@
                     </div>
                 </td></tr>
 
+<<<<<<< HEAD
+                <tr><td>
+                    <h5 class="group_name">Leave a massage:</h5>
+                    <form id="new_comment">
+                        {% csrf_token %}
+                        <textarea class="form-control" rows="3" id="content"></textarea>
+                        <button type="submit" class="btn btn-primary" id="submit_comment">
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                            Submit
+                        </button>
+                    </form>
+                    <div id="warning" class="alert alert-danger alert-dismissable" style="width:230px; margin-left:0; margin-top:10px; margin-bottom: 0px; display:none;"></div>
+                </td></tr>
+
+=======
                 <tr>
                     <td>
                         <form>
@@ -237,6 +282,7 @@
                         </form>
                     </td>
                 </tr>
+>>>>>>> be60f025c3ad6e9ef07e1bef8e44534a1f8c26f8
             </tbody>
 
         </table>

@@ -58,7 +58,7 @@ def myAccount(request):
     username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
     return render(request, 'bbjjzl/my_account.html', {'username': username})
 
-def myPlayList(request):
+def myPlaylist(request):
     if not 'id' in request.session.keys():
         return HttpResponse('You must login first')
 

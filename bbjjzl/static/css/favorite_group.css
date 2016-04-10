@@ -1,0 +1,12 @@
+.group_table.table {
+  margin: 0;
+  padding: 0;
+}
+
+.group_container.container {
+  width: 800px;
+  padding: 20px;
+  padding-top: 0;
+  padding-bottom: 10px;
+  background-color: white;
+}
