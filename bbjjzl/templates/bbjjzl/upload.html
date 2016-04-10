@@ -56,29 +56,45 @@
             /* form submit */
             $("#group_upload").submit(function(event){
                 event.preventDefault();
-                var fileJSON = {file:audio};
-                var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
-                fileJSON["csrfmiddlewaretoken"] = token;
-                $.post("/fileupload", fileJSON, function(feedback){
-                    if (feedback.status == 0) {
-                        // construct the JSON
-                        var upload_obj = {};
-                        upload_obj["gid"] = {{ gid }};
-                        upload_obj["name"] = $("#name").val();
-                        upload_obj["artist"] = $("#artist").val();
-                        upload_obj["vHash"] = feedback.hash;
-                        upload_obj["csrfmiddlewaretoken"] = token;
-                        console.log(upload_obj);
+                //check confirm
+                var name = $("#name").val();
+                var description = $("#artist").val();
 
-                        // post the JSON
-                        $.post("/upload", upload_obj, function(res) {
-                            console.log(res);
-                        });
-                    }
-                    else {
-                        alert("Music upload failed!");
-                    }
-                });
+                if (name.length == 0) {
+                    $("#warning").html('<strong>Warning</strong> Empty Song Title!');
+                    $("#warning").show();
+                }
+                else if (description.length == 0) {
+                    $("#warning").html('<strong>Warning</strong> Empty Artists!');
+                    $("#warning").show();
+                }
+                else{
+                    //alert("haha");
+                    var fileJSON = {file:audio};
+                    var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
+                    fileJSON["csrfmiddlewaretoken"] = token;
+                    $.post("/fileupload", fileJSON, function(feedback){
+                        if (feedback.status == 0) {
+                            // construct the JSON
+                            var upload_obj = {};
+                            upload_obj["gid"] = {{ gid }};
+                            upload_obj["name"] = $("#name").val();
+                            upload_obj["artist"] = $("#artist").val();
+                            upload_obj["vHash"] = feedback.hash;
+                            upload_obj["csrfmiddlewaretoken"] = token;
+                            console.log(upload_obj);
+
+                            // post the JSON
+                            $.post("/upload", upload_obj, function(res) {
+                                console.log(res);
+                                window.location.href=res.url;
+                            });
+                        }
+                        else {
+                            alert("Music upload failed!");
+                        }
+                    });
+                }
             });
 
         });
@@ -148,6 +164,10 @@
         <button class="btn btn-primary" id="cancel">
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel
         </button>
+
+        <div id="warning" class="alert alert-danger alert-dismissable" style="width:460px;margin:0 auto;margin-top:10px;display:none;">
+        </div>
+
     </div> <!-- /container -->
 
 </body></html>
