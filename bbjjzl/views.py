@@ -39,8 +39,6 @@ def user_new(request) :
                     cursor = connection.cursor()
                     cursor.execute("INSERT INTO bbjjzl_musiclist(uid, songList) VALUES(" + str(uid) + ", '[]');")
                     cursor.execute("INSERT INTO bbjjzl_grouplist(uid, groupList) VALUES(" + str(uid) + ", '[]');")
-                    cursor.execute("INSERT INTO bbjjzl_mymusic(uid, songList) VALUES(" + str(uid) + ", '[]');")
-                    cursor.execute("INSERT INTO bbjjzl_mygroup(uid, groupList) VALUES(" + str(uid) + ", '[]');")
                 except:
                     return JsonResponse({'status': 3, 'message': 'user initialiation failed'})
                 finally:
@@ -70,8 +68,26 @@ def myAccount(request):
     if not 'id' in request.session.keys():
         return HttpResponse('You must login first')
 
+    oriSongs = Music.objects.values("id", "name", "artist", "vHash", "gid").filter(uid = request.session["id"])
+    likeList = json.loads(Musiclist.objects.values("songList").filter(uid = request.session["id"])[0]["songList"])
+    songList = []
+    song = {}
+    for i in range(len(oriSongs)):
+        theGroup = Group.objects.values("name").filter(id = oriSongs[i]["gid"])[0]
+        song["id"] = oriSongs[i]["id"]
+        song["name"] = oriSongs[i]["name"]
+        song["artist"] = oriSongs[i]["artist"]
+        song["path"] = "uploads/" + oriSongs[i]["vHash"][0:2] + "/" + oriSongs[i]["vHash"][2:4] + "/" + oriSongs[i]["vHash"][4:]
+        song["group"] = theGroup["name"]
+        song["like"] = False;
+        for j in likeList:
+            if int(j) == int(song["id"]):
+                song["like"] = True;
+        songList.append(song)
+        song = {}
+
     username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
-    return render(request, 'bbjjzl/my_account.html', {'username': username})
+    return render(request, 'bbjjzl/my_account.html', {'username': username, 'songList': songList})
 
 def myPlaylist(request):
     if not 'id' in request.session.keys():
@@ -88,26 +104,25 @@ def favoriteGroup(request):
     return render(request, 'bbjjzl/favorite_group.html', {'username': username})
 
 def group_new(request) :
-    username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
-
     if request.method == "POST":
         try:
             cursor = connection.cursor()
-            cursor.execute("INSERT INTO bbjjzl_group(name, uid, proPic, description, songList, commentList) VALUES('" + request.POST["name"] + "', " + str(request.session["id"]) + ", '" + request.POST["proPic"] + "', '" + request.POST["description"] + "', '[]', '[]');")
+            cursor.execute("INSERT INTO bbjjzl_group(name, uid, proPic, description, commentList) VALUES('" + request.POST["name"] + "', " + str(request.session["id"]) + ", '" + request.POST["proPic"] + "', '" + request.POST["description"] + "', '[]');")
         except:
             return JsonResponse({'status': 1, 'message': 'Creating group failed!'})
         finally:
             cursor.close()
             gid = Group.objects.values("id").filter(name = request.POST["name"], uid = request.session["id"])[0]["id"]
-            return JsonResponse({'status': 0, 'message': 'Creating group succeeded!'})
-
-    return render(request, 'bbjjzl/group_new.html', {'username': username})
+            return JsonResponse({'status': 0, 'message': 'Creating group succeeded!', 'url': '/group/home/?gid=' + str(gid)})
+    else:
+        username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
+        return render(request, 'bbjjzl/group_new.html', {'username': username})
 
 def group_home(request) :
     if not 'id' in request.session.keys():
         return HttpResponse('You must login first')
     username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
-    oriSongList = json.loads(Group.objects.values("songList").filter(id = request.GET.get('gid', 0))[0]["songList"])
+    oriSongList = Music.objects.values("id", "name", "artist", "vHash", "gid", "uid").filter(gid = request.GET.get('gid', 0))
     commentList = json.loads(Group.objects.values("commentList").filter(id = request.GET.get('gid', 0))[0]["commentList"])
     theGroup = Group.objects.values("id", "uid", "name", "description", "proPic").filter(id = request.GET.get('gid', 0))[0]
     idFounder = theGroup["uid"]
@@ -118,12 +133,11 @@ def group_home(request) :
     songList = []
     song = {}
     for i in range(len(oriSongList)):
-        theSong = Music.objects.values("name", "artist", "vHash").filter(id = oriSongList[i]["sid"])[0]
         theUser = User.objects.values("username").filter(id = oriSongList[i]["uid"])[0]
-        song["id"] = oriSongList[i]["sid"]
-        song["name"] = theSong["name"]
-        song["artist"] = theSong["artist"]
-        song["path"] = "uploads/" + theSong["vHash"][0:2] + "/" + theSong["vHash"][2:4] + "/" + theSong["vHash"][4:]
+        song["id"] = oriSongList[i]["id"]
+        song["name"] = oriSongList[i]["name"]
+        song["artist"] = oriSongList[i]["artist"]
+        song["path"] = "uploads/" + oriSongList[i]["vHash"][0:2] + "/" + oriSongList[i]["vHash"][2:4] + "/" + oriSongList[i]["vHash"][4:]
         song["uploader"] = theUser["username"]
         song["own"] = request.session["id"] == oriSongList[i]["uid"]
         song["like"] = False;
@@ -148,22 +162,9 @@ def upload(request):
 
         try:
             cursor = connection.cursor()
-            cursor.execute("INSERT INTO bbjjzl_music(name, artist, vHash) VALUES('" + request.POST["name"] + "', '" + request.POST["artist"] + "', '" + request.POST["vHash"] + "');")
+            cursor.execute("INSERT INTO bbjjzl_music(name, artist, vHash, gid, uid) VALUES('" + request.POST["name"] + "', '" + request.POST["artist"] + "', '" + request.POST["vHash"] + "', " + str(request.POST["gid"]) + ", " + str(request.session["id"]) + ");")
         except:
             return JsonResponse({'status': 2, 'message': 'Creating music failed!'})
-        finally:
-            cursor.close()
-
-        idSong = Music.objects.values("id").filter(vHash = request.POST["vHash"])[0]["id"]
-        songList = Group.objects.values("songList").filter(id = request.POST["gid"])[0]["songList"]
-        songList_json = json.loads(songList)
-        songList_json.append({"sid": idSong, "uid": request.session["id"]})
-        songList = json.dumps(songList_json)
-        try:
-            cursor = connection.cursor()
-            cursor.execute("UPDATE bbjjzl_group set songList = '" + songList + "' where id = " + request.POST["gid"] + ";")
-        except:
-            return JsonResponse({'status': 4, 'message': 'Updating song list failed!'})
         finally:
             cursor.close()
 
@@ -224,31 +225,19 @@ def delete_from_group(request):
         if not 'id' in request.session.keys():
             return JsonResponse({'status': 1, 'message': 'You must login first to delete the music'})
 
-        songList = Group.objects.values("songList").filter(id = request.POST["gid"])[0]["songList"]
-        songList_json = json.loads(songList)
+        uid = Music.objects.values("uid").filter(id = request.POST["sid"])[0]["uid"]
+        if uid != request.session["id"]:
+            return JsonResponse({'status': 2, 'message': 'You hvae no previlege to delete this song'})
 
-        print(songList_json)
-        for i in range(len(songList_json)):
-            print(i)
-            print(songList_json[i])
-            print(songList_json)
-            if int(songList_json[i]["sid"]) == int(request.POST["sid"]):
-                if int(songList_json[i]["uid"]) != int(request.session["id"]):
-                    return JsonResponse({'status': 2, 'message': 'Deletion request denied'})
-                else:
-                    songList_json.pop(i)
-                    break
-
-        songList = json.dumps(songList_json)
         try:
             cursor = connection.cursor()
-            cursor.execute("UPDATE bbjjzl_group set songList = '" + songList + "' where id = " + request.POST["gid"] + ";")
+            cursor.execute("DELETE FROM bbjjzl_music where id = " + request.POST["sid"] + ";")
         except:
-            return JsonResponse({'status': 4, 'message': 'Updating song list failed!'})
+            return JsonResponse({'status': 3, 'message': 'Unable to delete the song'})
         finally:
             cursor.close()
 
-        return JsonResponse({'status': 0, 'message': 'music deleted'})
+        return JsonResponse({'status': 0, 'message': 'successfully deleted the song'})
 
 def like_song(request):
     if request.method == "POST":

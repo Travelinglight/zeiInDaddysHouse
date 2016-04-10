@@ -154,7 +154,7 @@
                                 <td id="sartist-td-{{forloop.counter}}">{{ c.artist }}</td>
                                 <td id="suploader-td-{{forloop.counter}}">{{ c.group }}</td>
                                 <td id="splay-td-{{forloop.counter}}" class="center">
-                                    <audio src="{% static "" %}{{ c.path }}" controls="controls">
+                                    <audio src="{% static "" %}{{ c.path }}" controls="controls" preload="metadata">
                                         No Audio Support
                                     </audio>
                                 </td>
@@ -166,9 +166,7 @@
                                     {% endif %}
                                 </td>
                                 <td id="sdelete-td-{{forloop.counter}}" class="center">
-                                    {% if c.own %}
                                     <a id="song-delete-{{ c.id }}" class="song-delete" href="#"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
-                                    {% endif %}
                                 </td>
                             </tr>
                             {% endfor %}
