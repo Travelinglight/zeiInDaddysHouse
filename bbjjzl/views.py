@@ -440,4 +440,4 @@ def searchAll(request):
             groupList.append(group)
             group = {}
 
-        return JsonResponse({'songList': songList})
+        return JsonResponse({'songList': songList, 'groupList': groupList})
