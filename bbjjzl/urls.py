@@ -20,5 +20,5 @@ urlpatterns = [
     url(r'^dislikeSong$', views.dislike_song, name="dislike_song"),
     url(r'^likeGroup$', views.like_group, name="like_group"),
     url(r'^dislikeGroup$', views.dislike_group, name="dislike_group"),
-    url(r'^searchAll$', views.dislike_group, name="dislike_group"),
+    url(r'^searchAll$', views.searchAll, name="searchAll"),
 ]

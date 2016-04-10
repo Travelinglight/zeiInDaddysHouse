@@ -31,9 +31,40 @@
 
             $("#search_submit").click(function (event) {
                 event.preventDefault();
-                $("#begin_journey").hide();
-                $("#search_form").removeClass("first");
-                $("#search_result").fadeIn();
+                var key = $("#search_key").val();
+                var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
+                $.post("/searchAll", {'keyword': key, 'csrfmiddlewaretoken': token}, function(res) {
+                    $("#begin_journey").hide();
+                    $("#search_form").removeClass("first");
+                    $("#search_result").fadeIn();
+                    console.log(res.songList);
+
+                    var $song_result = $("#song_result"); 
+                    var strHtml = "";
+                    var path = "";
+                    $song_result.empty();
+                    $.each(res.songList,function(i, song){ 
+                            strHtml +="<tr><td class='title'>"+song["name"]+"</td>";
+                            strHtml +="<td>"+song["artist"]+"</td>";
+                            strHtml +="<td>"+song["group"]+"</td>";
+                            path = song["path"];
+                            //path = "{% static '"; path += song["path"]; path += "' %}";
+                            strHtml +="<td class=\"center\"><audio src=\"/static/";
+                            strHtml +=path;
+                            strHtml +="\" controls='controls'>No Audio Support</audio></td>";
+                            //strHtml +="<td>"+song["path"]+"</td>";
+                            if( song["like"] == true) {
+                                strHtml += "<td class='center'><a id='song-like-"+song["id"]+"'href='#' class='glyphicon glyphicon-heart song-like' aria-hidden='true'></a></td>";
+                            } else {
+                                strHtml += "<td class='center'><a id='song-like-"+song["id"]+"'href='#' class='glyphicon glyphicon-heart-empty song-like' aria-hidden='true'></a></td>";
+                            }
+                            if( song["own"] == true) {
+                                strHtml += "<td class='center'><a id='song-delete-"+song["id"]+"'href='#' class='glyphicon glyphicon-trash song-delete' aria-hidden='true'></a></td>";
+                            }
+                        })
+                    //strHtml+="</tbody>";
+                    $song_result.html(strHtml);//display 
+                });
             });
 
             $(".song-delete").click(function(event) {
@@ -46,7 +77,8 @@
                 });
             });
 
-            $(".song-like").click(function(event) {
+            $(".song-like").on("click", function(event) {
+                //alert("hhh");
                 event.preventDefault();
                 thisID = this.id;
                 var sid = Number(thisID.substring(10));
@@ -107,6 +139,7 @@
     </small></h1>
 
     <form class="form-group search first" id="search_form">
+        {% csrf_token %}
         <div class="form-group">
             <input type="text" class="form-control" id="search_key" placeholder="Search for songs and groups...">
         </div>
@@ -140,7 +173,8 @@
                                 <th class="center">Delete</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="song_result"> </tbody>
+                        <!--tbody>
                             {% for c in songList %}
                             <tr>
                                 <td id="sname-td-{{forloop.counter}}" class="title">{{ c.name }}</td>
@@ -165,7 +199,7 @@
                                 </td>
                             </tr>
                             {% endfor %}
-                        </tbody>
+                        </tbody-->
                     </table>
                 </div> <!-- end of container playlist-->
             </div><!--/ New Song-->
