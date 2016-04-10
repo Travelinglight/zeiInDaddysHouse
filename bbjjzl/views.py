@@ -258,5 +258,37 @@ def like_song(request):
         if not 'id' in request.session.keys():
             return JsonResponse({'status': 1, 'message': 'You must login first to delete the music'})
 
-        songList = json.loads(Group.objects.values("songList").filter(id = request.POST["gid"])[0]["songList"])
+        songList = json.loads(Starred.objects.values("songList").filter(id = request.session["id"])[0]["songList"])
+        for i in songList:
+            if int(i) == request.POST["sid"]:
+                return JsonResponse({'status': 0, 'message': 'song liked'})
+        songList.append(request.POST["sid"])
+        songList = json.dumps(songList)
+        try:
+            cursor = connection.cursor()
+            cursor.execute("UPDATE bbjjzl_musiclist set songList = '" + songList + "' where id = " + request.session["id"] + ";")
+        except:
+            return JsonResponse({'status': 2, 'message': 'Updating starred song list failed!'})
+        finally:
+            cursor.close()
+        return JsonResponse({'status': 0, 'message': 'song liked'})
 
+def dislike_song(request):
+    if request.method == "POST":
+        if not 'id' in request.session.keys():
+            return JsonResponse({'status': 1, 'message': 'You must login first to delete the music'})
+
+        songList = json.loads(Starred.objects.values("songList").filter(id = request.session["id"])[0]["songList"])
+        for i in songList:
+            if int(i) == request.POST["sid"]:
+                return JsonResponse({'status': 0, 'message': 'song liked'})
+        songList.append(request.POST["sid"])
+        songList = json.dumps(songList)
+        try:
+            cursor = connection.cursor()
+            cursor.execute("UPDATE bbjjzl_musiclist set songList = '" + songList + "' where id = " + request.session["id"] + ";")
+        except:
+            return JsonResponse({'status': 2, 'message': 'Updating starred song list failed!'})
+        finally:
+            cursor.close()
+        return JsonResponse({'status': 0, 'message': 'song liked'})
