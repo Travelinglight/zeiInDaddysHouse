@@ -127,11 +127,11 @@
                     <td id="sname-td-{{forloop.counter}}" class="title">{{ c.name }}</td>
                     <td id="sartist-td-{{forloop.counter}}">{{ c.artist }}</td>
                     <td id="suploader-td-{{forloop.counter}}">{{ c.uploader }}</td>
-                    <td id="splay-td-{{forloop.counter}}" class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
-                    <td id="slike-td-{{forloop.counter}}" class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
+                    <td id="splay-td-{{forloop.counter}}" class="center"><span id="splay-span-{{forloop.counter}}" class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
+                    <td id="slike-td-{{forloop.counter}}" class="center"><span id="slike-span-{{forloop.counter}}" class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
                     <td id="sdelete-td-{{forloop.counter}}" class="center">
                         {% if c.own %}
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            <span id="sdelete-span-{{forloop.counter}}" class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                         {% endif %}
                     </td>
                 </tr>
