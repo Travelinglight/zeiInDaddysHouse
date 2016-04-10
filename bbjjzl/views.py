@@ -238,3 +238,5 @@ def like_song(request):
         if not 'id' in request.session.keys():
             return JsonResponse({'status': 1, 'message': 'You must login first to delete the music'})
 
+        songList = json.loads(Group.objects.values("songList").filter(id = request.POST["gid"])[0]["songList"])
+
