@@ -74,6 +74,8 @@ def group_home(request) :
         return HttpResponse('You must login first')
 
     oriSongList = json.loads(Group.objects.values("songList").filter(id = request.GET.get('gid', 0))[0]["songList"])
+    idFounder = Group.objects.values("uid").filter(id = request.GET.get('gid', 0))[0]["uid"]
+    Founder = User.objects.values("username").filter(id = idFounder)[0]["username"]
 
     songList = []
     song = {}
@@ -87,7 +89,7 @@ def group_home(request) :
         song["own"] = request.session["id"] == oriSongList[i]["uid"]
         songList.append(song)
 
-    return render(request, 'bbjjzl/group_home.html', {"songList": songList, "gid": request.GET.get('gid', 0)})
+    return render(request, 'bbjjzl/group_home.html', {"songList": songList, "gid": request.GET.get('gid', 0), "Founder": Founder, "own": idFounder == request.session["id"]})
 
 def upload(request):
     if request.method == "POST":
@@ -201,7 +203,7 @@ def delete_from_group(request):
         finally:
             cursor.close()
 
-def add_favorate(request):
+def like_song(request):
     if request.method == "POST":
         if not 'id' in request.session.keys():
             return JsonResponse({'status': 1, 'message': 'You must login first to delete the music'})

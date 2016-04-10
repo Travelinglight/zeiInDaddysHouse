@@ -74,7 +74,7 @@
                 Founder:
             </h4>
             <h4 class="group_info_content"><small>
-                ShyuSeimin
+                {{ Founder }}
             </small></h4>
 
             <h4 class="group_info_lable">
@@ -92,10 +92,12 @@
                     Favorite
                 </button>
                 <br>
-                <button type="button" class="btn btn-primary" id="group_delete">
-                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    Delete
-                </button>
+                {% if own %}
+                    <button type="button" class="btn btn-primary" id="group_delete">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        Delete
+                    </button>
+                {% endif %}
                 <br>
                 <button type="button" class="btn btn-primary" id="group_upload">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
