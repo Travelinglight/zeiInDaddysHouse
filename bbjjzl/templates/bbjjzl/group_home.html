@@ -65,6 +65,30 @@
                     $("#" + thisID).parent().parent().hide();
                 });
             });
+
+            $(".song-like").click(function(event) {
+                event.preventDefault();
+                thisID = this.id;
+                var sid = Number(thisID.substring(12));
+                //alert(thisID);
+                if( $("#"+thisID).attr("class").indexOf("empty") != -1 ) { //if not like
+                    $.post("/likeSong", {'sid': sid, 'csrfmiddlewaretoken': token}, function(feedback) {
+                        if(feedback.status == 0) {
+                            $("#"+thisID).removeClass("glyphicon-heart-empty");
+                            $("#"+thisID).addClass("glyphicon-heart");
+                        }
+                    });
+                }
+                else { //if like
+                    $.post("/dislikeSong", {'sid': sid, 'csrfmiddlewaretoken': token}, function(feedback) {
+                        if(feedback.status == 0) {
+                            $("#"+thisID).removeClass("glyphicon-heart");
+                            $("#"+thisID).addClass("glyphicon-heart-empty");
+                        }
+                    });
+                }
+            });
+
         });
     </script>
 
@@ -174,7 +198,11 @@
                         </audio>
                     </td>
                     <td id="slike-td-{{forloop.counter}}" class="center">
-                        <span id="slike-span-{{forloop.counter}}" class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+                        {% if c.like %}
+                            <a id="song-like-{{ c.id }}" href="#" class="glyphicon glyphicon-heart song-like" aria-hidden="true"></a>
+                        {% else %}
+                            <a id="song-like-{{ c.id }}" href="#" class="glyphicon glyphicon-heart-empty song-like" aria-hidden="true"></a>
+                        {% endif %}
                     </td>
                     <td id="sdelete-td-{{forloop.counter}}" class="center">
                         {% if c.own %}

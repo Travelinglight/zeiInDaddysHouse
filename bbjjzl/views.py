@@ -83,6 +83,8 @@ def favoriteGroup(request):
     return render(request, 'bbjjzl/favorite_group.html', {'username': username})
 
 def group_new(request) :
+    username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
+
     if request.method == "POST":
         try:
             cursor = connection.cursor()
@@ -94,12 +96,12 @@ def group_new(request) :
             gid = Group.objects.values("id").filter(name = request.POST["name"], uid = request.session["id"])[0]["id"]
             return JsonResponse({'status': 0, 'message': 'Creating group succeeded!'})
 
-    return render(request, 'bbjjzl/group_new.html')
+    return render(request, 'bbjjzl/group_new.html', {'username': username})
 
 def group_home(request) :
     if not 'id' in request.session.keys():
         return HttpResponse('You must login first')
-
+    username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
     oriSongList = json.loads(Group.objects.values("songList").filter(id = request.GET.get('gid', 0))[0]["songList"])
     commentList = Group.objects.values("commentList").filter(id = request.GET.get('gid', 0))[0]["commentList"]
     theGroup = Group.objects.values("id", "uid", "name", "description", "proPic").filter(id = request.GET.get('gid', 0))[0]
@@ -126,7 +128,7 @@ def group_home(request) :
         song = {}
 
     theGroup["proPic"] = "/uploads/" + theGroup["proPic"][0:2] + "/" + theGroup["proPic"][2:4] + "/" + theGroup["proPic"][4:]
-    return render(request, 'bbjjzl/group_home.html', {"group": theGroup, "songList": songList, "commentList": commentList, "Founder": Founder, "own": idFounder == request.session["id"]})
+    return render(request, 'bbjjzl/group_home.html', {"username":username,"group": theGroup, "songList": songList, "commentList": commentList, "Founder": Founder, "own": idFounder == request.session["id"]})
 
 def upload(request):
     if request.method == "POST":
