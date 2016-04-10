@@ -151,7 +151,12 @@ def upload(request):
 
         return JsonResponse({'status': 0, 'message': '1 song added', 'url': '/group/home/?gid=' + str(request.POST["gid"])})
     else:
-        return render(request, 'bbjjzl/upload.html', {'gid': request.GET.get('gid', 0)})
+        if not 'id' in request.session.keys():
+            return HttpResponse('You must login first')
+
+        username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
+        groupname = Group.objects.values("name").filter(id = request.GET.get('gid', 0))[0]["name"]
+        return render(request, 'bbjjzl/upload.html', {'gid': request.GET.get('gid', 0), 'groupname': groupname, 'username': username})
 
 
 def file_upload(request) :
