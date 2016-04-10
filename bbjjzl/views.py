@@ -70,6 +70,7 @@ def myAccount(request):
 
     oriSongs = Music.objects.values("id", "name", "artist", "vHash", "gid").filter(uid = request.session["id"])
     likeList = json.loads(Musiclist.objects.values("songList").filter(uid = request.session["id"])[0]["songList"])
+    username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
     songList = []
     song = {}
     for i in range(len(oriSongs)):
@@ -86,8 +87,12 @@ def myAccount(request):
         songList.append(song)
         song = {}
 
-    username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
-    return render(request, 'bbjjzl/my_account.html', {'username': username, 'songList': songList})
+    groupList = Group.objects.values("id", "name", "proPic", "description").filter(uid = request.session["id"])
+    for i in range(len(groupList)):
+        groupList[i]["proPic"] = "uploads/" + groupList[i]["proPic"][0:2] + "/" + groupList[i]["proPic"][2:4] + "/" + groupList[i]["proPic"][4:]
+        groupList[i]["Founder"] = username
+
+    return render(request, 'bbjjzl/my_account.html', {'username': username, 'songList': songList, 'groupList': groupList})
 
 def myPlaylist(request):
     if not 'id' in request.session.keys():
