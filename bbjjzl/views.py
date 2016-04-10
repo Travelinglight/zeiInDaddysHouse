@@ -74,7 +74,8 @@ def group_home(request) :
         return HttpResponse('You must login first')
 
     oriSongList = json.loads(Group.objects.values("songList").filter(id = request.GET.get('gid', 0))[0]["songList"])
-    idFounder = Group.objects.values("uid").filter(id = request.GET.get('gid', 0))[0]["uid"]
+    theGroup = Group.objects.values("uid", "name", "description", "proPic").filter(id = request.GET.get('gid', 0))[0]
+    idFounder = theGroup["uid"]
     Founder = User.objects.values("username").filter(id = idFounder)[0]["username"]
 
     songList = []
@@ -89,7 +90,7 @@ def group_home(request) :
         song["own"] = request.session["id"] == oriSongList[i]["uid"]
         songList.append(song)
 
-    return render(request, 'bbjjzl/group_home.html', {"songList": songList, "gid": request.GET.get('gid', 0), "Founder": Founder, "own": idFounder == request.session["id"]})
+    return render(request, 'bbjjzl/group_home.html', {"group": theGroup, "songList": songList, "Founder": Founder, "own": idFounder == request.session["id"]})
 
 def upload(request):
     if request.method == "POST":
