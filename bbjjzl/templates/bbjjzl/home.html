@@ -21,11 +21,21 @@
     <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
 
     <script type="text/javascript"> 
-        //$(function () {
+        $(document).ready(function () {
+            $("#search_result").hide();
+
             $('#myTabs a').click(function (e) {
                 e.preventDefault();
                 $(this).tab('show');
             });
+
+            $("#search_submit").click(function (event) {
+                event.preventDefault();
+                $("#begin_journey").hide();
+                $("#search_form").removeClass("first");
+                $("#search_result").fadeIn();
+            });
+        });
     </script>
 
 </head>
@@ -58,12 +68,26 @@
         </div>
     </div><!-- end of header container-->
 
-    <div class="container home_container">
+    <h1 align="center" id="begin_journey"><small>
+        Begin Your Journey Here...
+    </small></h1>
+
+    <form class="form-group search first" id="search_form">
+        <div class="form-group">
+            <input type="text" class="form-control" id="search_key" placeholder="Search for songs and groups...">
+        </div>
+        <button type="submit" class="btn btn-primary" id="search_submit">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            Search
+        </button>
+    </form>
+
+    <div class="container home_container" id="search_result">
 
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#new_song" aria-controls="profile" role="tab" data-toggle="tab">New Songs</a></li>
-            <li role="presentation"><a href="#new_group" aria-controls="messages" role="tab" data-toggle="tab">New Groups</a></li>
+            <li role="presentation" class="active"><a href="#new_song" aria-controls="profile" role="tab" data-toggle="tab">Songs</a></li>
+            <li role="presentation"><a href="#new_group" aria-controls="messages" role="tab" data-toggle="tab">Groups</a></li>
         </ul>
         
         <!-- Tab panes -->
