@@ -75,7 +75,7 @@ def group_home(request) :
         song["own"] = request.session["id"] == oriSongList[i]["uid"]
         songList.append(song)
 
-    return render(request, 'bbjjzl/group_home.html', {"songList": songList})
+    return render(request, 'bbjjzl/group_home.html', {"songList": songList, "gid": request.GET.get('gid', 0)})
 
 def upload(request):
     if request.method == "POST":
@@ -112,8 +112,8 @@ def upload(request):
             cursor.close()
 
         return JsonResponse({'status': 0, 'message': '1 song added'})
-
-    return render(request, 'bbjjzl/upload.html', {'gid': 20})
+    else:
+        return render(request, 'bbjjzl/upload.html', {'gid': request.GET.get('gid', 0)})
 
 
 def file_upload(request) :
