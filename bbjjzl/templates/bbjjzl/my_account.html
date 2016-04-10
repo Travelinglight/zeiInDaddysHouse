@@ -20,14 +20,6 @@
     <script src="{% static 'jquery/dist/jquery.min.js' %}"></script> 
     <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
 
-    <link href="./header.css" rel="stylesheet">
-    <link href="./my_account.css" rel="stylesheet">
-    <link href="./playlist.css" rel="stylesheet">
-    <link href="./group_list.css" rel="stylesheet">
-
-    <script src="./jquery.min.js"></script>
-    <script src="./bootstrap/js/bootstrap.min.js"></script>
-
     <script type="text/javascript"> 
         $(document).ready(function () {
 
@@ -40,6 +32,40 @@
                 event.preventDefault();
                 window.location.href="/group/new";
             });
+
+            $(".song-delete").click(function(event) {
+                event.preventDefault();
+                thisID = this.id;
+                var sid = Number(thisID.substring(12));
+                var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
+                $.post("/group/delete", {'sid': sid, 'csrfmiddlewaretoken': token}, function(feedback) {
+                    $("#" + thisID).parent().parent().hide();
+                });
+            });
+
+            $(".song-like").click(function(event) {
+                event.preventDefault();
+                thisID = this.id;
+                var sid = Number(thisID.substring(10));
+                var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
+                if( $("#"+thisID).attr("class").indexOf("empty") != -1 ) { //if not like
+                    $.post("/likeSong", {'sid': sid, 'csrfmiddlewaretoken': token}, function(feedback) {
+                        if(feedback.status == 0) {
+                            $("#"+thisID).removeClass("glyphicon-heart-empty");
+                            $("#"+thisID).addClass("glyphicon-heart");
+                        }
+                    });
+                }
+                else { //if like
+                    $.post("/dislikeSong", {'sid': sid, 'csrfmiddlewaretoken': token}, function(feedback) {
+                        if(feedback.status == 0) {
+                            $("#"+thisID).removeClass("glyphicon-heart");
+                            $("#"+thisID).addClass("glyphicon-heart-empty");
+                        }
+                    });
+                }
+            });
+
         });
     </script>
 
@@ -73,6 +99,10 @@
         </div>
     </div><!-- end of header container-->
 
+    <form>
+        {% csrf_token %}
+    </form>
+
     <div class="container acc_mng_container">
 
         <!-- Nav tabs -->
@@ -102,7 +132,6 @@
                     <button type="submit" class="btn btn-primary" id="submit_pw">Submit</button>
                 </form>
             </div><Change Password-->
-
             <div role="tabpanel" class="tab-pane fade in active" id="my_song">
                 <div class="container playlist_container">
                     <table class="table table-hover playlist_table">
@@ -117,57 +146,40 @@
                                 <th class="center">Delete</th>
                             </tr>
                         </thead>
-                        <tr>
-                            <td>1</td>
-                            <td class="title">Sweet Refrain</td>
-                            <td>Perfume</td>
-                            <td>ShyuSeiMin</td>
-                            <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td class="title">僕が僕の全て</td>
-                            <td>嵐</td>
-                            <td>arashi</td>
-                            <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td class="title">虹</td>
-                            <td>二宮和也</td>
-                            <td>ShyuSeiMin</td>
-                            <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td class="title">ふたりごと</td>
-                            <td>RADWIMPS</td>
-                            <td>二宮和也</td>
-                            <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td class="title">25コ目の染色体</td>
-                            <td>RADWIMPS</td>
-                            <td>野田洋次郎</td>
-                            <td class="center"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></td>
-                            <td class="center"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td>
-                        </tr>
+                        <tbody>
+                            {% for c in songList %}
+                            <tr>
+                                <td id="sid-td-{{forloop.counter}}">{{ forloop.counter }}</td>
+                                <td id="sname-td-{{forloop.counter}}" class="title">{{ c.name }}</td>
+                                <td id="sartist-td-{{forloop.counter}}">{{ c.artist }}</td>
+                                <td id="suploader-td-{{forloop.counter}}">{{ c.group }}</td>
+                                <td id="splay-td-{{forloop.counter}}" class="center">
+                                    <audio src="{% static "" %}{{ c.path }}" controls="controls">
+                                        No Audio Support
+                                    </audio>
+                                </td>
+                                <td id="slike-td-{{forloop.counter}}" class="center">
+                                    {% if c.like %}
+                                        <a id="song-like-{{ c.id }}" href="#" class="glyphicon glyphicon-heart song-like" aria-hidden="true"></a>
+                                    {% else %}
+                                        <a id="song-like-{{ c.id }}" href="#" class="glyphicon glyphicon-heart-empty song-like" aria-hidden="true"></a>
+                                    {% endif %}
+                                </td>
+                                <td id="sdelete-td-{{forloop.counter}}" class="center">
+                                    {% if c.own %}
+                                    <a id="song-delete-{{ c.id }}" class="song-delete" href="#"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
                     </table>
                 </div> <!-- end of container playlist-->
             </div><!--/ My Song-->
 
             <div role="tabpanel" class="tab-pane fade" id="my_group">
                 <table class="table group_table"><tbody>
+
                     <tr><td class="first">
                         <button class="btn btn-primary" id="create_new_group">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -205,18 +217,6 @@
                                     Welcome those who also like Arashi and RADWIMPS!!!
                                 </small></h4>
 
-                                <div class="group_button">
-                                    <button type="button" class="btn btn-primary" id="group_favorite">
-                                        <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
-                                        Favorite
-                                    </button>
-                                    <br>
-                                    <button type="button" class="btn btn-primary" id="group_delete">
-                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                        Delete
-                                    </button>
-                                </div>
-
                             </div>
                         </div><!-- end of group information-->
                     </td></tr>
@@ -250,18 +250,6 @@
                                     Hey! These are the songs that I love sooo much!!!<br>
                                     Welcome those who also like Arashi and RADWIMPS!!!
                                 </small></h4>
-
-                                <div class="group_button">
-                                    <button type="button" class="btn btn-primary" id="group_favorite">
-                                        <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
-                                        Favorite
-                                    </button>
-                                    <br>
-                                    <button type="button" class="btn btn-primary" id="group_delete">
-                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                        Delete
-                                    </button>
-                                </div>
 
                             </div>
                         </div><!-- end of group information-->

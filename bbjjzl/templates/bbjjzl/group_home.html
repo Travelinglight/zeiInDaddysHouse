@@ -36,14 +36,14 @@
                 else
                 {
                     // construct the JSON
-                    var login_obj = {};
+                    var comment_obj = {};
                     var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
-                    login_obj["content"] = content;
-                    login_obj["gid"] = {{ group.id }};
-                    login_obj["csrfmiddlewaretoken"] = token;
+                    comment_obj["content"] = content;
+                    comment_obj["gid"] = {{ group.id }};
+                    comment_obj["csrfmiddlewaretoken"] = token;
 
                     // post the JSON
-                    $.post("/group/comment", login_obj, function(res) {
+                    $.post("/group/comment", comment_obj, function(res) {
                         if (res.status == 0) {
                             location.reload();
                         }
@@ -87,6 +87,40 @@
                         }
                     });
                 }
+            });
+
+            $("#group_favorite").click(function(event) {
+                event.preventDefault();
+                var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
+                if( $("#like_group_flag").attr("class").indexOf("empty") != -1 ) { //if not like
+                    //alert("like");
+                    $.post("/likeGroup", {'gid': group.id, 'csrfmiddlewaretoken': token}, function(feedback) {
+                        if(feedback.status == 0) {
+                            $("#like_group_flag").removeClass("glyphicon-heart-empty");
+                            $("#like_group_flag").addClass("glyphicon-heart");
+                        }
+                    });
+                }
+                else { //if like
+                    //alert("dislike");
+                    $.post("/dislikeGroup", {'gid': group.id, 'csrfmiddlewaretoken': token}, function(feedback) {
+                        if(feedback.status == 0) {
+                            $("#like_group_flag").removeClass("glyphicon-heart");
+                            $("#like_group_flag").addClass("glyphicon-heart-empty");
+                        }
+                    });
+                }
+            });
+
+            $("#group_delete").click(function(event) {
+                event.preventDefault();
+                var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
+                $.post("/group/dismiss", {'gid': group.id, 'csrfmiddlewaretoken': token}, function(feedback) {
+                        if(feedback.status == 0) {
+                            alert("Group Dismissed!");
+                            window.location.href="/home";
+                        }
+                    });
             });
 
         });
@@ -152,17 +186,21 @@
 
             <div class="group_button">
                 <button type="button" class="btn btn-primary" id="group_favorite">
-                    <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+                    {% if group.like %}
+                        <span class="glyphicon glyphicon-heart" aria-hidden="true" id="like_group_flag"></span>
+                    {% else %}
+                        <span class="glyphicon glyphicon-heart-empty" aria-hidden="true" id="like_group_flag"></span>
+                    {% endif %}
                     Favorite
                 </button>
                 <br>
                 {% if own %}
                     <button type="button" class="btn btn-primary" id="group_delete">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                        Delete
+                        Dismiss
                     </button>
+                    <br>
                 {% endif %}
-                <br>
                 <button type="button" class="btn btn-primary" id="group_upload">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     Upload
@@ -181,11 +219,12 @@
                     <th>Title</th>
                     <th>Artist</th>
                     <th>Uploader</th>
-                    <th class="music center">Play</th>
+                    <th class="center">Play</th>
                     <th class="center">Add</th>
                     <th class="center">Delete</th>
                 </tr>
             </thead>
+            <tbody>
             {% for c in songList %}
                 <tr>
                     <td id="sid-td-{{forloop.counter}}">{{ forloop.counter }}</td>
@@ -211,6 +250,7 @@
                     </td>
                 </tr>
             {% endfor %}
+            </tbody>
         </table>
     </div> <!-- end of container playlist-->
 
