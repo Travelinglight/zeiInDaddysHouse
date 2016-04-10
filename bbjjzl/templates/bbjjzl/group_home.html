@@ -65,6 +65,29 @@
                     $("#" + thisID).parent().parent().hide();
                 });
             });
+
+            $(".song-like").click(function(event) {
+                event.preventDefault();
+
+                if( $(".song-like").attr("class").indexOf("empty") != -1 ) { //if not like
+                    $(".song-like").removeClass("glyphicon-heart-empty");
+                    $(".song-like").addClass("glyphicon-heart");
+                }
+                else { //if like
+                    $(".song-like").removeClass("glyphicon-heart");
+                    $(".song-like").addClass("glyphicon-heart-empty");
+                }
+
+                /*
+                thisID = this.id;
+                var sid = Number(thisID.substring(12));
+                var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
+                $.post("/like", {'sid': sid, 'csrfmiddlewaretoken': token}, function(feedback) {
+                    $("#" + thisID).parent().parent().hide();
+                });
+                */
+            });
+
         });
     </script>
 
@@ -174,7 +197,11 @@
                         </audio>
                     </td>
                     <td id="slike-td-{{forloop.counter}}" class="center">
-                        <span id="slike-span-{{forloop.counter}}" class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+                        {% if c.like %}
+                            <a id="song-like-{{ c.id }}" href="#" class="glyphicon glyphicon-heart song-like" aria-hidden="true"></a>
+                        {% else %}
+                            <a id="song-like-{{ c.id }}" href="#" class="glyphicon glyphicon-heart-empty song-like" aria-hidden="true"></a>
+                        {% endif %}
                     </td>
                     <td id="sdelete-td-{{forloop.counter}}" class="center">
                         {% if c.own %}
