@@ -61,7 +61,6 @@
                 var sid = Number(thisID.substring(12));
                 var gid = {{ group.id }}
                 var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
-
                 $.post("/group/delete", {'sid': sid, 'gid': gid, 'csrfmiddlewaretoken': token}, function(feedback) {
                     $("#" + thisID).parent().parent().hide();
                 });
@@ -198,65 +197,30 @@
 
             <tbody>
 
+                <!--{% for c in commentList %}
                 <tr><td>
                     <div class="comment_content">
-                        すきすきすきすきだいすき！！
+                        {{ c.content}}
                     </div>
                     <div class="comment_maker">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                        RADWIMPS_LOVER
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                        Mar 11 2016
+                        {{ c.username }}
                     </div>
-                </td></tr>
+                </td></tr>-->
 
                 <tr><td>
                     <div class="comment_content">
-                        Love this list sooo much!
+                        c.content
                     </div>
                     <div class="comment_maker">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                        ShyuSeimin
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                        Mar 11 2016
-                    </div>
-                    <div class="comment_delete">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                        Delete
+                        c.username
                     </div>
                 </td></tr>
 
-                <tr><td>
-                    <div class="comment_content">
-                        すきすきすきすきだいすき！！
-                    </div>
-                    <div class="comment_maker">
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                        RADWIMPS_LOVER
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                        Mar 11 2016
-                    </div>
-                </td></tr>
-
-                <tr><td>
-                    <div class="comment_content">
-                        Love this list sooo much!
-                    </div>
-                    <div class="comment_maker">
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                        Ninomiya_Kazunari
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                        Mar 11 2016
-                    </div>
-                </td></tr>
-
-<<<<<<< HEAD
                 <tr><td>
                     <h5 class="group_name">Leave a massage:</h5>
+
                     <form id="new_comment">
                         {% csrf_token %}
                         <textarea class="form-control" rows="3" id="content"></textarea>
@@ -265,24 +229,10 @@
                             Submit
                         </button>
                     </form>
+
                     <div id="warning" class="alert alert-danger alert-dismissable" style="width:230px; margin-left:0; margin-top:10px; margin-bottom: 0px; display:none;"></div>
                 </td></tr>
 
-=======
-                <tr>
-                    <td>
-                        <form>
-                            {% csrf_token %}
-                            <h5 class="group_name">Leave a massage:</h5>
-                            <textarea class="form-control" rows="3" id="new_comment"></textarea>
-                            <button type="button" class="btn btn-primary" id="submit_comment">
-                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                                Submit
-                            </button>
-                        </form>
-                    </td>
-                </tr>
->>>>>>> be60f025c3ad6e9ef07e1bef8e44534a1f8c26f8
             </tbody>
 
         </table>
