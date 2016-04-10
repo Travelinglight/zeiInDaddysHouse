@@ -384,3 +384,28 @@ def group_dismiss(request):
             cursor.close()
 
         return JsonResponse({'status': 0, 'message': 'group dismissed'})
+
+def searchAll(request):
+    if request.method == "POST":
+        if not 'id' in request.session.keys():
+            return JsonResponse({'status': 1, 'message': 'You must login first before you can make a search'})
+
+        oriSongs = Music.objects.values("id", "name", "artist", "vHash", "gid").filter(name__contains = request.POST["keyword"])
+        likeList = json.loads(Musiclist.objects.values("songList").filter(uid = request.session["id"])[0]["songList"])
+        songList = []
+        song = {}
+        for i in range(len(oriSongs)):
+            theGroup = Group.objects.values("name").filter(id = oriSongs[i]["gid"])[0]
+            song["id"] = oriSongs[i]["id"]
+            song["name"] = oriSongs[i]["name"]
+            song["artist"] = oriSongs[i]["artist"]
+            song["path"] = "uploads/" + oriSongs[i]["vHash"][0:2] + "/" + oriSongs[i]["vHash"][2:4] + "/" + oriSongs[i]["vHash"][4:]
+            song["group"] = theGroup["name"]
+            song["like"] = False;
+            for j in likeList:
+                if int(j) == int(song["id"]):
+                    song["like"] = True;
+            songList.append(song)
+            song = {}
+
+        return JsonResponse({'songList': songList})
