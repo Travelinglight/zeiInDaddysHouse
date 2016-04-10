@@ -128,22 +128,19 @@ def favoriteGroup(request):
     group = {}
     for i in range(len(likeList)):
         theGroup = Group.objects.values("id", "name", "proPic", "description", "uid").filter(id = int(likeList[i]))
-        if len(theSong) == 0:
+        if len(theGroup) == 0:
             continue
-        theSong = theSong[0]
-        theGroup = Group.objects.values("name").filter(id = int(theSong["gid"]))[0]
-        song["id"] = theSong["id"]
-        song["name"] = theSong["name"]
-        song["artist"] = theSong["artist"]
-        song["path"] = "uploads/" + theSong["vHash"][0:2] + "/" + theSong["vHash"][2:4] + "/" + theSong["vHash"][4:]
-        song["group"] = theGroup["name"]
-        song["like"] = True;
-        song["own"] = theSong["uid"] == request.session["id"]
-        songList.append(song)
-        song = {}
+        theGroup = theGroup[0]
+        group["id"] = theGroup["id"]
+        group["name"] = theGroup["name"]
+        group["description"] = theGroup["description"]
+        group["Founder"] = User.objects.values("username").filter(id = theGroup["uid"])[0]["username"]
+        group["proPic"] = "uploads/" + theGroup["proPic"][0:2] + "/" + theGroup["proPic"][2:4] + "/" + theGroup["proPic"][4:]
+        groupList.append(group)
+        group = {}
 
     username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
-    return render(request, 'bbjjzl/favorite_group.html', {'username': username})
+    return render(request, 'bbjjzl/favorite_group.html', {'username': username, 'groupList': groupList})
 
 def group_new(request) :
     if request.method == "POST":
