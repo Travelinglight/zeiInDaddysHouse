@@ -60,7 +60,8 @@ def group_new(request) :
     if request.method == "POST":
         try:
             cursor = connection.cursor()
-            cursor.execute("INSERT INTO bbjjzl_group (name, uid, proPic, description, nSong, songList) VALUES('" + request.POST["name"] + "', " + str(request.session["id"]) + ", '" + request.POST["proPic"] + "', '" + request.POST["description"] + "', 0, '[]');")
+            print("=======================")
+            cursor.execute("INSERT INTO bbjjzl_group(name, uid, proPic, description, nSong, songList, nComment, commentList) VALUES('" + request.POST["name"] + "', " + str(request.session["id"]) + ", '" + request.POST["proPic"] + "', '" + request.POST["description"] + "', 0, '[]', 0, '[]');")
         except:
             return JsonResponse({'status': 1, 'message': 'Creating group failed!'})
         finally:
@@ -86,7 +87,7 @@ def group_home(request) :
         theUser = User.objects.values("username").filter(id = oriSongList[i]["uid"])[0]
         song["name"] = theSong["name"]
         song["artist"] = theSong["artist"]
-        song["path"] = "/uploads/" + theSong["vHash"][0:2] + "/" + theSong["vHash"][2:4] + "/" + theSong["vHash"][4:]
+        song["path"] = "uploads/" + theSong["vHash"][0:2] + "/" + theSong["vHash"][2:4] + "/" + theSong["vHash"][4:]
         song["uploader"] = theUser["username"]
         song["own"] = request.session["id"] == oriSongList[i]["uid"]
         songList.append(song)
