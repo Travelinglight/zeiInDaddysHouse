@@ -53,7 +53,7 @@
         </div>
         <div class="container welcoming_container">
             <h4 class="welcoming">Welcome,</h4>
-            <h3 class="welcoming">ShyuSeimin</h3>
+            <h3 class="welcoming">{{username}}</h3>
         </div>
         <div class="container nav_container">
             <table class="table nav_table"><tbody>
@@ -77,15 +77,15 @@
 
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#change_pw" aria-controls="home" role="tab" data-toggle="tab">Change Password</a></li>
-            <li role="presentation"><a href="#my_song" aria-controls="profile" role="tab" data-toggle="tab">Songs I Uploaded</a></li>
+            <!--li role="presentation"><a href="#change_pw" aria-controls="home" role="tab" data-toggle="tab">Change Password</a></li-->
+            <li role="presentation" class="active"><a href="#my_song" aria-controls="profile" role="tab" data-toggle="tab">Songs I Uploaded</a></li>
             <li role="presentation"><a href="#my_group" aria-controls="messages" role="tab" data-toggle="tab">Groups I Created</a></li>
         </ul>
         
         <!-- Tab panes -->
         <div class="tab-content my_acc">
 
-            <div role="tabpanel" class="change_pswd tab-pane fade in active" id="change_pw">
+            <!--div role="tabpanel" class="change_pswd tab-pane fade in active" id="change_pw">
                 <form>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Old Password</label>
@@ -101,9 +101,9 @@
                     </div>
                     <button type="submit" class="btn btn-primary" id="submit_pw">Submit</button>
                 </form>
-            </div><!--Change Password-->
+            </div><Change Password-->
 
-            <div role="tabpanel" class="tab-pane fade" id="my_song">
+            <div role="tabpanel" class="tab-pane fade in active" id="my_song">
                 <div class="container playlist_container">
                     <table class="table table-hover playlist_table">
                         <thead>
