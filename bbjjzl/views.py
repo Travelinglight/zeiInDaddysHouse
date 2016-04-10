@@ -60,7 +60,8 @@ def group_new(request) :
     if request.method == "POST":
         try:
             cursor = connection.cursor()
-            cursor.execute("INSERT INTO bbjjzl_group (name, uid, proPic, description, nSong, songList) VALUES('" + request.POST["name"] + "', " + str(request.session["id"]) + ", '" + request.POST["proPic"] + "', '" + request.POST["description"] + "', 0, '[]');")
+            print("=======================")
+            cursor.execute("INSERT INTO bbjjzl_group(name, uid, proPic, description, nSong, songList, nComment, commentList) VALUES('" + request.POST["name"] + "', " + str(request.session["id"]) + ", '" + request.POST["proPic"] + "', '" + request.POST["description"] + "', 0, '[]', 0, '[]');")
         except:
             return JsonResponse({'status': 1, 'message': 'Creating group failed!'})
         finally:
