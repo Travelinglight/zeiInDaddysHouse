@@ -116,7 +116,7 @@
                     <th>Title</th>
                     <th>Artist</th>
                     <th>Uploader</th>
-                    <th>Play</th>
+                    <th class="music center">Play</th>
                     <th class="center">Add</th>
                     <th class="center">Delete</th>
                 </tr>
@@ -127,9 +127,10 @@
                     <td id="sname-td-{{forloop.counter}}" class="title">{{ c.name }}</td>
                     <td id="sartist-td-{{forloop.counter}}">{{ c.artist }}</td>
                     <td id="suploader-td-{{forloop.counter}}">{{ c.uploader }}</td>
-                    <td id="splay-td-{{forloop.counter}}">
-                        {{c.path}}
-                        <!--audio src="{% static "" %}{{ c.path }}">No Audio Support</audio-->
+                    <td id="splay-td-{{forloop.counter}}" class="music center">
+                        <audio src="{% static "" %}{{ c.path }}" controls="controls">
+                            No Audio Support
+                        </audio>
                     </td>
                     <td id="slike-td-{{forloop.counter}}" class="center">
                         <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>

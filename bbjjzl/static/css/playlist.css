@@ -6,6 +6,11 @@
   font-weight: bold;
 }
 
+.playlist_table.table > tbody > tr > td{
+  vertical-align: middle;
+}
+
+
 .playlist_table.table > thead > tr > th.center,
 .playlist_table.table > thead > tr > td.center,
 .playlist_table.table > tbody > tr > th.center,
@@ -16,4 +21,13 @@
 
 .playlist_table.table > tbody > tr > td.title {
   font-weight: bold;
+}
+
+.playlist_table.table > tbody > tr > td.music {
+  width: 180px;
+}
+
+audio {
+  width: 160px;
+  display: block;
 }
