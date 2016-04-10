@@ -35,6 +35,12 @@
                 e.preventDefault();
                 $(this).tab('show');
             });
+
+            $("#create_new_group").click(function(event) {
+                event.preventDefault();
+                window.location.href="/group/new";
+            });
+        });
     </script>
 
 </head>
@@ -72,8 +78,8 @@
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#change_pw" aria-controls="home" role="tab" data-toggle="tab">Change Password</a></li>
-            <li role="presentation"><a href="#my_song" aria-controls="profile" role="tab" data-toggle="tab">My Songs</a></li>
-            <li role="presentation"><a href="#my_group" aria-controls="messages" role="tab" data-toggle="tab">My Groups</a></li>
+            <li role="presentation"><a href="#my_song" aria-controls="profile" role="tab" data-toggle="tab">Songs I Uploaded</a></li>
+            <li role="presentation"><a href="#my_group" aria-controls="messages" role="tab" data-toggle="tab">Groups I Created</a></li>
         </ul>
         
         <!-- Tab panes -->
@@ -163,6 +169,13 @@
             <div role="tabpanel" class="tab-pane fade" id="my_group">
                 <table class="table group_table"><tbody>
                     <tr><td class="first">
+                        <button class="btn btn-primary" id="create_new_group">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            Create A New Group
+                        </button>
+                    </td></tr>
+
+                    <tr><td>
                         <div class="container group_info_container">
 
                             <div class="container group_icon_container">
