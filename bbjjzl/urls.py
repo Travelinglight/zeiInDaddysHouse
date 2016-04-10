@@ -11,6 +11,6 @@ urlpatterns = [
     url(r'^fileupload$', views.file_upload, name='upload'),
     url(r'^home$', views.home, name="home"),
     url(r'^myAccount$', views.myAccount, name="myAccount"),
-    url(r'^myPlayList$', views.myPlayList, name="myPlayList"),
+    url(r'^myPlaylist$', views.myPlaylist, name="myPlaylist"),
     url(r'^favoriteGroup$', views.favoriteGroup, name="favoriteGroup"),
 ]

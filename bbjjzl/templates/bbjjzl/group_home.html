@@ -24,6 +24,37 @@
                 event.preventDefault();
                 window.location.href='/upload/?gid={{ group.id }}';
             });
+
+            $("#submit_comment").click(function(event){
+                event.preventDefault();
+                // construct the JSON
+
+                var content=$("#content").val();
+
+                if (content.length == 0) {
+                    $("#warning").html('<strong>Warning</strong> Empty Comment!');
+                    $("#warning").show();
+                }
+                else
+                {
+                    var login_obj = {};
+                    var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
+                    login_obj["content"] = content;
+                    login_obj["gid"] = {{ group.id }};
+                    login_obj["csrfmiddlewaretoken"] = token;
+
+                    // post the JSON
+                    $.post("group/comment", login_obj, function(res) {
+                        if (res.status == 0) {
+                            location.reload();
+                        }
+                        else if (res.status == 1) {
+                            $("#warning").html('<strong>Warnings</strong> Submission Failed!');
+                            $("#warning").show();
+                        }
+                    });
+                }
+            });
         });
     </script>
 
@@ -215,11 +246,15 @@
 
                 <tr><td>
                     <h5 class="group_name">Leave a massage:</h5>
-                    <textarea class="form-control" rows="3" id="new_comment"></textarea>
-                    <button type="button" class="btn btn-primary" id="submit_comment">
-                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                        Submit
-                    </button>
+                    <form id="new_comment">
+                        {% csrf_token %}
+                        <textarea class="form-control" rows="3" id="content"></textarea>
+                        <button type="submit" class="btn btn-primary" id="submit_comment">
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                            Submit
+                        </button>
+                    </form>
+                    <div id="warning" class="alert alert-danger alert-dismissable" style="width:230px; margin-left:0; margin-top:10px; margin-bottom: 0px; display:none;"></div>
                 </td></tr>
 
             </tbody>
