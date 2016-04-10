@@ -91,6 +91,7 @@ def group_home(request) :
         return HttpResponse('You must login first')
 
     oriSongList = json.loads(Group.objects.values("songList").filter(id = request.GET.get('gid', 0))[0]["songList"])
+    commentList = json.loads(Group.objects.values("commentList").filter(id = request.GET.get('gid', 0))[0]["commentList"])
     theGroup = Group.objects.values("id", "uid", "name", "description", "proPic").filter(id = request.GET.get('gid', 0))[0]
     idFounder = theGroup["uid"]
     Founder = User.objects.values("username").filter(id = idFounder)[0]["username"]
@@ -110,7 +111,7 @@ def group_home(request) :
         song = {}
 
     theGroup["proPic"] = "/uploads/" + theGroup["proPic"][0:2] + "/" + theGroup["proPic"][2:4] + "/" + theGroup["proPic"][4:]
-    return render(request, 'bbjjzl/group_home.html', {"group": theGroup, "songList": songList, "Founder": Founder, "own": idFounder == request.session["id"]})
+    return render(request, 'bbjjzl/group_home.html', {"group": theGroup, "songList": songList, "commentList": commentList, "Founder": Founder, "own": idFounder == request.session["id"]})
 
 def upload(request):
     if request.method == "POST":
@@ -241,4 +242,6 @@ def like_song(request):
     if request.method == "POST":
         if not 'id' in request.session.keys():
             return JsonResponse({'status': 1, 'message': 'You must login first to delete the music'})
+
+        songList = json.loads(Group.objects.values("songList").filter(id = request.POST["gid"])[0]["songList"])
 
