@@ -105,11 +105,11 @@
                         </div>*/
                             strHtml +="<tr><td><div class='container group_info_container'>";
                             strHtml +="<div class='container group_icon_container'>";
-                            path = group["path"];
-                            strHtml +="<img src=\"/static/";
+                            path = group["proPic"];
+                            strHtml +="<img src='/static/";
                             strHtml +=path;
-                            strHtml +="\" class='group_icon'>";
-                            strHtml +="<div class='container group_description_container'><a href='/group/home?gid="+group["id"]+"'><h2 class='group_name'>"+group["name"]+"</h2></href>";
+                            strHtml +="' class='group_icon'></div>";
+                            strHtml +="<div class='container group_description_container'><a href='/group/home?gid="+group["id"]+"'><h2 class='group_name'>"+group["name"]+"</h2></a>";
                             strHtml +="<h4 class='group_info_lable'><span class='glyphicon glyphicon-user' aria-hidden='true'></span>Founder:</h4><h4 class='group_info_content'><small>"+group["Founder"]+"</small></h4>";
                             strHtml +="<h4 class='group_info_lable'><span class='glyphicon glyphicon-align-justify' aria-hidden='true'></span>Group Description:</h4><h4 class='group_info_content'><small>"+group["description"]+"</small></h4></div></div></td></tr>";
                         })
@@ -260,7 +260,7 @@
             </div><!--/ New Song-->
 
             <div role="tabpanel" class="tab-pane fade" id="new_group">
-                <table class="table group_table">
+                <table class="table group_table" style="margin-top:20px">
                     <tbody id="group_result">
                     <!--tr><td class="first">
                         <div class="container group_info_container">
