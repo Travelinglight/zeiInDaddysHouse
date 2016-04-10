@@ -9,6 +9,7 @@ from django.db import connection
 from django.core import serializers
 from bbjjzl.models import group as Group
 from bbjjzl.models import music as Music
+from bbjjzl.models import musicList as Starred
 import base64
 import hashlib
 import os
@@ -31,7 +32,16 @@ def user_new(request) :
                                          email=request.POST['email'],
                                          password=request.POST['password'])
                 user.save()
-                return JsonResponse({'status': 0})
+                uid = User.objects.values("id").filter(username = request.POST['username'])[0]["id"]
+
+                try:
+                    cursor = connection.cursor()
+                    cursor.execute("INSERT INTO bbjjzl_musiclist(uid, nSong, songList) VALUES(" + str(uid) + ", 0, '[]');")
+                except:
+                    return JsonResponse({'status': 3, 'message': 'music list creation failed!'})
+                finally:
+                    cursor.close()
+                    return JsonResponse({'status': 0, 'message': 'Creating user succeeded!'})
 
 def user_login(request) :
     user = authenticate(username=request.POST['username'], password=request.POST['password'])
@@ -95,6 +105,7 @@ def group_home(request) :
     theGroup = Group.objects.values("id", "uid", "name", "description", "proPic").filter(id = request.GET.get('gid', 0))[0]
     idFounder = theGroup["uid"]
     Founder = User.objects.values("username").filter(id = idFounder)[0]["username"]
+    likeList = json.loads(Starred.objects.values("songList").filter(uid = request.session["id"])[0]["songList"])
 
     songList = []
     song = {}
@@ -107,6 +118,10 @@ def group_home(request) :
         song["path"] = "uploads/" + theSong["vHash"][0:2] + "/" + theSong["vHash"][2:4] + "/" + theSong["vHash"][4:]
         song["uploader"] = theUser["username"]
         song["own"] = request.session["id"] == oriSongList[i]["uid"]
+        song["like"] = False;
+        for j in likeList:
+            if int(j) == int(song["id"]):
+                song["like"] = True;
         songList.append(song)
         song = {}
 
