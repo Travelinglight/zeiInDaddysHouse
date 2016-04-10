@@ -67,7 +67,7 @@
                 });
             });
 
-            $(".song-delete").click(function(event) {
+            $(document.body).on('click', '.song-delete' ,function(event){
                 event.preventDefault();
                 thisID = this.id;
                 var sid = Number(thisID.substring(12));
@@ -77,7 +77,7 @@
                 });
             });
 
-            $(".song-like").on("click", function(event) {
+            $(document.body).on('click', '.song-like' ,function(event){
                 //alert("hhh");
                 event.preventDefault();
                 thisID = this.id;
