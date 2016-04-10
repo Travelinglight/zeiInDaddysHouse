@@ -66,7 +66,7 @@ def group_new(request) :
         finally:
             cursor.close()
             gid = Group.objects.values("id").filter(name = request.POST["name"], uid = request.session["id"])[0]["id"]
-            return JsonResponse({'status': 0, 'message': 'Creating group succeeded!', 'redirect': '/group/home/?gid=' + str(gid)})
+            return JsonResponse({'status': 0, 'message': 'Creating group succeeded!'})
 
     return render(request, 'bbjjzl/group_new.html')
 
@@ -86,7 +86,7 @@ def group_home(request) :
         theUser = User.objects.values("username").filter(id = oriSongList[i]["uid"])[0]
         song["name"] = theSong["name"]
         song["artist"] = theSong["artist"]
-        song["vHash"] = theSong["vHash"]
+        song["path"] = "/uploads/" + theSong["vHash"][0:2] + "/" + theSong["vHash"][2:4] + "/" + theSong["vHash"][4:]
         song["uploader"] = theUser["username"]
         song["own"] = request.session["id"] == oriSongList[i]["uid"]
         songList.append(song)
