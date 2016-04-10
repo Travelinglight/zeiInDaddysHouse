@@ -262,27 +262,20 @@
             </thead>
 
             <tbody>
-
-                <!--
-                <tr><td>
-                    <div class="comment_content">
-                        {{ c.content}}
-                    </div>
-                    <div class="comment_maker">
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                        {{ c.username }}
-                    </div>
-                </td></tr>-->
-
-                <tr><td>
-                    <div class="comment_content">
-                        c.content
-                    </div>
-                    <div class="comment_maker">
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                        c.username
-                    </div>
-                </td></tr>
+                {% for c in commentList %}
+                <script> console.log("{{c}}") </script>
+                    <tr>
+                        <td>
+                            <div class="comment_content">
+                                {{ c.content }}
+                            </div>
+                            <div class="comment_maker">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                {{ c.username }}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
 
                 <tr>
                     <td>
