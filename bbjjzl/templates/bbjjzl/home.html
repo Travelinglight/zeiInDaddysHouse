@@ -64,6 +64,58 @@
                         })
                     //strHtml+="</tbody>";
                     $song_result.html(strHtml);//display 
+
+                    console.log(res.groupList);
+
+                    var $group_result = $("#group_result"); 
+                    strHtml = "";
+                    path = "";
+                    $group_result.empty();
+                    $.each(res.groupList,function(i, group){ 
+                        /*<div class="container group_info_container">
+
+                            <div class="container group_icon_container">
+                                <img src="{% static 'img/mio.jpg' %}" class="group_icon">
+                            </div>
+
+                            <div class="container group_description_container">
+
+                                <h2 class="group_name">
+                                    Shyuseimin's Favorite
+                                </h2>
+
+                                <h4 class="group_info_lable">
+                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                    Founder:
+                                </h4>
+                                <h4 class="group_info_content"><small>
+                                    ShyuSeimin
+                                </small></h4>
+
+                                <h4 class="group_info_lable">
+                                    <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
+                                    Group Description:
+                                </h4>
+                                <h4 class="group_info_content"><small>
+                                    Hey! These are the songs that I love sooo much!!!<br>
+                                    Welcome those who also like Arashi and RADWIMPS!!!
+                                </small></h4>
+
+                            </div>
+                        </div>*/
+                            strHtml +="<tr><td><div class='container group_info_container'>";
+                            strHtml +="<div class='container group_icon_container'>";
+                            path = group["path"];
+                            strHtml +="<img src=\"/static/";
+                            strHtml +=path;
+                            strHtml +="\" class='group_icon'>";
+                            strHtml +="<div class='container group_description_container'><a href='/group/home?gid="+group["id"]+"'><h2 class='group_name'>"+group["name"]+"</h2></href>";
+                            strHtml +="<h4 class='group_info_lable'><span class='glyphicon glyphicon-user' aria-hidden='true'></span>Founder:</h4><h4 class='group_info_content'><small>"+group["Founder"]+"</small></h4>";
+                            strHtml +="<h4 class='group_info_lable'><span class='glyphicon glyphicon-align-justify' aria-hidden='true'></span>Group Description:</h4><h4 class='group_info_content'><small>"+group["description"]+"</small></h4></div></div></td></tr>";
+                        })
+                    //strHtml+="</tbody>";
+                    $group_result.html(strHtml);//display 
+
                 });
             });
 
@@ -208,8 +260,9 @@
             </div><!--/ New Song-->
 
             <div role="tabpanel" class="tab-pane fade" id="new_group">
-                <table class="table group_table"><tbody>
-                    <tr><td class="first">
+                <table class="table group_table">
+                    <tbody id="group_result">
+                    <!--tr><td class="first">
                         <div class="container group_info_container">
 
                             <div class="container group_icon_container">
@@ -240,44 +293,8 @@
                                 </small></h4>
 
                             </div>
-                        </div><!-- end of group information-->
-                    </td></tr>
-
-                    <tr><td>
-                        <div class="container group_info_container">
-
-                            <div class="container group_icon_container">
-                                <img src="{% static 'img/mio.jpg' %}" class="group_icon">
-                            </div>
-
-                            <div class="container group_description_container">
-
-                                <h2 class="group_name">
-                                    Shyuseimin's Favorite
-                                </h2>
-
-                                <h4 class="group_info_lable">
-                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                                    Founder:
-                                </h4>
-                                <h4 class="group_info_content"><small>
-                                    ShyuSeimin
-                                </small></h4>
-
-                                <h4 class="group_info_lable">
-                                    <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
-                                    Group Description:
-                                </h4>
-                                <h4 class="group_info_content"><small>
-                                    Hey! These are the songs that I love sooo much!!!<br>
-                                    Welcome those who also like Arashi and RADWIMPS!!!
-                                </small></h4>
-
-                            </div>
-                        </div><!-- end of group information-->
-                    </td></tr>
-
-
+                        </div>
+                    </td></tr--><!-- end of group information-->
                 </tbody></table>
             </div><!--/ New Group-->
         </div>
