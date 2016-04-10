@@ -1,3 +1,20 @@
+.form-group.search {
+  width: 500px;
+  margin: 0 auto;
+}
+
+.form-group.first.search {
+  width: 500px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.btn.btn-primary#search_submit {
+  width: 100px;
+  margin-left: 200px;
+  margin-bottom: 20px;
+}
+
 .container.home_container{
   width: 800px;
   background-color: white;
