@@ -347,7 +347,6 @@ def dislike_group(request):
                 groupList = json.dumps(groupList)
                 try:
                     cursor = connection.cursor()
-                    print("UPDATE bbjjzl_musiclist set groupList = '" + groupList + "' where uid = " + str(request.session["id"]) + ";")
                     cursor.execute("UPDATE bbjjzl_grouplist set groupList = '" + groupList + "' where uid = " + str(request.session["id"]) + ";")
                 except:
                     return JsonResponse({'status': 2, 'message': 'Updating starred group list failed!'})
@@ -357,3 +356,22 @@ def dislike_group(request):
                 return JsonResponse({'status': 0, 'message': 'group disliked'})
 
         return JsonResponse({'status': 4, 'message': 'group not in like list'})
+
+def group_dismiss(request):
+    if request.method == "POST":
+        if not 'id' in request.session.keys():
+            return JsonResponse({'status': 1, 'message': 'You must login first if you want to dismiss this group'})
+
+        idFounder = Group.objects.values("uid").filter(id = request.POST["gid"])[0]["uid"]
+        if not idFounder == request.session["id"]:
+            return JsonResponse({'status': 2, 'message': 'You have no permission to do this'})
+
+        try:
+            cursor = connection.cursor()
+            cursor.execute("DELETE from bbjjzl_group where id = " + str(request.POST["gid"]) + ";")
+        except:
+            return JsonResponse({'status': 2, 'message': 'Updating starred group list failed!'})
+        finally:
+            cursor.close() 
+
+        return JsonResponse({'status': 0, 'message': 'group dismissed'})

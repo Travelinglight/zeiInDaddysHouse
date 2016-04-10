@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^group/home/', views.group_home, name='homeGroup'),
     url(r'^group/delete$', views.delete_from_group, name='delete_from_group'),
     url(r'^group/comment$', views.group_comment, name='group_comment'),
+    url(r'^group/dismiss$', views.group_dismiss, name='group_dismiss'),
     url(r'^upload', views.upload, name='upload'),
     url(r'^fileupload$', views.file_upload, name='upload'),
     url(r'^home$', views.home, name="home"),

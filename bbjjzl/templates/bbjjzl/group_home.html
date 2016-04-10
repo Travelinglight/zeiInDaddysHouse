@@ -115,12 +115,12 @@
             $("#group_delete").click(function(event) {
                 event.preventDefault();
                 var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
-                $.post("/group/dismiss", {'gid': group.id, 'csrfmiddlewaretoken': token}, function(feedback) {
-                        if(feedback.status == 0) {
-                            alert("Group Dismissed!");
-                            window.location.href="/home";
-                        }
-                    });
+                $.post("/group/dismiss", {'gid': {{ group.id }}, 'csrfmiddlewaretoken': token}, function(feedback) {
+                    if(feedback.status == 0) {
+                        alert("Group Dismissed!");
+                        window.location.href="/home";
+                    }
+                });
             });
 
         });
