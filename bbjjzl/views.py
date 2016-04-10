@@ -83,7 +83,9 @@ def group_home(request) :
     songList = []
     song = {}
     for i in range(len(oriSongList)):
+        print(i)
         theSong = Music.objects.values("name", "artist", "vHash").filter(id = oriSongList[i]["sid"])[0]
+        print(theSong)
         theUser = User.objects.values("username").filter(id = oriSongList[i]["uid"])[0]
         song["name"] = theSong["name"]
         song["artist"] = theSong["artist"]
@@ -91,8 +93,10 @@ def group_home(request) :
         song["uploader"] = theUser["username"]
         song["own"] = request.session["id"] == oriSongList[i]["uid"]
         songList.append(song)
+        song = {}
 
     theGroup["proPic"] = "/uploads/" + theGroup["proPic"][0:2] + "/" + theGroup["proPic"][2:4] + "/" + theGroup["proPic"][4:]
+    print(songList)
     return render(request, 'bbjjzl/group_home.html', {"group": theGroup, "songList": songList, "Founder": Founder, "own": idFounder == request.session["id"]})
 
 def upload(request):
@@ -129,7 +133,7 @@ def upload(request):
         finally:
             cursor.close()
 
-        return JsonResponse({'status': 0, 'message': '1 song added'})
+        return JsonResponse({'status': 0, 'message': '1 song added', 'url': '/group/home/?gid=' + str(request.POST["gid"])})
     else:
         return render(request, 'bbjjzl/upload.html', {'gid': request.GET.get('gid', 0)})
 
