@@ -185,25 +185,22 @@
                         </button>
                     </td></tr>
 
+                    {% for g in groupList %}
                     <tr><td>
                         <div class="container group_info_container">
-
                             <div class="container group_icon_container">
-                                <img src="{% static 'img/mio.jpg' %}" class="group_icon">
+                                <img src="{% static "" %}{{ g.proPic }}" class="group_icon">
                             </div>
 
                             <div class="container group_description_container">
 
-                                <h2 class="group_name">
-                                    Shyuseimin's Favorite
-                                </h2>
-
+                                <a href="/group/home?gid={{g.id}}"><h2 class="group_name">{{g.name}}</h2></a>
                                 <h4 class="group_info_lable">
                                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                                     Founder:
                                 </h4>
                                 <h4 class="group_info_content"><small>
-                                    ShyuSeimin
+                                    {{g.Founder}}
                                 </small></h4>
 
                                 <h4 class="group_info_lable">
@@ -211,15 +208,15 @@
                                     Group Description:
                                 </h4>
                                 <h4 class="group_info_content"><small>
-                                    Hey! These are the songs that I love sooo much!!!<br>
-                                    Welcome those who also like Arashi and RADWIMPS!!!
+                                    {{g.description}}
                                 </small></h4>
 
                             </div>
-                        </div><!-- end of group information-->
-                    </td></tr>
+                        </div>
+                    </tr></td>
+                    {% endfor %}
 
-                    <tr><td>
+                    <!--tr><td>
                         <div class="container group_info_container">
 
                             <div class="container group_icon_container">
@@ -250,8 +247,8 @@
                                 </small></h4>
 
                             </div>
-                        </div><!-- end of group information-->
-                    </td></tr>
+                        </div>
+                    </td></tr--><!-- end of group information-->
 
                 </tbody></table>
             </div><!--/ My Group-->
