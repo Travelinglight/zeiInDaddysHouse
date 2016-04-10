@@ -9,7 +9,8 @@ from django.db import connection
 from django.core import serializers
 from bbjjzl.models import group as Group
 from bbjjzl.models import music as Music
-from bbjjzl.models import musicList as Starred
+from bbjjzl.models import musiclist as Musiclist
+from bbjjzl.models import grouplist as Grouplist
 import base64
 import hashlib
 import os
@@ -37,11 +38,15 @@ def user_new(request) :
                 try:
                     cursor = connection.cursor()
                     cursor.execute("INSERT INTO bbjjzl_musiclist(uid, songList) VALUES(" + str(uid) + ", '[]');")
+                    cursor.execute("INSERT INTO bbjjzl_grouplist(uid, groupList) VALUES(" + str(uid) + ", '[]');")
+                    cursor.execute("INSERT INTO bbjjzl_mymusic(uid, songList) VALUES(" + str(uid) + ", '[]');")
+                    cursor.execute("INSERT INTO bbjjzl_mygroup(uid, groupList) VALUES(" + str(uid) + ", '[]');")
                 except:
-                    return JsonResponse({'status': 3, 'message': 'music list creation failed!'})
+                    return JsonResponse({'status': 3, 'message': 'user initialiation failed'})
                 finally:
                     cursor.close()
-                    return JsonResponse({'status': 0, 'message': 'Creating user succeeded!'})
+
+                return JsonResponse({'status': 0, 'message': 'Creating user succeeded!'})
 
 def user_login(request) :
     user = authenticate(username=request.POST['username'], password=request.POST['password'])
@@ -107,7 +112,8 @@ def group_home(request) :
     theGroup = Group.objects.values("id", "uid", "name", "description", "proPic").filter(id = request.GET.get('gid', 0))[0]
     idFounder = theGroup["uid"]
     Founder = User.objects.values("username").filter(id = idFounder)[0]["username"]
-    likeList = json.loads(Starred.objects.values("songList").filter(uid = request.session["id"])[0]["songList"])
+    likeList = json.loads(Musiclist.objects.values("songList").filter(uid = request.session["id"])[0]["songList"])
+    likeGrouplist = json.loads(Grouplist.objects.values("groupList").filter(uid = request.session["id"])[0]["groupList"])
 
     songList = []
     song = {}
@@ -126,6 +132,11 @@ def group_home(request) :
                 song["like"] = True;
         songList.append(song)
         song = {}
+
+    theGroup["like"] = False;
+    for i in likeGrouplist:
+        if int(i) == int(request.GET.get('gid', 0)):
+            theGroup["like"] = True;
 
     theGroup["proPic"] = "/uploads/" + theGroup["proPic"][0:2] + "/" + theGroup["proPic"][2:4] + "/" + theGroup["proPic"][4:]
     return render(request, 'bbjjzl/group_home.html', {"username":username,"group": theGroup, "songList": songList, "commentList": commentList, "Founder": Founder, "own": idFounder == request.session["id"]})
@@ -244,7 +255,7 @@ def like_song(request):
         if not 'id' in request.session.keys():
             return JsonResponse({'status': 1, 'message': 'You must login first to like the music'})
 
-        songList = json.loads(Starred.objects.values("songList").filter(uid = request.session["id"])[0]["songList"])
+        songList = json.loads(Musiclist.objects.values("songList").filter(uid = request.session["id"])[0]["songList"])
         for i in songList:
             if int(i) == int(request.POST["sid"]):
                 return JsonResponse({'status': 0, 'message': 'song liked'})
@@ -266,7 +277,7 @@ def dislike_song(request):
         if not 'id' in request.session.keys():
             return JsonResponse({'status': 1, 'message': 'You must login first to dislike the music'})
 
-        songList = json.loads(Starred.objects.values("songList").filter(uid = request.session["id"])[0]["songList"])
+        songList = json.loads(Musiclist.objects.values("songList").filter(uid = request.session["id"])[0]["songList"])
 
         for index, item in enumerate(songList):
             if int(item) == int(request.POST["sid"]):
