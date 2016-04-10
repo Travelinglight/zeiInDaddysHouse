@@ -262,9 +262,9 @@ def like_song(request):
 
         songList = json.loads(Starred.objects.values("songList").filter(uid = request.session["id"])[0]["songList"])
         for i in songList:
-            if int(i) == request.POST["sid"]:
+            if int(i) == int(request.POST["sid"]):
                 return JsonResponse({'status': 0, 'message': 'song liked'})
-        songList.append(int(request.POST["sid"]))
+        songList.append(str(request.POST["sid"]))
         print(songList)
         songList = json.dumps(songList)
         try:
@@ -291,9 +291,10 @@ def dislike_song(request):
             return JsonResponse({'status': 1, 'message': 'You must login first to dislike the music'})
 
         songList = json.loads(Starred.objects.values("songList").filter(uid = request.session["id"])[0]["songList"])
-        for i in songList:
-            if int(i) == request.POST["sid"]:
-                songList.pop(i)
+
+        for index, item in enumerate(songList):
+            if int(item) == int(request.POST["sid"]):
+                songList.pop(index)
                 songList = json.dumps(songList)
                 try:
                     cursor = connection.cursor()
@@ -313,7 +314,5 @@ def dislike_song(request):
                     cursor.close()
 
                 return JsonResponse({'status': 0, 'message': 'song disliked'})
-
-                break;
 
         return JsonResponse({'status': 4, 'message': 'song not in like list'})

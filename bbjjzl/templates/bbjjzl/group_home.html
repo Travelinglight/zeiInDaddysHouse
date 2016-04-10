@@ -80,10 +80,8 @@
                     });
                 }
                 else { //if like
-                    alert("dislike this song");
                     $.post("/dislikeSong", {'sid': sid, 'csrfmiddlewaretoken': token}, function(feedback) {
                         if(feedback.status == 0) {
-                            alert("dislike this song");
                             $("#"+thisID).removeClass("glyphicon-heart");
                             $("#"+thisID).addClass("glyphicon-heart-empty");
                         }
