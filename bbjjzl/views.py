@@ -91,7 +91,7 @@ def group_home(request) :
         return HttpResponse('You must login first')
 
     oriSongList = json.loads(Group.objects.values("songList").filter(id = request.GET.get('gid', 0))[0]["songList"])
-    commentList = json.loads(Group.objects.values("commentList").filter(id = request.GET.get('gid', 0))[0]["commentList"])
+    commentList = Group.objects.values("commentList").filter(id = request.GET.get('gid', 0))[0]["commentList"]
     theGroup = Group.objects.values("id", "uid", "name", "description", "proPic").filter(id = request.GET.get('gid', 0))[0]
     idFounder = theGroup["uid"]
     Founder = User.objects.values("username").filter(id = idFounder)[0]["username"]
