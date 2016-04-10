@@ -428,4 +428,16 @@ def searchAll(request):
             songList.append(song)
             song = {}
 
+        oriGroups = Group.objects.values("id", "name", "uid", "proPic", "description", ).filter(name__contains = request.POST["keyword"])
+        groupList = []
+        group = {}
+        for i in range(len(oriGroups)):
+            group["id"] = oriGroups[i]["id"]
+            group["name"] = oriGroups[i]["name"]
+            group["Founder"] = User.objects.values("username").filter(id = oriGroups[i]["uid"])[0]["username"]
+            group["proPic"] = "uploads/" + oriGroups[i]["proPic"][0:2] + "/" + oriGroups[i]["proPic"][2:4] + "/" + oriGroups[i]["proPic"][4:]
+            group["description"] = oriGroups[i]["description"]
+            groupList.append(group)
+            group = {}
+
         return JsonResponse({'songList': songList})
