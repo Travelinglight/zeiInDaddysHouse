@@ -76,7 +76,6 @@ def group_new(request) :
     if request.method == "POST":
         try:
             cursor = connection.cursor()
-            print("=======================")
             cursor.execute("INSERT INTO bbjjzl_group(name, uid, proPic, description, nSong, songList, nComment, commentList) VALUES('" + request.POST["name"] + "', " + str(request.session["id"]) + ", '" + request.POST["proPic"] + "', '" + request.POST["description"] + "', 0, '[]', 0, '[]');")
         except:
             return JsonResponse({'status': 1, 'message': 'Creating group failed!'})
@@ -99,10 +98,9 @@ def group_home(request) :
     songList = []
     song = {}
     for i in range(len(oriSongList)):
-        print(i)
         theSong = Music.objects.values("name", "artist", "vHash").filter(id = oriSongList[i]["sid"])[0]
-        print(theSong)
         theUser = User.objects.values("username").filter(id = oriSongList[i]["uid"])[0]
+        song["id"] = oriSongList[i]["sid"]
         song["name"] = theSong["name"]
         song["artist"] = theSong["artist"]
         song["path"] = "uploads/" + theSong["vHash"][0:2] + "/" + theSong["vHash"][2:4] + "/" + theSong["vHash"][4:]
@@ -112,7 +110,6 @@ def group_home(request) :
         song = {}
 
     theGroup["proPic"] = "/uploads/" + theGroup["proPic"][0:2] + "/" + theGroup["proPic"][2:4] + "/" + theGroup["proPic"][4:]
-    print(songList)
     return render(request, 'bbjjzl/group_home.html', {"group": theGroup, "songList": songList, "Founder": Founder, "own": idFounder == request.session["id"]})
 
 def upload(request):
@@ -208,12 +205,13 @@ def delete_from_group(request):
 
         songList = Group.objects.values("songList").filter(id = request.POST["gid"])[0]["songList"]
         songList_json = json.loads(songList)
-        if songList_json[request.POST["sid"]] != request.session["id"]:
-            return JsonResponse({'status': 2, 'message': 'Deletion request denied'})
 
-        for i in xrange(len(songList_json)):
-            if songList_json[i].keys() == request.POST["sid"]:
-                songList_json.pop(i)
+        for i in range(len(songList_json)):
+            if int(songList_json[i]["sid"]) == int(request.POST["sid"]):
+                if int(songList_json[i]["uid"]) != int(request.session["id"]):
+                    return JsonResponse({'status': 2, 'message': 'Deletion request denied'})
+                else:
+                    songList_json.pop(i)
 
         songList = json.dumps(songList_json)
         try:
@@ -231,6 +229,8 @@ def delete_from_group(request):
             return JsonResponse({'status': 3, 'message': 'Updating the number of songs failed!'})
         finally:
             cursor.close()
+
+        return JsonResponse({'status': 0, 'message': 'music deleted'})
 
 def like_song(request):
     if request.method == "POST":
