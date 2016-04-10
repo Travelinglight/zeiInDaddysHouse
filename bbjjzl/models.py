@@ -3,19 +3,12 @@ from django.db import models
 import json
 
 class musicList(models.Model):
-    title = models.CharField(max_length = 140)
     uid = models.IntegerField(default = 0)
     nSong = models.IntegerField(default = 0)
     songList = models.TextField()
 
-    def setSongs(self, x):
-        self.songList = json.dumps(x)
-
-    def getSongs(self, x):
-        return json.loads(self.foo)
-
     def __str__(self):
-        return self.title
+        return self.songList
 
 class music(models.Model):
     name = models.CharField(max_length = 140)
@@ -32,17 +25,8 @@ class group(models.Model):
     description = models.TextField()
     nSong = models.IntegerField(default = 0)
     songList = models.TextField()
-
-    def setSongs(self, x):
-        self.songList = json.dumps(x)
-
-    def getSongs(self):
-        return json.loads(self.foo)
-
-    def addSong(self, x):
-        crtSongList = self.getSongs()
-        crtSongList += x;
-        self.setSongs(crtSongList)
+    nComment = models.IntegerField(default = 0)
+    commentList = models.TextField(default = '[]')
 
     def __str__(self):
         return self.name
