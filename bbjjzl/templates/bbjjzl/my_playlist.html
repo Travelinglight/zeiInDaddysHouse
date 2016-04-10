@@ -111,7 +111,7 @@
                     <td id="sartist-td-{{forloop.counter}}">{{ c.artist }}</td>
                     <td id="suploader-td-{{forloop.counter}}">{{ c.group }}</td>
                     <td id="splay-td-{{forloop.counter}}" class="center">
-                        <audio src="{% static "" %}{{ c.path }}" controls="controls">
+                        <audio src="{% static "" %}{{ c.path }}" controls="controls" preload="none">
                             No Audio Support
                         </audio>
                     </td>
