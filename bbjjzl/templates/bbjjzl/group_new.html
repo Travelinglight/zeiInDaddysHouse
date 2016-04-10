@@ -65,28 +65,42 @@
             /* form submit */
             $("#newGroup-form").submit(function(event){
                 event.preventDefault();
+                //check confirm
+                var name = $("#name").val();
+                var description = $("#description").val();
 
-                var imj = {file:profileImg};
-                var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
-                imj["csrfmiddlewaretoken"] = token;
-                $.post("/fileupload", imj, function(feedback){
-                    if (feedback.status == 0) {
-                        // construct the JSON
-                        var group_obj = {};
-                        group_obj["name"] = $("#name").val();
-                        group_obj["description"] = $("#description").val();
-                        group_obj["proPic"] = feedback.hash;
-                        group_obj["csrfmiddlewaretoken"] = token;
+                if (name.length == 0) {
+                    $("#warning").html('<strong>Warning</strong> Empty Group Name!');
+                    $("#warning").show();
+                }
+                else if (description.length == 0) {
+                    $("#warning").html('<strong>Warning</strong> Empty Group Description!');
+                    $("#warning").show();
+                }
+                else{
+                    var imj = {file:profileImg};
+                    var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
+                    imj["csrfmiddlewaretoken"] = token;
+                    $.post("/fileupload", imj, function(feedback){
+                        if (feedback.status == 0) {
+                            // construct the JSON
+                            var group_obj = {};
+                            group_obj["name"] = $("#name").val();
+                            group_obj["description"] = $("#description").val();
+                            group_obj["proPic"] = feedback.hash;
+                            group_obj["csrfmiddlewaretoken"] = token;
 
-                        // post the JSON
-                        $.post("/group/new", group_obj, function(res) {
-                            console.log(res);
-                        });
-                    }
-                    else {
-                        alert("Group Profile upload failed!");
-                    }
-                });
+                            // post the JSON
+                            $.post("/group/new", group_obj, function(res) {
+                                console.log(res);
+                                window.location.href=res.url;
+                            });
+                        }
+                        else {
+                            alert("Group Profile upload failed!");
+                        }
+                    });
+                }
             });
 
         });
@@ -143,10 +157,19 @@
             <button type="submit" form="newGroup-form" class="btn btn-primary" id="submit">
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Submit
             </button>
+<<<<<<< HEAD
+            <button class="btn btn-primary" id="cancel">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Cancel
+            </button>
+		</form>
+        <div id="warning" class="alert alert-danger alert-dismissable" style="width:460px;margin:0 auto;margin-top:10px;display:none;">
+        </div>
+=======
         </form>
         <button class="btn btn-primary" id="cancel">
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Cancel
         </button>
+>>>>>>> a88b5fbde2da1cbcc7faf324f938c9145dbf66c5
     </div> <!-- /container -->
 </body>
 </html>
