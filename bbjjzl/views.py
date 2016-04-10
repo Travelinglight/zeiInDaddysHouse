@@ -45,16 +45,32 @@ def user_login(request) :
         return JsonResponse({'status': 2})
 
 def home(request): 
-    return render(request, 'bbjjzl/home.html')
+    if not 'id' in request.session.keys():
+        return HttpResponse('You must login first')
+
+    username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
+    return render(request, 'bbjjzl/home.html', {'username': username})
 
 def myAccount(request):
-    return render(request, 'bbjjzl/my_account.html')
+    if not 'id' in request.session.keys():
+        return HttpResponse('You must login first')
+
+    username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
+    return render(request, 'bbjjzl/my_account.html', {'username': username})
 
 def myPlayList(request):
-    return render(request, 'bbjjzl/my_playlist.html')
+    if not 'id' in request.session.keys():
+        return HttpResponse('You must login first')
+
+    username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
+    return render(request, 'bbjjzl/my_playlist.html', {'username': username})
 
 def favoriteGroup(request):
-    return render(request, 'bbjjzl/favorite_group.html')
+    if not 'id' in request.session.keys():
+        return HttpResponse('You must login first')
+
+    username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
+    return render(request, 'bbjjzl/favorite_group.html', {'username': username})
 
 def group_new(request) :
     if request.method == "POST":
