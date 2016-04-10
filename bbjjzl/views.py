@@ -44,6 +44,18 @@ def user_login(request) :
     else :
         return JsonResponse({'status': 2})
 
+def home(request): 
+    return render(request, 'bbjjzl/home.html')
+
+def myAccount(request):
+    return render(request, 'bbjjzl/my_account.html')
+
+def myPlayList(request):
+    return render(request, 'bbjjzl/my_playlist.html')
+
+def favoriteGroup(request):
+    return render(request, 'bbjjzl/favorite_group.html')
+
 def group_new(request) :
     if request.method == "POST":
         try:
@@ -194,15 +206,3 @@ def add_favorate(request):
         if not 'id' in request.session.keys():
             return JsonResponse({'status': 1, 'message': 'You must login first to delete the music'})
 
-
-def home(request): 
-    return render(request, 'bbjjzl/home.html')
-
-def myAccount(request):
-    return render(request, 'bbjjzl/my_account.html')
-
-def myPlayList(request):
-    return render(request, 'bbjjzl/my_playlist.html')
-
-def favoriteGroup(request):
-    return render(request, 'bbjjzl/favorite_group.html')
