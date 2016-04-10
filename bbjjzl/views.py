@@ -123,6 +123,25 @@ def favoriteGroup(request):
     if not 'id' in request.session.keys():
         return HttpResponse('You must login first')
 
+    likeList = json.loads(Grouplist.objects.values("groupList").filter(uid = request.session["id"])[0]["groupList"])
+    groupList = []
+    group = {}
+    for i in range(len(likeList)):
+        theGroup = Group.objects.values("id", "name", "proPic", "description", "uid").filter(id = int(likeList[i]))
+        if len(theSong) == 0:
+            continue
+        theSong = theSong[0]
+        theGroup = Group.objects.values("name").filter(id = int(theSong["gid"]))[0]
+        song["id"] = theSong["id"]
+        song["name"] = theSong["name"]
+        song["artist"] = theSong["artist"]
+        song["path"] = "uploads/" + theSong["vHash"][0:2] + "/" + theSong["vHash"][2:4] + "/" + theSong["vHash"][4:]
+        song["group"] = theGroup["name"]
+        song["like"] = True;
+        song["own"] = theSong["uid"] == request.session["id"]
+        songList.append(song)
+        song = {}
+
     username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
     return render(request, 'bbjjzl/favorite_group.html', {'username': username})
 
@@ -147,7 +166,6 @@ def group_home(request) :
     username = User.objects.values("username").filter(id = request.session["id"])[0]["username"]
     oriSongList = Music.objects.values("id", "name", "artist", "vHash", "gid", "uid").filter(gid = request.GET.get('gid', 0))
     commentList = json.loads(Group.objects.values("commentList").filter(id = request.GET.get('gid', 0))[0]["commentList"])
-    print(request.GET.get('gid', 0))
     theGroup = Group.objects.values("id", "uid", "name", "description", "proPic").filter(id = request.GET.get('gid', 0))[0]
     idFounder = theGroup["uid"]
     Founder = User.objects.values("username").filter(id = idFounder)[0]["username"]
@@ -394,7 +412,7 @@ def searchAll(request):
         if not 'id' in request.session.keys():
             return JsonResponse({'status': 1, 'message': 'You must login first before you can make a search'})
 
-        oriSongs = Music.objects.values("id", "name", "artist", "vHash", "gid").filter(name__contains = request.POST["keyword"])
+        oriSongs = Music.objects.values("id", "name", "artist", "vHash", "gid", "uid").filter(name__contains = request.POST["keyword"])
         likeList = json.loads(Musiclist.objects.values("songList").filter(uid = request.session["id"])[0]["songList"])
         songList = []
         song = {}
@@ -406,6 +424,7 @@ def searchAll(request):
             song["path"] = "uploads/" + oriSongs[i]["vHash"][0:2] + "/" + oriSongs[i]["vHash"][2:4] + "/" + oriSongs[i]["vHash"][4:]
             song["group"] = theGroup["name"]
             song["like"] = False;
+            song["own"] = int(request.session["id"]) == oriSongs[i]["uid"]
             for j in likeList:
                 if int(j) == int(song["id"]):
                     song["like"] = True;
