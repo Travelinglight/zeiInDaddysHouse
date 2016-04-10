@@ -65,7 +65,8 @@ def group_new(request) :
             return JsonResponse({'status': 1, 'message': 'Creating group failed!'})
         finally:
             cursor.close()
-            return JsonResponse({'status': 0, 'message': 'Creating group succeeded!'})
+            gid = Group.objects.values("id").filter(name = request.POST["name"], uid = request.session["id"])[0]["id"]
+            return JsonResponse({'status': 0, 'message': 'Creating group succeeded!', 'redirect': '/group/home/?gid=' + str(gid)})
 
     return render(request, 'bbjjzl/group_new.html')
 
