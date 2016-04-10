@@ -87,7 +87,7 @@ def group_home(request) :
         theUser = User.objects.values("username").filter(id = oriSongList[i]["uid"])[0]
         song["name"] = theSong["name"]
         song["artist"] = theSong["artist"]
-        song["path"] = "/uploads/" + theSong["vHash"][0:2] + "/" + theSong["vHash"][2:4] + "/" + theSong["vHash"][4:]
+        song["path"] = "uploads/" + theSong["vHash"][0:2] + "/" + theSong["vHash"][2:4] + "/" + theSong["vHash"][4:]
         song["uploader"] = theUser["username"]
         song["own"] = request.session["id"] == oriSongList[i]["uid"]
         songList.append(song)
