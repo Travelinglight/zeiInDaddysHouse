@@ -69,8 +69,8 @@
             $(".song-like").click(function(event) {
                 event.preventDefault();
                 thisID = this.id;
-                var sid = Number(thisID.substring(12));
-                //alert(thisID);
+                var sid = Number(thisID.substring(10));
+                var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
                 if( $("#"+thisID).attr("class").indexOf("empty") != -1 ) { //if not like
                     $.post("/likeSong", {'sid': sid, 'csrfmiddlewaretoken': token}, function(feedback) {
                         if(feedback.status == 0) {
@@ -80,8 +80,10 @@
                     });
                 }
                 else { //if like
+                    alert("dislike this song");
                     $.post("/dislikeSong", {'sid': sid, 'csrfmiddlewaretoken': token}, function(feedback) {
                         if(feedback.status == 0) {
+                            alert("dislike this song");
                             $("#"+thisID).removeClass("glyphicon-heart");
                             $("#"+thisID).addClass("glyphicon-heart-empty");
                         }

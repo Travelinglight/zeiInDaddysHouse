@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^myPlaylist$', views.myPlaylist, name="myPlaylist"),
     url(r'^favoriteGroup$', views.favoriteGroup, name="favoriteGroup"),
     url(r'^likeSong$', views.like_song, name="like_song"),
+    url(r'^dislikeSong$', views.dislike_song, name="like_song"),
 ]
