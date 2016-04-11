@@ -32,62 +32,70 @@
             $("#search_submit").click(function (event) {
                 event.preventDefault();
                 var key = $("#search_key").val();
-                var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
-                $.post("/searchAll", {'keyword': key, 'csrfmiddlewaretoken': token}, function(res) {
-                    $("#begin_journey").hide();
-                    $("#search_form").removeClass("first");
-                    $("#search_result").fadeIn();
-                    console.log(res.songList);
+                if (key.length == 0) {
+                    $("#warning").html('<strong>Warning</strong> Please input a search key!');
+                    $("#warning").show();
+                }
+                else {
+                    var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
+                    $.post("/searchAll", {'keyword': key, 'csrfmiddlewaretoken': token}, function(res) {
+                        $("#begin_journey").hide();
+                        $("#warning").hide();
+                        $("#search_form").removeClass("first");
+                        $("#search_result").fadeIn();
+                        console.log(res.songList);
 
-                    var $song_result = $("#song_result"); 
-                    var strHtml = "";
-                    var path = "";
-                    $song_result.empty();
-                    $.each(res.songList,function(i, song){ 
-                            strHtml +="<tr><td class='title'>"+song["name"]+"</td>";
-                            strHtml +="<td>"+song["artist"]+"</td>";
-                            strHtml +="<td>"+song["group"]+"</td>";
-                            path = song["path"];
-                            //path = "{% static '"; path += song["path"]; path += "' %}";
-                            strHtml +="<td class=\"center\"><audio src=\"/static/";
-                            strHtml +=path;
-                            strHtml +="\" controls='controls'>No Audio Support</audio></td>";
-                            //strHtml +="<td>"+song["path"]+"</td>";
-                            if( song["like"] == true) {
-                                strHtml += "<td class='center'><a id='song-like-"+song["id"]+"'href='#' class='glyphicon glyphicon-heart song-like' aria-hidden='true'></a></td>";
-                            } else {
-                                strHtml += "<td class='center'><a id='song-like-"+song["id"]+"'href='#' class='glyphicon glyphicon-heart-empty song-like' aria-hidden='true'></a></td>";
-                            }
-                            if( song["own"] == true) {
-                                strHtml += "<td class='center'><a id='song-delete-"+song["id"]+"'href='#' class='glyphicon glyphicon-trash song-delete' aria-hidden='true'></a></td>";
-                            } else {
-                                strHtml += "<td class='center'></td>"
-                            }
-                        });
-                    //strHtml+="</tbody>";
-                    $song_result.html(strHtml);//display 
+                        var $song_result = $("#song_result"); 
+                        var strHtml = "";
+                        var path = "";
+                        $song_result.empty();
+                        $.each(res.songList,function(i, song){ 
+                                strHtml +="<tr><td class='title'>"+song["name"]+"</td>";
+                                strHtml +="<td>"+song["artist"]+"</td>";
+                                strHtml +="<td>"+song["group"]+"</td>";
+                                path = song["path"];
+                                //path = "{% static '"; path += song["path"]; path += "' %}";
+                                strHtml +="<td class=\"center\"><audio src=\"/static/";
+                                strHtml +=path;
+                                strHtml +="\" controls='controls'>No Audio Support</audio></td>";
+                                //strHtml +="<td>"+song["path"]+"</td>";
+                                if( song["like"] == true) {
+                                    strHtml += "<td class='center'><a id='song-like-"+song["id"]+"'href='#' class='glyphicon glyphicon-heart song-like' aria-hidden='true'></a></td>";
+                                } else {
+                                    strHtml += "<td class='center'><a id='song-like-"+song["id"]+"'href='#' class='glyphicon glyphicon-heart-empty song-like' aria-hidden='true'></a></td>";
+                                }
+                                if( song["own"] == true) {
+                                    strHtml += "<td class='center'><a id='song-delete-"+song["id"]+"'href='#' class='glyphicon glyphicon-trash song-delete' aria-hidden='true'></a></td>";
+                                } else {
+                                    strHtml += "<td class='center'></td>"
+                                }
+                            });
+                        //strHtml+="</tbody>";
+                        $song_result.html(strHtml);//display 
 
-                    console.log(res.groupList);
+                        console.log(res.groupList);
 
-                    var $group_result = $("#group_result"); 
-                    strHtml = "";
-                    path = "";
-                    $group_result.empty();
-                    $.each(res.groupList,function(i, group){
-                            strHtml +="<tr><td><div class='container group_info_container'>";
-                            strHtml +="<div class='container group_icon_container'>";
-                            path = group["proPic"];
-                            strHtml +="<img src='/static/";
-                            strHtml +=path;
-                            strHtml +="' class='group_icon'></div>";
-                            strHtml +="<div class='container group_description_container'><a href='/group/home?gid="+group["id"]+"'><h2 class='group_name'>"+group["name"]+"</h2></a>";
-                            strHtml +="<h4 class='group_info_lable'><span class='glyphicon glyphicon-user' aria-hidden='true'></span>Founder:</h4><h4 class='group_info_content'><small>"+group["Founder"]+"</small></h4>";
-                            strHtml +="<h4 class='group_info_lable'><span class='glyphicon glyphicon-align-justify' aria-hidden='true'></span>Group Description:</h4><h4 class='group_info_content'><small>"+group["description"]+"</small></h4></div></div></td></tr>";
-                        });
-                    //strHtml+="</tbody>";
-                    $group_result.html(strHtml);//display 
+                        var $group_result = $("#group_result"); 
+                        strHtml = "";
+                        path = "";
+                        $group_result.empty();
+                        $.each(res.groupList,function(i, group){
+                                strHtml +="<tr><td><div class='container group_info_container'>";
+                                strHtml +="<div class='container group_icon_container'>";
+                                path = group["proPic"];
+                                strHtml +="<img src='/static/";
+                                strHtml +=path;
+                                strHtml +="' class='group_icon'></div>";
+                                strHtml +="<div class='container group_description_container'><a href='/group/home?gid="+group["id"]+"'><h2 class='group_name'>"+group["name"]+"</h2></a>";
+                                strHtml +="<h4 class='group_info_lable'><span class='glyphicon glyphicon-user' aria-hidden='true'></span>Founder:</h4><h4 class='group_info_content'><small>"+group["Founder"]+"</small></h4>";
+                                strHtml +="<h4 class='group_info_lable'><span class='glyphicon glyphicon-align-justify' aria-hidden='true'></span>Group Description:</h4><h4 class='group_info_content'><small>"+group["description"]+"</small></h4></div></div></td></tr>";
+                            });
+                        //strHtml+="</tbody>";
+                        $group_result.html(strHtml);//display 
 
-                });
+                    });
+                }
+                
             });
 
             $(document.body).on('click', '.song-delete' ,function(event){
@@ -160,6 +168,8 @@
     <h1 align="center" id="begin_journey"><small>
         Begin Your Journey Here...
     </small></h1>
+
+    <div id="warning" class="alert alert-danger alert-dismissable" style="width:300px;margin:0 auto;display:none; margin-bottom:20px;"></div>
 
     <div class="song-like"></div>
     <div class="song-delete"></div>
