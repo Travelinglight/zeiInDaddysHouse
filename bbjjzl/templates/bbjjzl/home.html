@@ -60,8 +60,10 @@
                             }
                             if( song["own"] == true) {
                                 strHtml += "<td class='center'><a id='song-delete-"+song["id"]+"'href='#' class='glyphicon glyphicon-trash song-delete' aria-hidden='true'></a></td>";
+                            } else {
+                                strHtml += "<td class='center'></td>"
                             }
-                        })
+                        });
                     //strHtml+="</tbody>";
                     $song_result.html(strHtml);//display 
 
@@ -71,38 +73,7 @@
                     strHtml = "";
                     path = "";
                     $group_result.empty();
-                    $.each(res.groupList,function(i, group){ 
-                        /*<div class="container group_info_container">
-
-                            <div class="container group_icon_container">
-                                <img src="{% static 'img/mio.jpg' %}" class="group_icon">
-                            </div>
-
-                            <div class="container group_description_container">
-
-                                <h2 class="group_name">
-                                    Shyuseimin's Favorite
-                                </h2>
-
-                                <h4 class="group_info_lable">
-                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                                    Founder:
-                                </h4>
-                                <h4 class="group_info_content"><small>
-                                    ShyuSeimin
-                                </small></h4>
-
-                                <h4 class="group_info_lable">
-                                    <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
-                                    Group Description:
-                                </h4>
-                                <h4 class="group_info_content"><small>
-                                    Hey! These are the songs that I love sooo much!!!<br>
-                                    Welcome those who also like Arashi and RADWIMPS!!!
-                                </small></h4>
-
-                            </div>
-                        </div>*/
+                    $.each(res.groupList,function(i, group){
                             strHtml +="<tr><td><div class='container group_info_container'>";
                             strHtml +="<div class='container group_icon_container'>";
                             path = group["proPic"];
@@ -112,7 +83,7 @@
                             strHtml +="<div class='container group_description_container'><a href='/group/home?gid="+group["id"]+"'><h2 class='group_name'>"+group["name"]+"</h2></a>";
                             strHtml +="<h4 class='group_info_lable'><span class='glyphicon glyphicon-user' aria-hidden='true'></span>Founder:</h4><h4 class='group_info_content'><small>"+group["Founder"]+"</small></h4>";
                             strHtml +="<h4 class='group_info_lable'><span class='glyphicon glyphicon-align-justify' aria-hidden='true'></span>Group Description:</h4><h4 class='group_info_content'><small>"+group["description"]+"</small></h4></div></div></td></tr>";
-                        })
+                        });
                     //strHtml+="</tbody>";
                     $group_result.html(strHtml);//display 
 

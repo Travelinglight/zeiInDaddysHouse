@@ -409,7 +409,10 @@ def searchAll(request):
         if not 'id' in request.session.keys():
             return JsonResponse({'status': 1, 'message': 'You must login first before you can make a search'})
 
-        oriSongs = Music.objects.values("id", "name", "artist", "vHash", "gid", "uid").filter(name__contains = request.POST["keyword"])
+        if request.POST["keyword"] != "*":
+            oriSongs = Music.objects.values("id", "name", "artist", "vHash", "gid", "uid").filter(name__contains = request.POST["keyword"])
+        else:
+            oriSongs = Music.objects.values("id", "name", "artist", "vHash", "gid", "uid")
         likeList = json.loads(Musiclist.objects.values("songList").filter(uid = request.session["id"])[0]["songList"])
         songList = []
         song = {}
@@ -428,7 +431,10 @@ def searchAll(request):
             songList.append(song)
             song = {}
 
-        oriGroups = Group.objects.values("id", "name", "uid", "proPic", "description", ).filter(name__contains = request.POST["keyword"])
+        if request.POST["keyword"] != "*":
+            oriGroups = Group.objects.values("id", "name", "uid", "proPic", "description", ).filter(name__contains = request.POST["keyword"])
+        else:
+            oriGroups = Group.objects.values("id", "name", "uid", "proPic", "description", )
         groupList = []
         group = {}
         for i in range(len(oriGroups)):
