@@ -55,7 +55,7 @@
                                 strHtml +="<td>"+song["group"]+"</td>";
                                 path = song["path"];
                                 //path = "{% static '"; path += song["path"]; path += "' %}";
-                                strHtml +="<td class=\"center\"><audio src=\"/static/";
+                                strHtml +="<td class=\"center\"><audio preload='none'src=\"/static/";
                                 strHtml +=path;
                                 strHtml +="\" controls='controls'>No Audio Support</audio></td>";
                                 //strHtml +="<td>"+song["path"]+"</td>";
