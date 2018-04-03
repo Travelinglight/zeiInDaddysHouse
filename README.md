@@ -1,5 +1,5 @@
 # zeiInDaddysHouse
-This a a term project for CMPT365 at Simon Fraser University, which implements a professional private music sharing website with Django framework.
+This is a term project for CMPT365 at Simon Fraser University, which implements a professional private music sharing website with Django framework.
 
 ## Dependency
 * Python 3.5.1
